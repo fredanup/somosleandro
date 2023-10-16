@@ -14,6 +14,9 @@ dependencies:
   '@ducanh2912/next-pwa':
     specifier: ^9.7.1
     version: 9.7.1(next@13.4.8)(webpack@5.89.0)
+  '@next-auth/prisma-adapter':
+    specifier: 0.4.4-canary.81
+    version: 0.4.4-canary.81(@prisma/client@4.14.1)(next-auth@4.22.1)
   '@prisma/client':
     specifier: ^4.14.1
     version: 4.14.1(prisma@4.14.1)
@@ -2252,6 +2255,16 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
+
+  /@next-auth/prisma-adapter@0.4.4-canary.81(@prisma/client@4.14.1)(next-auth@4.22.1):
+    resolution: {integrity: sha512-RXdjrRkK4A3ksMdGXIyDmYBcgdpmbVqSGDoaH2X7P/MLBngh3/GO8TFGpiLwiUt1o4+Py81KICZYvBgatRP+Ew==}
+    peerDependencies:
+      '@prisma/client': '>=2.16.0'
+      next-auth: '>=3.19.2'
+    dependencies:
+      '@prisma/client': 4.14.1(prisma@4.14.1)
+      next-auth: 4.22.1(next@13.4.8)(react-dom@18.2.0)(react@18.2.0)
+    dev: false
 
   /@next/env@13.4.8:
     resolution: {integrity: sha512-twuSf1klb3k9wXI7IZhbZGtFCWvGD4wXTY2rmvzIgVhXhs7ISThrbNyutBx3jWIL8Y/Hk9+woytFz5QsgtcRKQ==}
