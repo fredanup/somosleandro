@@ -6,7 +6,7 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 
 let useMockProvider = process.env.NODE_ENV === 'test';
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV, APP_ENV } = process.env;
+const { GITHUB_CLIENT_ID, GITHUB_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV, APP_ENV } = process.env;
 if (
   (NODE_ENV !== 'production' || APP_ENV === 'test') &&
   (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET)
