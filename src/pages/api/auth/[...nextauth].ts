@@ -4,12 +4,12 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 
 let useMockProvider = process.env.NODE_ENV === 'test';
-const { GITHUB_CLIENT_ID, GITHUB_SECRET, NODE_ENV, APP_ENV } = process.env;
+const { GITHUB_CLIENT_ID, GITHUB_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NODE_ENV, APP_ENV } = process.env;
 if (
   (NODE_ENV !== 'production' || APP_ENV === 'test') &&
-  (!GITHUB_CLIENT_ID || !GITHUB_SECRET)
+  (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET)
 ) {
-  console.log('⚠️ Using mocked GitHub auth correct credentials were not added');
+  console.log('⚠️ Using mocked Google auth correct credentials were not added');
   useMockProvider = true;
 }
 const providers: AppProviders = [];
@@ -35,13 +35,13 @@ if (useMockProvider) {
     }),
   );
 } else {
-  if (!GITHUB_CLIENT_ID || !GITHUB_SECRET) {
-    throw new Error('GITHUB_CLIENT_ID and GITHUB_SECRET must be set');
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    throw new Error('GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET must be set');
   }
   providers.push(
     GithubProvider({
-      clientId: GITHUB_CLIENT_ID,
-      clientSecret: GITHUB_SECRET,
+      clientId: GOOGLE_CLIENT_ID,
+      clientSecret: GOOGLE_CLIENT_SECRET,
       profile(profile) {
         return {
           id: profile.id,
