@@ -40,6 +40,7 @@
     "singleQuote": true
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^9.7.1",
     "@prisma/client": "^4.14.1",
     "@tanstack/react-query": "^4.18.0",
     "@trpc/client": "^10.40.0",
@@ -78,7 +79,8 @@
     "prisma": "^4.14.1",
     "start-server-and-test": "^1.12.0",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "webpack": "^5.89.0"
   },
   "publishConfig": {
     "access": "restricted"
