@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import SignUpForm from './login/signUpForm';
 import SignInForm from './login/signInForm';
+import IndexPage from './indexPage';
 
 export default function Home() {
   const [isSignUp, setIsSignUp] = useState(true);
@@ -106,6 +107,7 @@ export default function Home() {
             </div>
             {/**Este contenedor no aparece en móviles */}
             <div className="hidden md:order-last md:block md:h-full md:w-3/5 md:rounded-lg md:bg-[url('/images/milagros.jpg')] md:bg-cover md:bg-center"></div>
+            <IndexPage />
           </div>
         )}
       </div>
