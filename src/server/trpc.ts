@@ -10,7 +10,12 @@
 
 import { Context } from './context';
 import { initTRPC, TRPCError } from '@trpc/server';
+import { Session } from 'next-auth';
 import superjson from 'superjson';
+
+type CreateContextOptions = {
+  session: Session | null;
+};
 
 const t = initTRPC.context<Context>().create({
   /**
@@ -29,7 +34,7 @@ const t = initTRPC.context<Context>().create({
  * Create a router
  * @see https://trpc.io/docs/v10/router
  */
-export const router = t.router;
+export const createTRPCRouter = t.router;
 
 /**
  * Create an unprotected procedure
@@ -67,4 +72,4 @@ const isAuthed = middleware(({ next, ctx }) => {
 /**
  * Protected base procedure
  */
-export const authedProcedure = t.procedure.use(isAuthed);
+export const protectedProcedure = t.procedure.use(isAuthed);

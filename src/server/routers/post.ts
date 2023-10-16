@@ -7,7 +7,7 @@ import { observable } from '@trpc/server/observable';
 import { EventEmitter } from 'events';
 import { prisma } from '../prisma';
 import { z } from 'zod';
-import { authedProcedure, publicProcedure, router } from '../trpc';
+import { protectedProcedure, publicProcedure, createTRPCRouter } from '../trpc';
 
 interface MyEvents {
   add: (data: Post) => void;
@@ -50,8 +50,8 @@ process.on('SIGTERM', () => {
   clearInterval(interval);
 });
 
-export const postRouter = router({
-  add: authedProcedure
+export const postRouter = createTRPCRouter({
+  add: protectedProcedure
     .input(
       z.object({
         id: z.string().uuid().optional(),
@@ -73,7 +73,7 @@ export const postRouter = router({
       return post;
     }),
 
-  isTyping: authedProcedure
+  isTyping: protectedProcedure
     .input(z.object({ typing: z.boolean() }))
     .mutation(({ input, ctx }) => {
       const { name } = ctx.user;
