@@ -6,9 +6,10 @@ import { useEffect, useState } from 'react';
 import CallingSmallScreen from './calling/callingSmallScreen';
 /*
 import CallingFullScreen from "./calling/callingFullScreen";
-import ProfileSmallScreen from "./profile/profileSmallScreen";
-import ProfileFullScreen from "./profile/profileFullScreen";
 */
+import ProfileSmallScreen from './profile/profileSmallScreen';
+import ProfileFullScreen from './profile/profileFullScreen';
+
 import ScreenDesign from './template/screenDesign';
 /*
 import ApplyingSmallScreen from "./applying/applyingSmallScreen";
@@ -266,6 +267,7 @@ export default function Main() {
             fullScreenBody={<ApplicantChatFullScreen selectedCard={roomCard} />}
           />
         )}
+          */}
         {opt === 6 && (
           <ScreenDesign
             header="Mi perfil"
@@ -273,7 +275,6 @@ export default function Main() {
             fullScreenBody={<ProfileFullScreen />}
           />
         )}
-        */}
       </div>
     </>
   );
