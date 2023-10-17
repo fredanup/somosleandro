@@ -7,8 +7,8 @@ import CallingSmallScreen from './calling/callingSmallScreen';
 /*
 import CallingFullScreen from "./calling/callingFullScreen";
 */
-import ProfileSmallScreen from './profile/profileSmallScreen';
-import ProfileFullScreen from './profile/profileFullScreen';
+//import ProfileSmallScreen from './profile/profileSmallScreen';
+//import ProfileFullScreen from './profile/profileFullScreen';
 
 import ScreenDesign from './template/screenDesign';
 /*
@@ -268,6 +268,7 @@ export default function Main() {
           />
         )}
           */}
+        {/*
         {opt === 6 && (
           <ScreenDesign
             header="Mi perfil"
@@ -275,6 +276,7 @@ export default function Main() {
             fullScreenBody={<ProfileFullScreen />}
           />
         )}
+        */}
       </div>
     </>
   );
