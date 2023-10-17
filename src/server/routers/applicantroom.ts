@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { type ApplicantRoomType, Events, ee } from "./room";
 import { observable } from "@trpc/server/observable";
-import { prisma } from "../../db";
+import { prisma } from "server/prisma";
 
 export const applicantRoomRouter = createTRPCRouter({ 
     applicantChange: publicProcedure    
