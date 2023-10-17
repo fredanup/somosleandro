@@ -11,10 +11,12 @@ import CallingFullScreen from "./calling/callingFullScreen";
 //import ProfileFullScreen from './profile/profileFullScreen';
 
 import ScreenDesign from './template/screenDesign';
+
+import ApplyingSmallScreen from './applying/applyingSmallScreen';
+import ApplyingFullScreen from './applying/applyingFullScreen';
+
+import { type IUserCalling } from '../utils/auth';
 /*
-import ApplyingSmallScreen from "./applying/applyingSmallScreen";
-import ApplyingFullScreen from "./applying/applyingFullScreen";
-import { type IUserCalling } from "../utils/auth";
 import CallingRoomSmallScreen from "./chat/creator/callingRoomSmallScreen";
 import ChatFullScreen from "./chat/creator/chatFullScreen";
 import CallingAcceptedSmallScreen from "./chat/applicant/callingAcceptedSmallScreen";
@@ -26,7 +28,7 @@ export default function Main() {
   const { data: session, status } = useSession();
   //Establecemos qué opción del menú se verá primero
   const [opt, setOpt] = useState(1);
-  //const [selectedCard, setSelectedCard] = useState<IUserCalling | null>(null);
+  const [selectedCard, setSelectedCard] = useState<IUserCalling | null>(null);
   //const [roomCard, setRoomCard] = useState<ApplicantRoomType | null>(null);
   // Inicialmente el menu en dispositivos móviles será visible
   const [isMenuVisible, setIsMenuVisible] = useState(true);
@@ -61,11 +63,11 @@ export default function Main() {
   }, []);
 
   // Callback que recibe los datos de la tarjeta seleccionada
-  /*
+
   const handleCardSelect = (data: IUserCalling | null) => {
     setSelectedCard(data);
   };
-
+  /*
   const handleRoomCardSelect = (data: ApplicantRoomType | null) => {
     setRoomCard(data);
   };
@@ -249,6 +251,7 @@ export default function Main() {
             fullScreenBody={<ChatFullScreen selectedCard={selectedCard} />}
           />
         )}
+          */}
         {opt === 3 && (
           <ScreenDesign
             header="Convocatorias disponibles"
@@ -258,6 +261,7 @@ export default function Main() {
             fullScreenBody={<ApplyingFullScreen selectedCard={selectedCard} />}
           />
         )}
+        {/*
         {opt === 4 && (
           <ScreenDesign
             header="Postulaciones aprobadas"
