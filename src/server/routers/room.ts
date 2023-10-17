@@ -3,7 +3,7 @@ import { randomUUID } from "crypto";
 import { observable } from "@trpc/server/observable";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { EventEmitter } from "events";
-import { prisma, Prisma } from "server/prisma";
+import { prisma, Prisma } from "../prisma";
 
 
 //Valida qué campos de la tabla mensaje se van a poder seleccionar o consultar
