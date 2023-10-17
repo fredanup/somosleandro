@@ -28,7 +28,11 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
       },
     }),
-   
+    async redirect(params: { url: string; baseUrl: string }): Promise<string> {
+      const redirectTo = params.baseUrl + '/main';
+  
+      return Promise.resolve(redirectTo);
+    },
   },
   adapter: PrismaAdapter(prisma),
   providers: [

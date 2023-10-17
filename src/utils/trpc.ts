@@ -2,7 +2,7 @@ import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import { createTRPCNext } from '@trpc/next';
-import type { inferProcedureOutput } from '@trpc/server';
+import type { inferProcedureOutput, inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import { NextPageContext } from 'next';
 import getConfig from 'next/config';
 import type { AppRouter } from 'server/routers/_app';
@@ -80,11 +80,16 @@ export const trpc = createTRPCNext<AppRouter>({
   ssr: true,
 });
 
-// export const transformer = superjson;
 /**
- * This is a helper method to infer the output of a query resolver
- * @example type HelloOutput = inferQueryOutput<'hello'>
+ * Inference helper for inputs.
+ *
+ * @example type HelloInput = RouterInputs['example']['hello']
  */
-export type inferQueryOutput<
-  TRouteKey extends keyof AppRouter['_def']['queries'],
-> = inferProcedureOutput<AppRouter['_def']['queries'][TRouteKey]>;
+export type RouterInputs = inferRouterInputs<AppRouter>;
+
+/**
+ * Inference helper for outputs.
+ *
+ * @example type HelloOutput = RouterOutputs['example']['hello']
+ */
+export type RouterOutputs = inferRouterOutputs<AppRouter>;
