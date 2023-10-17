@@ -6,6 +6,7 @@ import { applicantRoomRouter } from './applicantroom';
 import { callingRouter } from './calling';
 import { documentRouter } from './document';
 import { messageRouter } from './message';
+import { roomRouter } from './room';
 import { userRouter } from './user';
 import { videoRouter } from './video';
 
@@ -17,7 +18,8 @@ export const appRouter = createTRPCRouter({
   applicantRoom: applicantRoomRouter,
   document: documentRouter,
   message: messageRouter,
-  video: videoRouter
+  video: videoRouter,
+  room: roomRouter
 });
 
 export type AppRouter = typeof appRouter;

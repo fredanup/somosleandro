@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import CallingSmallScreen from './calling/callingSmallScreen';
-/*
-import CallingFullScreen from "./calling/callingFullScreen";
-*/
+
+import CallingFullScreen from './calling/callingFullScreen';
+
 import ProfileSmallScreen from './profile/profileSmallScreen';
 import ProfileFullScreen from './profile/profileFullScreen';
 
@@ -16,13 +16,14 @@ import ApplyingSmallScreen from './applying/applyingSmallScreen';
 import ApplyingFullScreen from './applying/applyingFullScreen';
 
 import { type IUserCalling } from '../utils/auth';
-/*
-import CallingRoomSmallScreen from "./chat/creator/callingRoomSmallScreen";
-import ChatFullScreen from "./chat/creator/chatFullScreen";
-import CallingAcceptedSmallScreen from "./chat/applicant/callingAcceptedSmallScreen";
-*/
-import type { ApplicantRoomType } from 'server/routers/room';
-//import ApplicantChatFullScreen from "./chat/applicant/applicantChatFullScreen";
+
+import CallingRoomSmallScreen from './chat/creator/callingRoomSmallScreen';
+
+import ChatFullScreen from './chat/creator/chatFullScreen';
+import CallingAcceptedSmallScreen from './chat/applicant/callingAcceptedSmallScreen';
+
+import { ApplicantRoomType } from 'server/routers/room';
+import ApplicantChatFullScreen from './chat/applicant/applicantChatFullScreen';
 
 export default function Main() {
   const router = useRouter();
@@ -239,10 +240,10 @@ export default function Main() {
             smallScreenBody={
               <CallingSmallScreen onCardSelect={handleCardSelect} />
             }
-            fullScreenBody={'<CallingFullScreen selectedCard={selectedCard} />'}
+            fullScreenBody={<CallingFullScreen selectedCard={selectedCard} />}
           />
         )}
-        {/*
+
         {opt === 2 && (
           <ScreenDesign
             header="Chat con postulantes"
@@ -252,7 +253,7 @@ export default function Main() {
             fullScreenBody={<ChatFullScreen selectedCard={selectedCard} />}
           />
         )}
-          */}
+
         {opt === 3 && (
           <ScreenDesign
             header="Convocatorias disponibles"
@@ -262,7 +263,7 @@ export default function Main() {
             fullScreenBody={<ApplyingFullScreen selectedCard={selectedCard} />}
           />
         )}
-        {/*
+
         {opt === 4 && (
           <ScreenDesign
             header="Postulaciones aprobadas"
@@ -272,7 +273,6 @@ export default function Main() {
             fullScreenBody={<ApplicantChatFullScreen selectedCard={roomCard} />}
           />
         )}
-          */}
 
         {opt === 6 && (
           <ScreenDesign
