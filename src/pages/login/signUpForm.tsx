@@ -1,14 +1,14 @@
-import { type NextPage } from "next";
+import { type NextPage } from 'next';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import Image from "next/image";
-import { signIn } from "next-auth/react";
+import Image from 'next/image';
+import { signIn } from 'next-auth/react';
 
 const SignUpForm: NextPage = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <form className="md:mt-2 md:h-auto md:w-full">
@@ -74,8 +74,8 @@ const SignUpForm: NextPage = () => {
         <span className="text-justify text-base font-light text-gray-400">
           La creación de esta cuenta significa que ud. está de acuerdo con los
           <span className="text-justify text-sky-500">
-            {" "}
-            términos y condiciones{" "}
+            {' '}
+            términos y condiciones{' '}
           </span>
           de la plataforma
         </span>
@@ -99,7 +99,9 @@ const SignUpForm: NextPage = () => {
             height={100}
             alt="Logo"
             onClick={() => {
-              signIn("google").catch(console.log);
+              signIn('google', {
+                callbackUrl: 'https://trpc-websockets-807m.onrender.com/main',
+              }).catch(console.log);
             }}
           />
           <Image
@@ -109,7 +111,7 @@ const SignUpForm: NextPage = () => {
             height={100}
             alt="Logo"
             onClick={() => {
-              signIn("facebook").catch(console.log);
+              signIn('facebook').catch(console.log);
             }}
           />
         </div>
