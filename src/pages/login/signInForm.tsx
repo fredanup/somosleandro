@@ -1,22 +1,22 @@
-import { type NextPage } from "next";
-import { signIn } from "next-auth/react";
-import Image from "next/image";
-import { useState } from "react";
+import { type NextPage } from 'next';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import { useState } from 'react';
 
 const SignInForm: NextPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   return (
     <form
       className="mt-2"
       onSubmit={(event) => {
         event.preventDefault();
-        signIn("credentials", {
-          callbackUrl: "http://localhost:3000/main",
+        signIn('credentials', {
+          callbackUrl: 'http://localhost:3000/main',
         }).catch(console.log);
-        setEmail("");
-        setPassword("");
+        setEmail('');
+        setPassword('');
       }}
     >
       {/**Input text y label de inicio de sesión */}
@@ -65,7 +65,9 @@ const SignInForm: NextPage = () => {
             height={100}
             alt="Logo"
             onClick={() => {
-              signIn("google").catch(console.log);
+              signIn('google', {
+                callbackUrl: 'https://trpc-websockets-807m.onrender.com/main',
+              }).catch(console.log);
             }}
           />
           <Image
@@ -75,7 +77,7 @@ const SignInForm: NextPage = () => {
             height={100}
             alt="Logo"
             onClick={() => {
-              signIn("facebook").catch(console.log);
+              signIn('facebook').catch(console.log);
             }}
           />
         </div>
