@@ -3,12 +3,14 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+import CallingSmallScreen from './calling/callingSmallScreen';
 /*
-import CallingSmallScreen from "./calling/callingSmallScreen";
 import CallingFullScreen from "./calling/callingFullScreen";
 import ProfileSmallScreen from "./profile/profileSmallScreen";
 import ProfileFullScreen from "./profile/profileFullScreen";
-import ScreenDesign from "./template/screenDesign";
+*/
+import ScreenDesign from './template/screenDesign';
+/*
 import ApplyingSmallScreen from "./applying/applyingSmallScreen";
 import ApplyingFullScreen from "./applying/applyingFullScreen";
 import { type IUserCalling } from "../utils/auth";
@@ -226,16 +228,17 @@ export default function Main() {
           </div>
         </nav>
         {/**Módulos */}
-        {/*
+
         {opt === 1 && (
           <ScreenDesign
             header="Tus convocatorias"
             smallScreenBody={
-              <CallingSmallScreen onCardSelect={handleCardSelect} />
+              <CallingSmallScreen /*onCardSelect={handleCardSelect}*/ />
             }
-            fullScreenBody={<CallingFullScreen selectedCard={selectedCard} />}
+            fullScreenBody={'<CallingFullScreen selectedCard={selectedCard} />'}
           />
         )}
+        {/*
         {opt === 2 && (
           <ScreenDesign
             header="Chat con postulantes"
