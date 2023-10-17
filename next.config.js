@@ -21,6 +21,23 @@ const config = {
   /** We run eslint as a separate task in CI */
   eslint: { ignoreDuringBuilds: !!process.env.CI },
   reactStrictMode: true,
+  swcMinify: true,
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'platform-lookaside.fbsbx.com',
+      }
+    ],
+  },
 };
 
 module.exports = (phase) => {
