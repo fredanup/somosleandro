@@ -20,8 +20,9 @@ import { type IUserCalling } from '../utils/auth';
 import CallingRoomSmallScreen from "./chat/creator/callingRoomSmallScreen";
 import ChatFullScreen from "./chat/creator/chatFullScreen";
 import CallingAcceptedSmallScreen from "./chat/applicant/callingAcceptedSmallScreen";
-import type { ApplicantRoomType } from "../server/api/routers/room";
-import ApplicantChatFullScreen from "./chat/applicant/applicantChatFullScreen";*/
+*/
+import type { ApplicantRoomType } from 'server/routers/room';
+//import ApplicantChatFullScreen from "./chat/applicant/applicantChatFullScreen";
 
 export default function Main() {
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function Main() {
   //Establecemos qué opción del menú se verá primero
   const [opt, setOpt] = useState(1);
   const [selectedCard, setSelectedCard] = useState<IUserCalling | null>(null);
-  //const [roomCard, setRoomCard] = useState<ApplicantRoomType | null>(null);
+  const [roomCard, setRoomCard] = useState<ApplicantRoomType | null>(null);
   // Inicialmente el menu en dispositivos móviles será visible
   const [isMenuVisible, setIsMenuVisible] = useState(true);
   //límite de desplazamiento hacia abajo en píxeles antes de que el menú se oculte.
@@ -67,11 +68,11 @@ export default function Main() {
   const handleCardSelect = (data: IUserCalling | null) => {
     setSelectedCard(data);
   };
-  /*
+
   const handleRoomCardSelect = (data: ApplicantRoomType | null) => {
     setRoomCard(data);
   };
-  */
+
   if (status === 'loading') {
     // Aquí puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el estado de autenticación
     return <div className="text-center">Cargando...</div>;
@@ -117,7 +118,7 @@ export default function Main() {
               }`}
               onClick={() => {
                 setOpt(1);
-                //setSelectedCard(null);
+                setSelectedCard(null);
               }}
             >
               <path d="m410.3 231 11.3-11.3-33.9-33.9-62.1-62.1-33.9-33.9-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2l199.2-199.2 22.6-22.7zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9l-78.2 23 23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7l-14.4 14.5-22.6 22.6-11.4 11.3 33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5l-39.3-39.4c-25-25-65.5-25-90.5 0zm-47.4 168-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z" />
@@ -130,7 +131,7 @@ export default function Main() {
               }`}
               onClick={() => {
                 setOpt(2);
-                //setSelectedCard(null);
+                setSelectedCard(null);
               }}
             >
               <path d="M208 352c114.9 0 208-78.8 208-176S322.9 0 208 0S0 78.8 0 176c0 38.6 14.7 74.3 39.6 103.4c-3.5 9.4-8.7 17.7-14.2 24.7c-4.8 6.2-9.7 11-13.3 14.3c-1.8 1.6-3.3 2.9-4.3 3.7c-.5 .4-.9 .7-1.1 .8l-.2 .2 0 0 0 0C1 327.2-1.4 334.4 .8 340.9S9.1 352 16 352c21.8 0 43.8-5.6 62.1-12.5c9.2-3.5 17.8-7.4 25.3-11.4C134.1 343.3 169.8 352 208 352zM448 176c0 112.3-99.1 196.9-216.5 207C255.8 457.4 336.4 512 432 512c38.2 0 73.9-8.7 104.7-23.9c7.5 4 16 7.9 25.2 11.4c18.3 6.9 40.3 12.5 62.1 12.5c6.9 0 13.1-4.5 15.2-11.1c2.1-6.6-.2-13.8-5.8-17.9l0 0 0 0-.2-.2c-.2-.2-.6-.4-1.1-.8c-1-.8-2.5-2-4.3-3.7c-3.6-3.3-8.5-8.1-13.3-14.3c-5.5-7-10.7-15.4-14.2-24.7c24.9-29 39.6-64.7 39.6-103.4c0-92.8-84.9-168.9-192.6-175.5c.4 5.1 .6 10.3 .6 15.5z" />
@@ -143,7 +144,7 @@ export default function Main() {
               }`}
               onClick={() => {
                 setOpt(3);
-                //setSelectedCard(null);
+                setSelectedCard(null);
               }}
             >
               <path d="M465 7c-9.4-9.4-24.6-9.4-33.9 0L383 55c-2.4 2.4-4.3 5.3-5.5 8.5l-15.4 41-77.5 77.6c-45.1-29.4-99.3-30.2-131 1.6-11 11-18 24.6-21.4 39.6-3.7 16.6-19.1 30.7-36.1 31.6-25.6 1.3-49.3 10.7-67.3 28.6-44.8 44.9-36.4 125.9 18.7 181s136.1 63.5 180.9 18.7c17.9-17.9 27.4-41.7 28.6-67.3.9-17 15-32.3 31.6-36.1 15-3.4 28.6-10.5 39.6-21.4 31.8-31.8 31-85.9 1.6-131l77.6-77.6 41-15.4c3.2-1.2 6.1-3.1 8.5-5.5l48-48c9.4-9.4 9.4-24.6 0-33.9L465 7zM208 256a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
@@ -156,8 +157,8 @@ export default function Main() {
               }`}
               onClick={() => {
                 setOpt(4);
-                //setSelectedCard(null);
-                //setRoomCard(null);
+                setSelectedCard(null);
+                setRoomCard(null);
               }}
             >
               <path d="M208 352c114.9 0 208-78.8 208-176S322.9 0 208 0S0 78.8 0 176c0 38.6 14.7 74.3 39.6 103.4c-3.5 9.4-8.7 17.7-14.2 24.7c-4.8 6.2-9.7 11-13.3 14.3c-1.8 1.6-3.3 2.9-4.3 3.7c-.5 .4-.9 .7-1.1 .8l-.2 .2 0 0 0 0C1 327.2-1.4 334.4 .8 340.9S9.1 352 16 352c21.8 0 43.8-5.6 62.1-12.5c9.2-3.5 17.8-7.4 25.3-11.4C134.1 343.3 169.8 352 208 352zM448 176c0 112.3-99.1 196.9-216.5 207C255.8 457.4 336.4 512 432 512c38.2 0 73.9-8.7 104.7-23.9c7.5 4 16 7.9 25.2 11.4c18.3 6.9 40.3 12.5 62.1 12.5c6.9 0 13.1-4.5 15.2-11.1c2.1-6.6-.2-13.8-5.8-17.9l0 0 0 0-.2-.2c-.2-.2-.6-.4-1.1-.8c-1-.8-2.5-2-4.3-3.7c-3.6-3.3-8.5-8.1-13.3-14.3c-5.5-7-10.7-15.4-14.2-24.7c24.9-29 39.6-64.7 39.6-103.4c0-92.8-84.9-168.9-192.6-175.5c.4 5.1 .6 10.3 .6 15.5z" />
@@ -170,7 +171,7 @@ export default function Main() {
               }`}
               onClick={() => {
                 setOpt(5);
-                //setSelectedCard(null);
+                setSelectedCard(null);
               }}
             >
               <path d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zM160 224c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm128-64V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm64 32c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32zM480 96V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-17.7 14.3-32 32-32s32 14.3 32 32z" />
@@ -182,7 +183,7 @@ export default function Main() {
               }`}
               onClick={() => {
                 setOpt(6);
-                //setSelectedCard(null);
+                setSelectedCard(null);
               }}
             >
               <path d="M399 384.2c-22.1-38.4-63.6-64.2-111-64.2h-64c-47.4 0-88.9 25.8-111 64.2 35.2 39.2 86.2 63.8 143 63.8s107.8-24.7 143-63.8zM0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z" />
@@ -236,7 +237,7 @@ export default function Main() {
           <ScreenDesign
             header="Tus convocatorias"
             smallScreenBody={
-              <CallingSmallScreen /*onCardSelect={handleCardSelect}*/ />
+              <CallingSmallScreen onCardSelect={handleCardSelect} />
             }
             fullScreenBody={'<CallingFullScreen selectedCard={selectedCard} />'}
           />

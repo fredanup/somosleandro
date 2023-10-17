@@ -8,11 +8,11 @@ import Image from 'next/image';
 import { trpc } from 'utils/trpc';
 import { useSession } from 'next-auth/react';
 
-export default function CallingSmallScreen(/*{
+export default function CallingSmallScreen({
   onCardSelect,
 }: {
   onCardSelect: (data: IUserCalling) => void;
-}*/) {
+}) {
   const [isOpen, setIsOpen] = useState(false);
   //Llamada a la sesión para obtener los datos del usuario
   const { data: session, status } = useSession();
@@ -87,7 +87,7 @@ export default function CallingSmallScreen(/*{
   }
 
   const handleCardClick = (data: IUserCalling) => {
-    //onCardSelect(data);
+    onCardSelect(data);
   };
 
   return (
