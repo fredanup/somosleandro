@@ -7,6 +7,7 @@ import SignInForm from './login/signInForm';
 
 export default function Home() {
   const [isSignUp, setIsSignUp] = useState(true);
+  //Obtenemos la sesión de la bd
   const { data: session, status } = useSession();
   const router = useRouter();
   useEffect(() => {
