@@ -31,9 +31,9 @@ export default function Home() {
 
   return (
     <>
-      <div className="md:flex md:flex-row md:gap-4">
+      <div className="md:bg-slate-100 md:flex md:flex-row ">
         {/**Envuelve a dos contenedores y content-between es para que la opción de registro se encuentre en la parte inferior sin salirse de su contenedor */}
-        <div className="flex flex-col h-screen rounded-lg bg-white md:order-first md:mr-6 md:w-2/5">
+        <div className="flex flex-col h-screen rounded-lg bg-white md:order-first md:w-2/5">
           {/**Header */}
           <div className="mt-8 mb-8">
             <Image
@@ -149,7 +149,7 @@ export default function Home() {
           </p>
         </div>
         {/**Este contenedor no aparece en móviles */}
-        <div className="hidden md:order-last md:block md:h-screen md:w-3/5 md:rounded-lg md:bg-[url('/images/chucky.jpg')] md:bg-cover md:bg-center"></div>
+        <div className="hidden md:order-last md:block md:h-screen md:w-3/5 md-rounded-tr-lg md-rounded-br-lg md-rounded-none md:bg-[url('/images/chucky.jpg')] md:bg-cover md:bg-center"></div>
       </div>
     </>
   );
