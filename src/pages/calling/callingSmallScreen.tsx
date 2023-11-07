@@ -97,7 +97,7 @@ export default function CallingSmallScreen({
        */}
       <svg
         viewBox="0 0 512 512"
-        className="absolute bottom-12 right-3 z-10 h-10 w-10 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded-lg fill-gray-600 drop-shadow-lg md:bottom-6 md:w-auto"
+        className="absolute bottom-12 right-3 z-10 h-10 w-10 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer rounded-lg fill-sky-500 drop-shadow-lg md:bottom-6 md:w-auto"
         onClick={openModal}
       >
         <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />

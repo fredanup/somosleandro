@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { type ReactNode } from "react";
+import Image from 'next/image';
+import { type ReactNode } from 'react';
 
 interface BodyProps {
   header: string;
@@ -17,16 +17,17 @@ export default function ScreenDesign({
       {/*/Contenedor principal de todos los módulos**/}
       <div className="flex h-full w-full flex-col md:flex md:flex-row md:gap-2">
         {/* Encabezado de dispositivos móviles contiene el logo y el menú */}
-        <div className="relative flex h-full w-full flex-col rounded-lg bg-green-400 pb-8 drop-shadow-lg md:w-1/3 md:pb-0">
+        <div className="relative flex h-full w-full flex-col rounded-lg bg-orange-500 pb-8 drop-shadow-lg md:w-1/3 md:pb-0">
           <div className="flex items-center px-4 py-2">
             <Image
-              className="h-8 w-8"
+              className="h-8 w-8 rounded-lg bg-white p-0.5"
               src="/icons/Logo.svg"
               width={100}
               height={100}
               alt="Logo"
             />
-            <h1 className="w-full text-center text-xl font-semibold text-white">
+
+            <h1 className="w-full font-poppins text-center text-xl font-semibold text-white">
               {header}
             </h1>
             <svg

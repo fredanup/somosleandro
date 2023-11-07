@@ -131,7 +131,7 @@ export default function Main() {
 
             <svg
               viewBox="0 0 512 512"
-              className={`m-auto h-8 w-8 cursor-pointer fill-gray-600 p-1.5 md:mb-6 ${
+              className={`m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6 ${
                 opt === 1 ? 'rounded-lg bg-sky-100 ' : ''
               }`}
               onClick={() => {
@@ -144,7 +144,7 @@ export default function Main() {
 
             <svg
               viewBox="0 0 640 512"
-              className={`m-auto h-8 w-8 cursor-pointer fill-gray-600 p-1.5 md:mb-6 ${
+              className={`m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6 ${
                 opt === 2 ? 'rounded-lg bg-sky-100 ' : ''
               }`}
               onClick={() => {
@@ -157,7 +157,7 @@ export default function Main() {
 
             <svg
               viewBox="0 0 512 512"
-              className={`m-auto h-8 w-8 cursor-pointer fill-sky-600 p-1.5 md:mb-6 ${
+              className={`m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6 ${
                 opt === 3 ? 'rounded-lg bg-sky-100 ' : ''
               }`}
               onClick={() => {
@@ -170,7 +170,7 @@ export default function Main() {
 
             <svg
               viewBox="0 0 640 512"
-              className={`m-auto h-8 w-8 cursor-pointer fill-sky-600 p-1.5 md:mb-6 ${
+              className={`m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6 ${
                 opt === 4 ? 'rounded-lg bg-sky-100 ' : ''
               }`}
               onClick={() => {
@@ -184,7 +184,7 @@ export default function Main() {
 
             <svg
               viewBox="0 0 512 512"
-              className={`m-auto h-8 w-8 cursor-pointer fill-gray-600 p-1.5 md:mb-6 ${
+              className={`m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6 ${
                 opt === 5 ? 'rounded-lg bg-sky-100 ' : ''
               }`}
               onClick={() => {
@@ -196,7 +196,7 @@ export default function Main() {
             </svg>
             <svg
               viewBox="0 0 512 512"
-              className={`m-auto h-8 w-8 cursor-pointer fill-gray-600 p-1.5 md:mb-6 md:hidden ${
+              className={`m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6 md:hidden ${
                 opt === 6 ? 'rounded-lg bg-sky-100 ' : ''
               }`}
               onClick={() => {
@@ -208,7 +208,7 @@ export default function Main() {
             </svg>
             <svg
               viewBox="0 0 512 512"
-              className="m-auto h-8 w-8 cursor-pointer fill-gray-600 p-1.5 md:hidden"
+              className="m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:hidden"
               onClick={() => {
                 signOut({
                   callbackUrl: 'https://trpc-websockets-807m.onrender.com',
@@ -224,7 +224,7 @@ export default function Main() {
             {/**Profile button */}
             <svg
               viewBox="0 0 512 512"
-              className={`m-auto h-8 w-8 cursor-pointer fill-gray-600 p-1.5 md:mb-6 ${
+              className={`m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6 ${
                 opt === 6 ? 'rounded-lg bg-sky-100 ' : ''
               }`}
               onClick={() => {
@@ -238,7 +238,7 @@ export default function Main() {
             {/**SignOut button */}
             <svg
               viewBox="0 0 512 512"
-              className="m-auto h-8 w-8 cursor-pointer fill-gray-600 p-1.5 md:mb-6"
+              className="m-auto h-8 w-8 cursor-pointer fill-black p-1.5 md:mb-6"
               onClick={() => {
                 signOut({
                   callbackUrl: 'https://trpc-websockets-807m.onrender.com',
