@@ -24,36 +24,48 @@ import CallingAcceptedSmallScreen from './chat/applicant/callingAcceptedSmallScr
 
 import { ApplicantRoomType } from 'server/routers/room';
 import ApplicantChatFullScreen from './chat/applicant/applicantChatFullScreen';
+import Spinner from './utilities/spinner';
 
 export default function Main() {
-  const router = useRouter();
+  //Obtención de la sesión
   const { data: session, status } = useSession();
-  //Establecemos qué opción del menú se verá primero
+  //Declaración de router empleado en caso de no obtener la sesión
+  const router = useRouter();
+
+  //Declaración de variable que controla la selección de opciones del menú
   const [opt, setOpt] = useState(1);
+
+  //Declaración de variable que recibe el objeto seleccionado de tipo IUserCalling en un componente
   const [selectedCard, setSelectedCard] = useState<IUserCalling | null>(null);
+
+  //Declaración de variable que recibe el objeto seleccionado de tipo ApplicantRoomType de un componente
   const [roomCard, setRoomCard] = useState<ApplicantRoomType | null>(null);
-  // Inicialmente el menu en dispositivos móviles será visible
+
+  //Declaración de variable que controla la visibilidad del menú en dispositivos móviles
   const [isMenuVisible, setIsMenuVisible] = useState(true);
+
   //límite de desplazamiento hacia abajo en píxeles antes de que el menú se oculte.
   const threshold = 200;
 
   //Se ejecuta al renderizarse el componente por primera vez
-
   useEffect(() => {
-    //representa la posición actual(coordenada y <-a,a>) del scroll vertical de la página
+    //representa la posición actual(en la coordenada Y <-a,a>) del scroll vertical de la página
     let prevScrollY = window.scrollY;
-    //manejador del evento de scroll
+    //Declaración de la función manejadora del evento scroll
     const handleScroll = () => {
-      // se obtiene el valor actual del scroll vertical
+      //Se obtiene el valor actual del scroll vertical (en la coordenada Y <-a,a>)
       const currentScrollY = window.scrollY;
+      //Se muestra el valor de la posición Y a fines de prueba
       console.log(`valor de scroll ${currentScrollY}`);
-      //Cambia el valor de isMenuVisible de acuerdo a si el scroll actual es menor o igual a 200 píxeles es true x lo que el menú debe mostrarse, Si el valor actual del scroll (currentScrollY) es menor que el valor anterior del scroll (prevScrollY), también se establece isMenuVisible como true
-      //Esto significa que el menú se mostrará nuevamente cuando el usuario haga scroll hacia arriba.
+      //Cambia el valor de la variable isMenuVisible a true si el scroll actual es menor o igual a 200 píxeles, es decir, cuando estamos al inicio de la pantalla
+      //o si la posición del scroll actual en el eje Y es menor que el anterior, es decir, si estando abajo subimos ligeramente el cursor.
+      //En el caso que hayamos bajo más de 200 píxeles y además que nuestra posición actual sea menor (en el eje y) se ocultará el menú.
       setIsMenuVisible(
         currentScrollY <= threshold || currentScrollY < prevScrollY,
       );
       //se actualiza el valor de prevScrollY con el valor actual de currentScrollY, para que en el próximo ciclo del efecto se pueda comparar correctamente el scroll actual con el valor anterior.
       prevScrollY = currentScrollY;
+      //Se muestra el valor de la posición del scroll actua a fines de verificación
       console.log(`valor de scroll ${prevScrollY}`);
     };
     //Se agrega un evento de escucha al objeto global window para detectar el evento de scroll. Cuando se desencadena el evento, se llamará a la función handleScroll.
@@ -64,32 +76,37 @@ export default function Main() {
     };
   }, []);
 
-  // Callback que recibe los datos de la tarjeta seleccionada
-
+  //Nota. Es necesario unificar los tipos usados para evitar redundancia y para obtener simplicidad
+  // Función que recibe los datos de la tarjeta seleccionada de tipo IUseCalling y establece el valor de selectedCard, es un tipo de descriptor de acceso PODRÍA OMITIRSE
   const handleCardSelect = (data: IUserCalling | null) => {
     setSelectedCard(data);
   };
 
+  // Función que recibe los datos de la tarjeta seleccionada de tipo ApplicantRoomType y establece el valor de selectedCard, es un tipo de descriptor de acceso PODRÍA OMITIRSE
   const handleRoomCardSelect = (data: ApplicantRoomType | null) => {
     setRoomCard(data);
   };
 
+  //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
   if (status === 'loading') {
-    // Aquí puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el estado de autenticación
-    return <div className="text-center">Cargando...</div>;
+    // Se muestra el spinner mientra se verifica el estado de autenticación
+    return <Spinner />;
   }
+
+  //Si la sesión no existe se redirige al inicio de sesión
   if (!session) {
     router.replace('/').catch((error) => {
-      // Manejar cualquier error que pueda ocurrir al redirigir
+      // Se muestra el error identificado en el enrutadomiento. F(x): manejo de errores
       console.error(
         'Error al redirigir a la página de inicio de sesión:',
         error,
       );
     });
   }
+
   return (
     <>
-      <div className="m-0 box-border h-screen w-screen border-0 bg-slate-100 p-2 md:flex md:h-screen md:w-screen md:gap-2">
+      <div className="m-0 box-border h-screen w-screen border-0 bg-slate-200 drop-shadow-lg md:p-2 md:flex md:h-screen md:w-screen md:gap-2 ">
         {/**Nota como se puede apreciar hay un desborde en la pantalla principal pero este es necesario para que el menú aparezca y desaparezca */}
 
         {/**Menú de navegación */}

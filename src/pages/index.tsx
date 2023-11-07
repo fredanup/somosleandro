@@ -32,29 +32,27 @@ export default function Home() {
   return (
     <>
       <div className="md:bg-slate-100 md:flex md:flex-row ">
-        {/**Envuelve a dos contenedores y content-between es para que la opción de registro se encuentre en la parte inferior sin salirse de su contenedor */}
-        <div className="flex flex-col h-screen rounded-lg bg-white md:order-first md:w-2/5">
+        {/**Envuelve a dos contenedores y content-between es para que la opción de registro se encuentre en la parte inferior sin salirse de su contenedor bg-[url('/images/carito.jpg')] bg-cover bg-center */}
+        <div className="flex flex-col h-screen rounded-lg bg-white md:order-first px-6 md:w-2/5">
           {/**Header */}
-          <div className="mt-8 mb-8">
+          <div className="mt-8 mb-2">
+            <h1 className="font-poppins text-3xl text-center text-gray-600 font-bold mt-16">
+              ¡Bienvenido!
+            </h1>
             <Image
-              className="mt-16 h-20 w-full justify-center items-center"
+              className="mt-6 h-20 w-full justify-center items-center"
               src="/icons/Logo.svg"
               width={100}
               height={100}
               alt="Logo"
             />
-
-            <h1 className="font-poppins text-2xl text-center font-bold mt-4">
-              Iniciar sesión
-            </h1>
-
-            <p className="text-center text-base font-light text-gray-500 mt-2">
+            <p className="text-center text-base font-light text-gray-500 mt-6">
               Por favor, Ingrese sus datos
             </p>
           </div>
           {/**Body */}
           <form
-            className="mt-2 mb-8"
+            className="mb-8"
             onSubmit={(event) => {
               event.preventDefault();
               signIn('credentials', {
@@ -106,11 +104,11 @@ export default function Home() {
             </div>
 
             {/**Botones*/}
-            <div className="mt-8 flex flex-col items-center justify-center">
+            <div className="mt-10 flex flex-col items-center justify-center px-6">
               {/**Botón de inicio */}
               <button
                 type="submit"
-                className="mt-4 w-48 rounded-full bg-sky-500 px-3 py-1.5 text-base font-semibold text-white hover:border-transparent hover:bg-sky-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2"
+                className="w-full mb-6 h-10 rounded-lg bg-sky-500 px-3 py-1.5 text-base font-semibold text-white hover:border-transparent hover:bg-sky-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2"
               >
                 Iniciar sesión
               </button>
