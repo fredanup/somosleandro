@@ -1,5 +1,4 @@
 import { signOut, useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -120,17 +119,10 @@ export default function Main() {
          2. El segundo contenedor sólo incluye a las opciones de salida y configuración, esto es para que se vea bien en dispositivos de pantalla completa
         */}
           {/**Logo se oculta en dispositivos móviles */}
-          <Image
-            className="hidden h-8 w-8  md:block md:cursor-pointer"
-            src="/icons/Logov10.svg"
-            width={100}
-            height={100}
-            alt="Logo"
-          />
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
               opt === 1 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
@@ -143,7 +135,7 @@ export default function Main() {
 
           <svg
             viewBox="0 0 640 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
               opt === 2 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
@@ -156,7 +148,7 @@ export default function Main() {
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
               opt === 3 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
@@ -169,7 +161,7 @@ export default function Main() {
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
               opt === 4 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
@@ -183,7 +175,7 @@ export default function Main() {
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
               opt === 5 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
@@ -195,7 +187,7 @@ export default function Main() {
           </svg>
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
               opt === 6 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
@@ -207,7 +199,7 @@ export default function Main() {
           </svg>
           <svg
             viewBox="0 0 512 512"
-            className="h-8 w-8 cursor-pointer fill-gray-500 p-1"
+            className="h-8 w-8 cursor-pointer fill-gray-500 p-1.5"
             onClick={() => {
               signOut({
                 callbackUrl: 'https://trpc-websockets-807m.onrender.com',
