@@ -89,7 +89,7 @@ export default function CallingFullScreen({
           </div>
           <div className="grow overflow-auto rounded-b-lg bg-white">
             {selectedCard ? (
-              (applicants?.length as number) > 0 ? (
+              applicants !== null && applicants.length > 0 ? (
                 applicants?.map((entry, index) => (
                   <div
                     className={`flex w-full cursor-pointer flex-row items-center gap-2 border-b-2 border-gray-100 p-2 ${

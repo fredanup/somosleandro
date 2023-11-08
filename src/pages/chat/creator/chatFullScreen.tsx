@@ -154,7 +154,7 @@ export default function ChatFullScreen({
   return (
     <>
       {selectedCard ? (
-        (roomsQuery?.data?.length as number) > 0 ? (
+        roomsQuery?.data !== null && roomsQuery?.data?.length !== null ? (
           <div className="flex h-full w-full flex-row gap-2">
             {/**Chat container */}
 

@@ -48,24 +48,26 @@ const TeachingCallingModal = ({
   });
 
   useEffect(() => {
-    if (
-      selectedCalling !== null &&
-      selectedCalling.hasInstrument !== null &&
-      selectedCalling.studentAge !== null &&
-      selectedCalling.repertoireLiked !== null &&
-      selectedCalling.atHome !== null &&
-      selectedCalling.details !== null
-    ) {
+    if (selectedCalling !== null) {
       setNroPostulante(selectedCalling.applicantNumber.toString());
       setFechaPostulacion(selectedCalling.deadlineAt);
       setInstrumentoInteres(selectedCalling.instrumentLiked);
-      setTieneInstrumento(selectedCalling.hasInstrument);
-      setEdadEstudiante(selectedCalling.studentAge.toString());
-      setRepertorioInteres(selectedCalling.repertoireLiked);
-      setClasesADomicilio(selectedCalling.atHome);
+      if (
+        selectedCalling.hasInstrument !== null &&
+        selectedCalling.studentAge !== null &&
+        selectedCalling.repertoireLiked !== null &&
+        selectedCalling.atHome !== null &&
+        selectedCalling.details !== null
+      ) {
+        setTieneInstrumento(selectedCalling.hasInstrument);
+        setEdadEstudiante(selectedCalling.studentAge.toString());
+        setRepertorioInteres(selectedCalling.repertoireLiked);
+        setClasesADomicilio(selectedCalling.atHome);
+        setDetalles(selectedCalling.details);
+      }
+
       setTiempoContrata(selectedCalling.contractTime);
       setHorarioDisponible(selectedCalling.availableSchedule);
-      setDetalles(selectedCalling.details);
     }
   }, [selectedCalling]);
 

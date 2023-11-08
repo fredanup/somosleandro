@@ -43,7 +43,7 @@ const EventCallingModal = ({
   });
 
   useEffect(() => {
-    if (selectedCalling !== null && selectedCalling.details !== null) {
+    if (selectedCalling !== null) {
       setNroPostulante(selectedCalling.applicantNumber.toString());
       setFechaPostulacion(selectedCalling.deadlineAt);
       setTipoEvento(selectedCalling.eventType);
@@ -52,7 +52,9 @@ const EventCallingModal = ({
       setDuracionServicio(selectedCalling.serviceLength);
       setMusicoRequerido(selectedCalling.musicianRequired);
       setTieneEquipoSonido(selectedCalling.hasSoundEquipment);
-      setDetalles(selectedCalling.details);
+      if (selectedCalling.details !== null) {
+        setDetalles(selectedCalling.details);
+      }
     }
   }, [selectedCalling]);
 

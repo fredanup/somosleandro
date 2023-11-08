@@ -10,12 +10,7 @@
 
 import { Context } from './context';
 import { initTRPC, TRPCError } from '@trpc/server';
-import { Session } from 'next-auth';
 import superjson from 'superjson';
-
-type CreateContextOptions = {
-  session: Session | null;
-};
 
 const t = initTRPC.context<Context>().create({
   /**
@@ -54,7 +49,7 @@ export const mergeRouters = t.mergeRouters;
 
 const isAuthed = middleware(({ next, ctx }) => {
   if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
   return next({
     ctx: {
