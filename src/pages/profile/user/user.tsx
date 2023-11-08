@@ -3,6 +3,7 @@ import { trpc } from 'utils/trpc';
 import { useSession } from 'next-auth/react';
 
 export default function User() {
+  //Limpieza e inicialización de campos
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
@@ -11,14 +12,16 @@ export default function User() {
   // const [account, setAccount] = useState("");
   const { data: session, status } = useSession();
 
-  const userData = trpc.user.findOne.useQuery(session?.user?.id);
+  const userData = trpc.user.findOne.useQuery(session?.user?.id ?? '');
   const editUser = trpc.user.updateUser.useMutation();
 
   useEffect(() => {
-    setName(userData.data?.name);
-    setLastName(userData.data?.lastName);
-    setPhone(userData.data?.phone);
-    setAddress(userData.data?.address);
+    if (userData !== null) {
+      setName(userData.data?.name ?? '');
+      setLastName(userData.data?.lastName ?? '');
+      setPhone(userData.data?.phone ?? '');
+      setAddress(userData.data?.address ?? '');
+    }
 
     // setAccount(userData.data?.acc as string);
   }, [
@@ -27,11 +30,11 @@ export default function User() {
     userData.data?.name,
     userData.data?.phone,
   ]);
-
   if (status === 'loading') {
     // Aquí puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el estado de autenticación
     return <div className="text-center">Cargando...</div>;
   }
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const userData = {

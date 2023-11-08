@@ -1,7 +1,7 @@
-import { useSession } from "next-auth/react";
-import DocumentFullScreen from "./document/documentFullScreen";
-import User from "./user/user";
-import VideoFullScreen from "./video/videoFullScreen";
+import { useSession } from 'next-auth/react';
+import DocumentFullScreen from './document/documentFullScreen';
+import User from './user/user';
+import VideoFullScreen from './video/videoFullScreen';
 
 const ProfileFullScreen = () => {
   const { data: session } = useSession();
@@ -25,9 +25,9 @@ const ProfileFullScreen = () => {
         {/*Formulario de datos del usuario */}
         <User />
         {/*Documentos*/}
-        <DocumentFullScreen userId={session?.user?.id as string} />
+        <DocumentFullScreen userId={session?.user?.id ?? ''} />
         {/*Vídeos*/}
-        <VideoFullScreen userId={session?.user?.id as string} />
+        <VideoFullScreen userId={session?.user?.id ?? ''} />
       </div>
     </>
   );

@@ -30,9 +30,9 @@ const ProfileSmallScreen = () => {
           </p>
         </div>
         {/*Documentos*/}
-        <DocumentSmallScreen userId={session?.user?.id!} />
+        <DocumentSmallScreen userId={session?.user?.id ?? ''} />
         {/*Vídeo*/}
-        <VideoSmallScreen userId={session?.user?.id!} />
+        <VideoSmallScreen userId={session?.user?.id ?? ''} />
         {/**Calificaciones */}
         <Rating />
       </div>
