@@ -27,6 +27,7 @@ export default function ScreenDesign({
               alt="Logo"
             />
           </div>
+          <p>{header}</p>
           <div className="grow overflow-auto rounded-b-lg bg-white">
             {smallScreenBody}
           </div>
