@@ -73,7 +73,7 @@ export default function Home() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="focus:shadow-outline w-full appearance-none rounded-lg border pl-12 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                className=" w-full rounded-lg border pl-12 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:border-violet-300 focus:ring-violet-300"
               />
               <svg
                 className="absolute h-6 fill-gray-300 bottom-2 left-9"
@@ -93,7 +93,7 @@ export default function Home() {
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="focus:shadow-outline w-full appearance-none rounded-lg border pl-12 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                className=" w-full rounded-lg border pl-12 px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none focus:border-violet-300 focus:ring-sky-300"
               />
               <svg
                 className="absolute h-6 fill-gray-300 bottom-2 left-9"
