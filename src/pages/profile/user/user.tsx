@@ -11,14 +11,14 @@ export default function User() {
   // const [account, setAccount] = useState("");
   const { data: session, status } = useSession();
 
-  const userData = trpc.user.findOne.useQuery(session?.user?.id as string);
+  const userData = trpc.user.findOne.useQuery(session?.user?.id);
   const editUser = trpc.user.updateUser.useMutation();
 
   useEffect(() => {
-    setName(userData.data?.name as string);
-    setLastName(userData.data?.lastName as string);
-    setPhone(userData.data?.phone as string);
-    setAddress(userData.data?.address as string);
+    setName(userData.data?.name);
+    setLastName(userData.data?.lastName);
+    setPhone(userData.data?.phone);
+    setAddress(userData.data?.address);
 
     // setAccount(userData.data?.acc as string);
   }, [

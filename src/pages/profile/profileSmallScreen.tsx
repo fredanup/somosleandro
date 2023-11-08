@@ -1,13 +1,13 @@
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import DocumentSmallScreen from "./document/documentSmallScreen";
-import VideoSmallScreen from "./video/videoSmallScreen";
-import Rating from "./rating/rating";
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import DocumentSmallScreen from './document/documentSmallScreen';
+import VideoSmallScreen from './video/videoSmallScreen';
+import Rating from './rating/rating';
 
 const ProfileSmallScreen = () => {
   const { data: session, status } = useSession();
 
-  if (status === "loading") {
+  if (status === 'loading') {
     return <main className="flex flex-col items-center pt-4">Loading...</main>;
   }
   return (
@@ -17,7 +17,7 @@ const ProfileSmallScreen = () => {
         <div className="pb-2">
           <Image
             className="m-auto mt-4 rounded-full"
-            src={session?.user?.image || ""}
+            src={session?.user?.image || ''}
             width={95}
             height={100}
             alt="Logo"
@@ -30,9 +30,9 @@ const ProfileSmallScreen = () => {
           </p>
         </div>
         {/*Documentos*/}
-        <DocumentSmallScreen userId={session?.user?.id as string} />
+        <DocumentSmallScreen userId={session?.user?.id!} />
         {/*Vídeo*/}
-        <VideoSmallScreen userId={session?.user?.id as string} />
+        <VideoSmallScreen userId={session?.user?.id!} />
         {/**Calificaciones */}
         <Rating />
       </div>

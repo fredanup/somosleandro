@@ -11,9 +11,7 @@ export interface PaymentRequestForm {
 
 declare global {
   interface Window {
-    MercadoPago: {
-      new (accessToken: string): MercadoPagoInstance;
-    };
+    MercadoPago: new (accessToken: string) => MercadoPagoInstance;
   }
   interface MercadoPagoInstance {
     bricks(): MercadoPagoBricks;

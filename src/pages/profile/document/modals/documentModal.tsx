@@ -77,7 +77,7 @@ const DocumentModal = ({
   //Función que controla el envío de datos de un formulario
   const handleSubmit = useCallback(async () => {
     if (acceptedFiles.length > 0 && presignedUrl !== null) {
-      const file = acceptedFiles[0] as File;
+      const file = acceptedFiles[0];
 
       await axios
         .put(presignedUrl, file.slice(), {

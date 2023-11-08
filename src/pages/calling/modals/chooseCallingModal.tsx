@@ -1,7 +1,6 @@
-import { useState } from "react";
-import EventCallingModal from "./eventCallingModal";
-import TeachingCallingModal from "./teachingCallingModal";
-
+import { useState } from 'react';
+import EventCallingModal from './eventCallingModal';
+import TeachingCallingModal from './teachingCallingModal';
 
 export default function ChooseCallingModal({
   isOpen,
@@ -13,8 +12,8 @@ export default function ChooseCallingModal({
   const [isModal1Open, setIsModal1Open] = useState(false);
   const [isModal2Open, setIsModal2Open] = useState(false);
   const overlayClassName = isOpen
-    ? "fixed top-0 left-0 w-full h-full bg-gray-800 opacity-60 z-20"
-    : "hidden";
+    ? 'fixed top-0 left-0 w-full h-full bg-gray-800 opacity-60 z-20'
+    : 'hidden';
   const openModal1 = () => {
     setIsModal1Open(true);
   };

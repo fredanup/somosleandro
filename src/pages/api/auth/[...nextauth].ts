@@ -1,12 +1,11 @@
-import NextAuth, { type NextAuthOptions } from "next-auth";
+import NextAuth, { type NextAuthOptions } from 'next-auth';
 
 // Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "server/prisma";
-import { env } from "../../../server/env";
-
-import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { prisma } from 'server/prisma';
+import { env } from '../../../server/env';
+import GoogleProvider from 'next-auth/providers/google';
+import FacebookProvider from 'next-auth/providers/facebook';
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
@@ -28,7 +27,7 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
       },
     }),
-   /**
+    /**
     async redirect(params: { url: string; baseUrl: string }): Promise<string> {
       const redirectTo = params.baseUrl + '/main';
   
@@ -41,17 +40,14 @@ export const authOptions: NextAuthOptions = {
     // ...add more providers here
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,     
-
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
     }),
     FacebookProvider({
       clientId: env.FACEBOOK_CLIENT_ID,
       clientSecret: env.FACEBOOK_CLIENT_SECRET,
     }),
-   
   ],
   secret: env.NEXTAUTH_SECRET,
-
 };
 
 export default NextAuth(authOptions);
