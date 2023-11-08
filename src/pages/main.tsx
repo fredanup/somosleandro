@@ -111,7 +111,7 @@ export default function Main() {
 
         {/**Menú de navegación */}
         <nav
-          className={`fixed inset-x-0 bottom-0 z-10 h-12 border-t border-gray-200 flex flex-row bg-violet-100 drop-shadow-lg justify-evenly items-center md:static md:flex md:h-full md:w-12 md:flex-col md:rounded-full md:border-0 ${
+          className={`fixed inset-x-0 bottom-0 z-10 h-12 border-t border-gray-200 flex flex-row bg-white drop-shadow-lg justify-evenly items-center md:static md:flex md:h-full md:w-12 md:flex-col md:rounded-full md:border-0 ${
             isMenuVisible ? 'block' : 'hidden'
           }`}
         >
@@ -130,8 +130,8 @@ export default function Main() {
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-700 p-1  ${
-              opt === 1 ? 'rounded-lg bg-white ' : ''
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+              opt === 1 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
               setOpt(1);
@@ -143,8 +143,8 @@ export default function Main() {
 
           <svg
             viewBox="0 0 640 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-700 p-1  ${
-              opt === 2 ? 'rounded-lg bg-sky-100 ' : ''
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+              opt === 2 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
               setOpt(2);
@@ -156,8 +156,8 @@ export default function Main() {
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-700 p-1  ${
-              opt === 3 ? 'rounded-lg bg-sky-100 ' : ''
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+              opt === 3 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
               setOpt(3);
@@ -169,8 +169,8 @@ export default function Main() {
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-700 p-1  ${
-              opt === 4 ? 'rounded-lg bg-sky-100 ' : ''
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+              opt === 4 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
               setOpt(4);
@@ -183,8 +183,8 @@ export default function Main() {
 
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-700 p-1  ${
-              opt === 5 ? 'rounded-lg bg-sky-100 ' : ''
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+              opt === 5 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
               setOpt(5);
@@ -195,8 +195,8 @@ export default function Main() {
           </svg>
           <svg
             viewBox="0 0 512 512"
-            className={`h-8 w-8 cursor-pointer fill-gray-700 p-1  ${
-              opt === 6 ? 'rounded-lg bg-sky-100 ' : ''
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1  ${
+              opt === 6 ? 'fill-pink-500' : ''
             }`}
             onClick={() => {
               setOpt(6);
@@ -207,7 +207,7 @@ export default function Main() {
           </svg>
           <svg
             viewBox="0 0 512 512"
-            className="h-8 w-8 cursor-pointer fill-gray-700 p-1"
+            className="h-8 w-8 cursor-pointer fill-gray-500 p-1"
             onClick={() => {
               signOut({
                 callbackUrl: 'https://trpc-websockets-807m.onrender.com',
