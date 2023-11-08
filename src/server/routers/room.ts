@@ -1,10 +1,9 @@
-import { z } from "zod";
-import { randomUUID } from "crypto";
-import { observable } from "@trpc/server/observable";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { EventEmitter } from "events";
-import { prisma, Prisma } from "../prisma";
-
+import { z } from 'zod';
+import { randomUUID } from 'crypto';
+import { observable } from '@trpc/server/observable';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { EventEmitter } from 'events';
+import { prisma, Prisma } from '../prisma';
 
 //Valida qué campos de la tabla mensaje se van a poder seleccionar o consultar
 const message = Prisma.validator<Prisma.MessageDefaultArgs>()({
@@ -14,66 +13,67 @@ const message = Prisma.validator<Prisma.MessageDefaultArgs>()({
     createdAt: true,
     userName: true,
     userId: true,
-    applicantRoomId:true
+    applicantRoomId: true,
   },
 });
 
 //Valida qué campos de la tabla usuario se van a poder seleccionar o consultar
 const applicantRoom = Prisma.validator<Prisma.ApplicantRoomDefaultArgs>()({
   select: {
-    id: true,    
-    callingId:true,
-    applicantId:true,
-    applyStatus:true,
+    id: true,
+    callingId: true,
+    applicantId: true,
+    applyStatus: true,
     createdAt: true,
-    Applicant:true,
-    Calling:{
+    Applicant: true,
+    Calling: {
       select: {
-        id:true,
-        applicantNumber:true,
-        deadlineAt:true,
-        instrumentLiked:true,
-        hasInstrument:true,
-        studentAge:true,
-        repertoireLiked:true,
-        atHome:true,
-        contractTime:true,
-        availableSchedule:true,
-        details:true,
-        callingTaken:true,
-        createdAt:true,
-        eventType:true,
-        eventDate:true,
-        eventAddress:true,
-        serviceLength:true,
-        hasSoundEquipment:true,
-        musicianRequired:true,
-        callingType:true,   
-        userId:true,
-        User:true,
-      }
-    }
+        id: true,
+        applicantNumber: true,
+        deadlineAt: true,
+        instrumentLiked: true,
+        hasInstrument: true,
+        studentAge: true,
+        repertoireLiked: true,
+        atHome: true,
+        contractTime: true,
+        availableSchedule: true,
+        details: true,
+        callingTaken: true,
+        createdAt: true,
+        eventType: true,
+        eventDate: true,
+        eventAddress: true,
+        serviceLength: true,
+        hasSoundEquipment: true,
+        musicianRequired: true,
+        callingType: true,
+        userId: true,
+        User: true,
+      },
+    },
   },
 });
 
 const user = Prisma.validator<Prisma.UserDefaultArgs>()({
   select: {
-    id:true,
-    name:true,
-    lastName:true,
-    email:true,
-    address:true,    
-    phone:true,
-    emailVerified:true,
-    image:true,
-    roomId:true
+    id: true,
+    name: true,
+    lastName: true,
+    email: true,
+    address: true,
+    phone: true,
+    emailVerified: true,
+    image: true,
+    roomId: true,
   },
 });
 
-
 //Exporta el tipo MessageType y UserType en base a los tipos de message y user de prisma
 export type MessageType = Prisma.MessageGetPayload<typeof message>;
-export type ApplicantRoomType = Prisma.ApplicantRoomGetPayload<typeof applicantRoom>;
+export type ApplicantRoomType = Prisma.ApplicantRoomGetPayload<
+  typeof applicantRoom
+>;
 export type UserType = Prisma.UserGetPayload<typeof user>;
 
 type MessageOutputType = {
@@ -82,9 +82,9 @@ type MessageOutputType = {
 };
 
 export enum Events {
-  SEND_MESSAGE = "SEND_MESSAGE",
-  ENTER_ROOM = "ENTER_ROOM",
-  APPLICANT_CHANGE="APPLICANT_CHANGE"
+  SEND_MESSAGE = 'SEND_MESSAGE',
+  ENTER_ROOM = 'ENTER_ROOM',
+  APPLICANT_CHANGE = 'APPLICANT_CHANGE',
 }
 
 export const ee = new EventEmitter();
@@ -93,22 +93,20 @@ export const roomRouter = createTRPCRouter({
   //Retorna un mensaje y añade el mensaje el emisor de eventos, LLENA TODOS LOS CAMPOS DE MESSAGE MENOS UPDATE
   //Y emite el evento SEND_MESSAGE con el mensaje creado en "caché"
   sendMessage: protectedProcedure
-    .input(
-      z.object({ text: z.string(), applicantRoomId: z.string() })
-    )
+    .input(z.object({ text: z.string(), applicantRoomId: z.string() }))
     .mutation(({ ctx, input }) => {
       const message: MessageType = {
         id: randomUUID(),
         createdAt: new Date(),
-        userName: ctx.session.user.name || "unknown",
-        userId:ctx.session.user.id,
+        userName: ctx.session.user.name || 'unknown',
+        userId: ctx.session.user.id,
         ...input,
       };
       ee.emit(Events.SEND_MESSAGE, message);
       return message;
     }),
 
-  //Emite el evento ENTER_ROOM con el id de la sala proporcionado por el usuario, 
+  //Emite el evento ENTER_ROOM con el id de la sala proporcionado por el usuario,
   enterRoom: publicProcedure
     .input(z.object({ roomId: z.string() }))
     .mutation(({ input }) => {
@@ -116,37 +114,43 @@ export const roomRouter = createTRPCRouter({
     }),
 
   findMany: protectedProcedure
-  .input(z.object({ callingId: z.string() }))
-  .query(async ({input}) => {
-    //Lista a todos los usuarios y lo más importante es que se pueden obtener a TODOS LOS USUARIOS DE LA SALA
-    return await prisma.applicantRoom.findMany({include: { Applicant: true, Calling:{
-      select: {
-        id:true,
-        applicantNumber:true,
-        deadlineAt:true,
-        instrumentLiked:true,
-        hasInstrument:true,
-        studentAge:true,
-        repertoireLiked:true,
-        atHome:true,
-        contractTime:true,
-        availableSchedule:true,
-        details:true,
-        callingTaken:true,
-        createdAt:true,
-        eventType:true,
-        eventDate:true,
-        eventAddress:true,
-        serviceLength:true,
-        hasSoundEquipment:true,
-        musicianRequired:true,
-        callingType:true,   
-        userId:true,
-        User:true,
-      }
-    } },where:{callingId:input.callingId}});
-  }),
-  
+    .input(z.object({ callingId: z.string() }))
+    .query(async ({ input }) => {
+      //Lista a todos los usuarios y lo más importante es que se pueden obtener a TODOS LOS USUARIOS DE LA SALA
+      return await prisma.applicantRoom.findMany({
+        include: {
+          Applicant: true,
+          Calling: {
+            select: {
+              id: true,
+              applicantNumber: true,
+              deadlineAt: true,
+              instrumentLiked: true,
+              hasInstrument: true,
+              studentAge: true,
+              repertoireLiked: true,
+              atHome: true,
+              contractTime: true,
+              availableSchedule: true,
+              details: true,
+              callingTaken: true,
+              createdAt: true,
+              eventType: true,
+              eventDate: true,
+              eventAddress: true,
+              serviceLength: true,
+              hasSoundEquipment: true,
+              musicianRequired: true,
+              callingType: true,
+              userId: true,
+              User: true,
+            },
+          },
+        },
+        where: { callingId: input.callingId },
+      });
+    }),
+
   findOne: publicProcedure.input(z.string()).query(async ({ input }) => {
     const room = await prisma.applicantRoom.findUnique({
       where: { id: input },

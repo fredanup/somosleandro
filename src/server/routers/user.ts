@@ -1,8 +1,8 @@
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { prisma } from "../prisma";
-import { z } from "zod";
-import { userSchema } from "../../utils/auth";
-import { Events, ee } from "./room";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import { prisma } from '../prisma';
+import { z } from 'zod';
+import { userSchema } from '../../utils/auth';
+import { Events, ee } from './room';
 
 export const userRouter = createTRPCRouter({
   //Listar a todos los usuarios
@@ -14,38 +14,38 @@ export const userRouter = createTRPCRouter({
     const user = await prisma.user.findUnique({ where: { id: input } });
     return user;
   }),
-    updateUser: protectedProcedure
+  updateUser: protectedProcedure
     .input(userSchema)
     .mutation(async ({ ctx, input }) => {
-    try {
-      await ctx.prisma.user.update({
-        where: { id: ctx.session.user.id },
+      try {
+        await ctx.prisma.user.update({
+          where: { id: ctx.session.user.id },
+          data: {
+            name: input.name,
+            lastName: input.lastName,
+            address: input.address,
+            phone: input.phone,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }),
+  updateRoom: protectedProcedure
+    .input(z.object({ roomId: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const user = await prisma.user.updateMany({
+        where: {
+          id: ctx.session.user.id,
+        },
         data: {
-          name:input.name,
-          lastName:input.lastName,  
-          address:input.address,          
-          phone:input.phone,
+          roomId: input.roomId,
         },
       });
-    } catch (error) {
-      console.log(error);
-    }
-  }),
-  updateRoom: protectedProcedure
-  .input(z.object({ roomId: z.string() }))
-  .mutation(async ({ input,ctx }) => {
-    const user = await prisma.user.updateMany({
-      where: {
-        id: ctx.session.user.id,
-      },
-      data: {
+      ee.emit(Events.ENTER_ROOM, {
         roomId: input.roomId,
-      },
-    });
-    ee.emit(Events.ENTER_ROOM, {
-      roomId: input.roomId,
-      userId: ctx.session.user.id,
-    });
-    return user;
-  }),
+        userId: ctx.session.user.id,
+      });
+      return user;
+    }),
 });

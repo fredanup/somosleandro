@@ -1,14 +1,12 @@
-import { paymentSchema } from "../../utils/auth";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { TRPCError } from "@trpc/server";
+import { paymentSchema } from '../../utils/auth';
+import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { TRPCError } from '@trpc/server';
 
-
-
-export const paymentRouter = createTRPCRouter({    
-    processPayment: protectedProcedure
+export const paymentRouter = createTRPCRouter({
+  processPayment: protectedProcedure
     .input(paymentSchema)
-    .mutation(async ({ ctx, input }) => {      
-      try {      
+    .mutation(async ({ ctx, input }) => {
+      try {
         /*  
         const paymentData=await ctx.prisma.payment.create({
           data: {            
@@ -50,7 +48,10 @@ export const paymentRouter = createTRPCRouter({
      */
       } catch (error) {
         console.error(error);
-        throw new TRPCError({ message: 'Hubo un error al procesar el pago', code: "BAD_REQUEST" });
+        throw new TRPCError({
+          message: 'Hubo un error al procesar el pago',
+          code: 'BAD_REQUEST',
+        });
       }
     }),
- })
+});

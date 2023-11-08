@@ -10,7 +10,6 @@ import { roomRouter } from './room';
 import { userRouter } from './user';
 import { videoRouter } from './video';
 
-
 export const appRouter = createTRPCRouter({
   healthcheck: publicProcedure.query(() => 'yay!'),
   calling: callingRouter,
@@ -19,7 +18,7 @@ export const appRouter = createTRPCRouter({
   document: documentRouter,
   message: messageRouter,
   video: videoRouter,
-  room: roomRouter
+  room: roomRouter,
 });
 
 export type AppRouter = typeof appRouter;
