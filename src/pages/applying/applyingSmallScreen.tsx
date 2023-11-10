@@ -56,7 +56,7 @@ export default function ApplyingSmallScreen({
         //Contenedor principal
         <div
           key={index}
-          className="cursor-pointer flex flex-col gap-4 p-4 rounded-lg drop-shadow-lg bg-white border-blue-200 m-4"
+          className="cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg bg-white m-4"
           onClick={() => handleCardClick(entry)}
         >
           {/**Header */}
@@ -105,19 +105,17 @@ export default function ApplyingSmallScreen({
 
           {/**Detalles adicionales*/}
           {entry.callingType === musico && expandedStates[index] && (
-            <div className="flex flex-col gap-4">
-              {/**Header de datos del servicio */}
-              <div className="flex flex-col items-center">
-                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
-                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                </svg>
-
-                <p className="text-base font-medium text-black">
-                  Datos del evento
-                </p>
-              </div>
-              {/**Descripción de datos del servicio */}
-              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+            <div className="flex flex-col gap-4 items-center">
+              {/**Ícono de header*/}
+              <svg viewBox="0 0 512 512" className="h-10 w-10 fill-sky-500 p-2">
+                <path d="M465 7c-9.4-9.4-24.6-9.4-33.9 0L383 55c-2.4 2.4-4.3 5.3-5.5 8.5l-15.4 41-77.5 77.6c-45.1-29.4-99.3-30.2-131 1.6c-11 11-18 24.6-21.4 39.6c-3.7 16.6-19.1 30.7-36.1 31.6c-25.6 1.3-49.3 10.7-67.3 28.6C-16 328.4-7.6 409.4 47.5 464.5s136.1 63.5 180.9 18.7c17.9-17.9 27.4-41.7 28.6-67.3c.9-17 15-32.3 31.6-36.1c15-3.4 28.6-10.5 39.6-21.4c31.8-31.8 31-85.9 1.6-131l77.6-77.6 41-15.4c3.2-1.2 6.1-3.1 8.5-5.5l48-48c9.4-9.4 9.4-24.6 0-33.9L465 7zM208 256a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+              </svg>
+              {/**Header*/}
+              <h1 className="text-base font-medium text-black">
+                Datos del evento
+              </h1>
+              {/**body */}
+              <div className="flex flex-col items-center text-sm font-light text-gray-700">
                 <p>
                   Tipo de evento: <span>{entry.eventType}</span>
                 </p>
@@ -129,18 +127,12 @@ export default function ApplyingSmallScreen({
                   Lugar del evento: <span>{entry.eventAddress}</span>
                 </p>
               </div>
-              {/**Header de datos del estudiante */}
-              <div className="ml-2 flex items-center">
-                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
-                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                </svg>
-
-                <p className="text-base font-medium text-black">
-                  Datos del servicio
-                </p>
-              </div>
-              {/**Descripción de datos del estudiante */}
-              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+              {/**Header*/}
+              <h1 className="text-base font-medium text-black">
+                Datos del servicio
+              </h1>
+              {/**Body*/}
+              <div className="flex flex-col items-center text-sm font-light text-gray-700">
                 <p>Duración del servicio: {entry.serviceLength}</p>
                 <p>
                   Dispone de equipo de sonido:{' '}
@@ -149,17 +141,12 @@ export default function ApplyingSmallScreen({
                 </p>
                 <p>Tipo de músico requerido: {entry.musicianRequired}</p>
               </div>
-              {/**Header de datos de postulación */}
-              <div className="ml-2 flex items-center">
-                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
-                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                </svg>
-                <p className="text-base font-medium text-black">
-                  Datos de postulación
-                </p>
-              </div>
-              {/**Descripción de datos de postulación */}
-              <div className="ml-10 mr-4 text-sm font-light text-gray-700">
+              {/**Header */}
+              <p className="text-base font-medium text-black">
+                Datos de postulación
+              </p>
+              {/**Body */}
+              <div className="flex flex-col items-center text-sm font-light text-gray-700">
                 <p>
                   Fecha límite de postulación:{' '}
                   <span>{entry.deadlineAt.toLocaleDateString()}</span>
@@ -169,19 +156,17 @@ export default function ApplyingSmallScreen({
           )}
           {/**Caso se convocatoria de docente */}
           {entry.callingType === docente && expandedStates[index] && (
-            <div className="pb-4 pt-2">
-              {/**Header de datos del servicio */}
-              <div className="ml-2 flex items-center">
-                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
-                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                </svg>
-
-                <p className="text-base font-medium text-black">
-                  Datos del servicio
-                </p>
-              </div>
-              {/**Descripción de datos del servicio */}
-              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+            <div className="flex flex-col gap-2 items-center">
+              {/**Ícono de header*/}
+              <svg viewBox="0 0 512 512" className="h-10 w-10 fill-sky-500 p-2">
+                <path d="M465 7c-9.4-9.4-24.6-9.4-33.9 0L383 55c-2.4 2.4-4.3 5.3-5.5 8.5l-15.4 41-77.5 77.6c-45.1-29.4-99.3-30.2-131 1.6c-11 11-18 24.6-21.4 39.6c-3.7 16.6-19.1 30.7-36.1 31.6c-25.6 1.3-49.3 10.7-67.3 28.6C-16 328.4-7.6 409.4 47.5 464.5s136.1 63.5 180.9 18.7c17.9-17.9 27.4-41.7 28.6-67.3c.9-17 15-32.3 31.6-36.1c15-3.4 28.6-10.5 39.6-21.4c31.8-31.8 31-85.9 1.6-131l77.6-77.6 41-15.4c3.2-1.2 6.1-3.1 8.5-5.5l48-48c9.4-9.4 9.4-24.6 0-33.9L465 7zM208 256a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+              </svg>
+              {/**Header*/}
+              <h1 className="text-base font-medium text-black">
+                Datos del servicio
+              </h1>
+              {/**Body */}
+              <div className="flex flex-col items-center text-sm font-light text-gray-700">
                 <p>
                   En casa del docente:
                   {(entry.atHome == true && <span>Si</span>) ||
@@ -194,18 +179,12 @@ export default function ApplyingSmallScreen({
                   Horario disponible: <span>{entry.availableSchedule}</span>
                 </p>
               </div>
-              {/**Header de datos del estudiante */}
-              <div className="ml-2 flex items-center">
-                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
-                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                </svg>
-
-                <p className="text-base font-medium text-black">
-                  Datos del estudiante
-                </p>
-              </div>
-              {/**Descripción de datos del estudiante */}
-              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+              {/**Header */}
+              <h1 className="text-base font-medium text-black">
+                Datos del estudiante
+              </h1>
+              {/**Body */}
+              <div className="flex flex-col items-center text-sm font-light text-gray-700">
                 <p>
                   Instrumento deseado: <span>{entry.instrumentLiked}</span>
                 </p>
@@ -217,17 +196,12 @@ export default function ApplyingSmallScreen({
                 <p>Edad del estudiante: {entry.studentAge}</p>
                 <p>Repertorio de interés: {entry.repertoireLiked}</p>
               </div>
-              {/**Header de datos de postulación */}
-              <div className="ml-2 flex items-center">
-                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
-                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                </svg>
-                <p className="text-base font-medium text-black">
-                  Datos de postulación
-                </p>
-              </div>
-              {/**Descripción de datos de postulación */}
-              <div className="ml-10 mr-4 text-sm font-light text-gray-700">
+              {/**Header */}
+              <p className="text-base font-medium text-black">
+                Datos de postulación
+              </p>
+              {/**Body */}
+              <div className="flex flex-col items-center text-sm font-light text-gray-700">
                 <p>
                   Fecha límite de postulación:{' '}
                   <span>{entry.deadlineAt.toLocaleDateString()}</span>
