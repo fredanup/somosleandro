@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { trpc } from 'utils/trpc';
 import { useEffect, useState } from 'react';
 import { type IUserCalling } from '../../utils/auth';
+import Spinner from 'pages/utilities/spinner';
 
 export default function ApplyingSmallScreen({
   onCardSelect,
@@ -32,7 +33,7 @@ export default function ApplyingSmallScreen({
   };
 
   if (isLoading) {
-    return <div>Fetching callings...</div>;
+    return <Spinner />;
   }
 
   if (!userCallings || userCallings.length === 0) {
@@ -48,64 +49,73 @@ export default function ApplyingSmallScreen({
   };
 
   return (
-    /**Card de convocatoria */
+    /**Card*/
     <>
       {userCallings.map((entry, index) => (
+        //Contenedor principal
         <div
           key={index}
-          className="mb-1 cursor-pointer border-b-2 border-gray-200"
+          className="cursor-pointer flex flex-col gap-4 p-4 rounded-lg drop-shadow-lg bg-white border-blue-200 m-4"
           onClick={() => handleCardClick(entry)}
         >
-          {/**Encabezado de la card */}
-          <div className="mb-4 flex pt-4">
+          {/**Header */}
+          <div className="flex flex-row gap-4 items-center">
             {/**Datos del creador de la convocatoria */}
-            <div className="flex items-center">
-              <Image
-                className="ml-4 mr-2 rounded-full"
-                src={entry.User?.image || '/avatar.jpg'}
-                width={55}
-                height={100}
-                alt="Logo"
-              />
+            <Image
+              className="h-12 w-12 rounded-full"
+              src={entry.User?.image || '/avatar.jpg'}
+              width={100}
+              height={100}
+              alt="Logo"
+            />
+            <div>
+              <p className="text-base font-medium text-black">
+                {entry.User?.name}
+              </p>
+              <p className="text-sm font-normal text-gray-500">
+                {entry.User?.email}
+              </p>
+            </div>
+          </div>
 
-              <div>
-                <p className="text-base font-medium text-black">
-                  {entry.User?.name}
-                </p>
-                <p className="text-sm font-normal text-gray-500">
-                  {entry.User?.email}
-                </p>
-              </div>
-            </div>
+          {/**Body */}
+
+          <div className="flex flex-row gap-4">
+            {/**Items listados */}
+            <p className="text-sm font-normal text-gray-500">
+              Postulantes:
+              <span className="text-sm font-medium text-black">
+                {' ' + entry.applicantNumber}
+              </span>
+            </p>
+            <p className="text-sm font-normal text-gray-500">
+              Estado:
+              {entry.callingTaken === true && (
+                <span className="text-sm font-medium text-red-400"> Llena</span>
+              )}
+              {entry.callingTaken === false && (
+                <span className="text-sm font-medium text-green-400">
+                  {' '}
+                  Vigente
+                </span>
+              )}
+            </p>
+            <p className="text-sm font-normal text-gray-500">
+              Fecha límite de postulación:
+              <span className="text-sm font-medium text-black">
+                {' ' + entry.deadlineAt.toLocaleDateString()}
+              </span>
+            </p>
           </div>
-          {/**Resumen de la convocatoria */}
-          <div className="pb-2">
-            <div className="flex">
-              {/**Items listados */}
-              <div className="ml-4 mr-4 md:mr-1">
-                <p className="text-sm font-normal text-gray-500">
-                  Postulantes:
-                  <span className="ml-2 text-sm font-medium text-black">
-                    4/{entry.applicantNumber}
-                  </span>
-                </p>
-                <p className="text-sm font-normal text-gray-500">
-                  Estado:
-                  {entry.callingTaken === true && <span>Tomada</span>}
-                  {entry.callingTaken === false && <span>Vigente</span>}
-                </p>
-              </div>
-            </div>
-          </div>
+
           {/**Drop down menu */}
-          <div className="flex cursor-pointer items-center border-t-2 border-gray-200">
-            <p className="ml-4 text-base font-bold text-gray-600">
+          <div className="cursor-pointer flex flex-row items-center justify-between border-t border-gray-200">
+            <p className="text-base font-medium text-gray-700">
               Requiere: {entry.callingType}
             </p>
-
             <svg
               viewBox="0 0 320 512"
-              className="ml-auto h-8 w-8 cursor-pointer items-center justify-center fill-gray-500 p-2 focus:outline-none"
+              className="h-4 w-4 cursor-pointer fill-gray-500 focus:outline-none"
               onClick={() => handleToggle(index)}
               aria-label={expandedStates[index] ? 'Collapse' : 'Expand'}
             >

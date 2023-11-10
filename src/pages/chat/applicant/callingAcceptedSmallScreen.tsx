@@ -49,7 +49,7 @@ export default function CallingAcceptedSmallScreen({
           </svg>
 
           <p className="text-slate-500">
-            Que mala suerte, aún nadie te ha elegido, pero sigue postulando
+            Que mala suerte, aún nadie te ha elegido, pero sigue intentando
           </p>
         </div>
       ) : (

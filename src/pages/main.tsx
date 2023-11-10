@@ -106,35 +106,26 @@ export default function Main() {
   return (
     <>
       <div className="m-0 box-border h-screen w-screen border-0 bg-slate-200 drop-shadow-lg rounded-lg md:flex md:flex-row md:h-screen md:w-screen md:gap-2">
-        {/**Nota como se puede apreciar hay un desborde en la pantalla principal pero este es necesario para que el menú aparezca y desaparezca */}
-
-        {/**Menú de navegación */}
+        {/**Menú de navegación
+         * En móviles es fijo y se ubica en la parte inferior. En escritorio se ubica a la izquierda
+         */}
         <nav
-          className={`fixed inset-x-0 bottom-0 z-10 h-12 border-t border-gray-200 flex flex-row bg-white drop-shadow-lg justify-evenly items-center md:static md:border-r md:border-gray-200 md:flex md:h-full md:flex-col md:border-0 ${
+          className={`fixed inset-x-0 bottom-0 z-10 p-2 border-t border-gray-200 flex flex-row bg-white drop-shadow-lg justify-evenly items-center md:static md:flex md:h-full md:flex-col md:border-0 ${
             isMenuVisible ? 'block' : 'hidden'
           }`}
         >
-          {/**El menú tiene dos contenedores.
-        *1. El primer contenedor es para el menú en móviles e incluye a las opciones [salida y configuración]
-         2. El segundo contenedor sólo incluye a las opciones de salida y configuración, esto es para que se vea bien en dispositivos de pantalla completa
-        */}
-          {/**Logo se oculta en dispositivos móviles */}
-
-          <div className="flex flex-row items-center justify-center">
-            <svg
-              viewBox="0 0 512 512"
-              className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
-                opt === 1 ? 'fill-pink-500' : ''
-              }`}
-              onClick={() => {
-                setOpt(1);
-                setSelectedCard(null);
-              }}
-            >
-              <path d="M278.5 215.6L23 471c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l74.8-74.8c7.4 4.6 15.3 8.2 23.8 10.5C200.3 452.8 270 454.5 338 409.4c12.2-8.1 5.8-25.4-8.8-25.4l-16.1 0c-5.1 0-9.2-4.1-9.2-9.2c0-4.1 2.7-7.6 6.5-8.8l97.7-29.3c3.4-1 6.4-3.1 8.4-6.1c4.4-6.4 8.6-12.9 12.6-19.6c6.2-10.3-1.5-23-13.5-23l-38.6 0c-5.1 0-9.2-4.1-9.2-9.2c0-4.1 2.7-7.6 6.5-8.8l80.9-24.3c4.6-1.4 8.4-4.8 10.2-9.3C494.5 163 507.8 86.1 511.9 36.8c.8-9.9-3-19.6-10-26.6s-16.7-10.8-26.6-10C391.5 7 228.5 40.5 137.4 131.6C57.3 211.7 56.7 302.3 71.3 356.4c2.1 7.9 12 9.6 17.8 3.8L253.6 195.8c6.2-6.2 16.4-6.2 22.6 0c5.4 5.4 6.1 13.6 2.2 19.8z" />
-            </svg>
-            <p className="hidden md:block">Publicaciones</p>
-          </div>
+          <svg
+            viewBox="0 0 512 512"
+            className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
+              opt === 1 ? 'fill-pink-500' : ''
+            }`}
+            onClick={() => {
+              setOpt(1);
+              setSelectedCard(null);
+            }}
+          >
+            <path d="M278.5 215.6L23 471c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l74.8-74.8c7.4 4.6 15.3 8.2 23.8 10.5C200.3 452.8 270 454.5 338 409.4c12.2-8.1 5.8-25.4-8.8-25.4l-16.1 0c-5.1 0-9.2-4.1-9.2-9.2c0-4.1 2.7-7.6 6.5-8.8l97.7-29.3c3.4-1 6.4-3.1 8.4-6.1c4.4-6.4 8.6-12.9 12.6-19.6c6.2-10.3-1.5-23-13.5-23l-38.6 0c-5.1 0-9.2-4.1-9.2-9.2c0-4.1 2.7-7.6 6.5-8.8l80.9-24.3c4.6-1.4 8.4-4.8 10.2-9.3C494.5 163 507.8 86.1 511.9 36.8c.8-9.9-3-19.6-10-26.6s-16.7-10.8-26.6-10C391.5 7 228.5 40.5 137.4 131.6C57.3 211.7 56.7 302.3 71.3 356.4c2.1 7.9 12 9.6 17.8 3.8L253.6 195.8c6.2-6.2 16.4-6.2 22.6 0c5.4 5.4 6.1 13.6 2.2 19.8z" />
+          </svg>
 
           <svg
             viewBox="0 0 640 512"
@@ -186,8 +177,9 @@ export default function Main() {
               setSelectedCard(null);
             }}
           >
-            <path d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zM160 224c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm128-64V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm64 32c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32zM480 96V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-17.7 14.3-32 32-32s32 14.3 32 32z" />
+            <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm169.8-90.7c7.9-22.3 29.1-37.3 52.8-37.3h58.3c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L280 264.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24V250.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1H222.6c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" />
           </svg>
+
           <svg
             viewBox="0 0 512 512"
             className={`h-8 w-8 cursor-pointer fill-gray-500 p-1.5  ${
@@ -204,16 +196,13 @@ export default function Main() {
             viewBox="0 0 512 512"
             className="h-8 w-8 cursor-pointer fill-gray-500 p-1.5"
             onClick={() => {
-              signOut({
-                callbackUrl: 'https://trpc-websockets-807m.onrender.com',
-              }).catch(console.log);
+              signOut().catch(console.log);
             }}
           >
             <path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l73.4 73.4H192c-17.7 0-32 14.3-32 32s14.3 32 32 32h210.7l-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96C43 32 0 75 0 128v256c0 53 43 96 96 96h64c17.7 0 32-14.3 32-32s-14.3-32-32-32H96c-17.7 0-32-14.3-32-32V128c0-17.7 14.3-32 32-32h64z" />
           </svg>
         </nav>
         {/**Módulos */}
-
         {opt === 1 && (
           <ScreenDesign
             header="Tus convocatorias"
@@ -223,7 +212,6 @@ export default function Main() {
             fullScreenBody={<CallingFullScreen selectedCard={selectedCard} />}
           />
         )}
-
         {opt === 2 && (
           <ScreenDesign
             header="Chat con postulantes"
@@ -233,7 +221,6 @@ export default function Main() {
             fullScreenBody={<ChatFullScreen selectedCard={selectedCard} />}
           />
         )}
-
         {opt === 3 && (
           <ScreenDesign
             header="Convocatorias disponibles"
@@ -243,7 +230,6 @@ export default function Main() {
             fullScreenBody={<ApplyingFullScreen selectedCard={selectedCard} />}
           />
         )}
-
         {opt === 4 && (
           <ScreenDesign
             header="Postulaciones aprobadas"
@@ -253,7 +239,6 @@ export default function Main() {
             fullScreenBody={<ApplicantChatFullScreen selectedCard={roomCard} />}
           />
         )}
-
         {opt === 6 && (
           <ScreenDesign
             header="Mi perfil"
