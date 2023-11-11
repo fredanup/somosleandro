@@ -223,7 +223,7 @@ export default function Main() {
         )}
         {opt === 3 && (
           <ScreenDesign
-            header="Convocatorias disponibles"
+            header="Convocatorias publicadas"
             smallScreenBody={
               <ApplyingSmallScreen onCardSelect={handleCardSelect} />
             }
@@ -232,7 +232,7 @@ export default function Main() {
         )}
         {opt === 4 && (
           <ScreenDesign
-            header="Postulaciones aprobadas"
+            header="Clientes interesados en ti"
             smallScreenBody={
               <CallingAcceptedSmallScreen onCardSelect={handleRoomCardSelect} />
             }
