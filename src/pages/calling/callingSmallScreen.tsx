@@ -4,7 +4,6 @@ import { type IEditCalling, type IUserCalling } from '../../utils/auth';
 import DeleteCallingModal from './modals/deleteCallingModal';
 import TeachingCallingModal from './modals/teachingCallingModal';
 import EventCallingModal from './modals/eventCallingModal';
-import Image from 'next/image';
 import { trpc } from 'utils/trpc';
 import { useSession } from 'next-auth/react';
 import Message from 'pages/utilities/message';
