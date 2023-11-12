@@ -14,8 +14,7 @@ export default function CallingSmallScreen({
   onCardSelect: (data: IUserCalling) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  //Llamada a la sesión para obtener los datos del usuario
-  const { data: session, status } = useSession();
+
   //Obtener los registros de bd
   const { data: userCallings, isLoading } =
     trpc.calling.getUserCallings.useQuery();
@@ -79,10 +78,6 @@ export default function CallingSmallScreen({
       return newStates;
     });
   };
-
-  if (status === 'loading') {
-    return <main className="flex flex-col items-center pt-4">Loading...</main>;
-  }
 
   if (isLoading) {
     return <div>Fetching callings...</div>;
@@ -218,161 +213,141 @@ export default function CallingSmallScreen({
           </div>
 
           {/**Descripción de card */}
-          {entry.callingType === 'Músico(s) para evento' &&
-            expandedStates[index] && (
-              <div className="pb-4 pt-2">
-                {/**Header de datos del servicio */}
-                <div className="ml-2 flex items-center">
-                  <svg
-                    viewBox="0 0 512 512"
-                    className="h-8 w-8 fill-sky-500 p-2"
-                  >
-                    <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                  </svg>
+          {entry.callingType === musico && expandedStates[index] && (
+            <div className="pb-4 pt-2">
+              {/**Header de datos del servicio */}
+              <div className="ml-2 flex items-center">
+                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
+                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
+                </svg>
 
-                  <p className="text-base font-medium text-black">
-                    Datos del evento
-                  </p>
-                </div>
-                {/**Descripción de datos del servicio */}
-                <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
-                  <p>
-                    Tipo de evento: <span>{entry.eventType}</span>
-                  </p>
-                  <p>
-                    Fecha del evento:{' '}
-                    <span>{entry.eventDate?.toLocaleDateString()}</span>
-                  </p>
-                  <p>
-                    Lugar del evento: <span>{entry.eventAddress}</span>
-                  </p>
-                </div>
-                {/**Header de datos del estudiante */}
-                <div className="ml-2 flex items-center">
-                  <svg
-                    viewBox="0 0 512 512"
-                    className="h-8 w-8 fill-sky-500 p-2"
-                  >
-                    <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                  </svg>
-
-                  <p className="text-base font-medium text-black">
-                    Datos del servicio
-                  </p>
-                </div>
-                {/**Descripción de datos del estudiante */}
-                <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
-                  <p>Duración del servicio: {entry.serviceLength}</p>
-                  <p>
-                    Dispone de equipo de sonido:{' '}
-                    {(entry.hasSoundEquipment == true && <span>Si</span>) ||
-                      (entry.hasSoundEquipment == false && <span>No</span>)}
-                  </p>
-                  <p>Tipo de músico requerido: {entry.musicianRequired}</p>
-                </div>
-                {/**Header de datos de postulación */}
-                <div className="ml-2 flex items-center">
-                  <svg
-                    viewBox="0 0 512 512"
-                    className="h-8 w-8 fill-sky-500 p-2"
-                  >
-                    <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                  </svg>
-                  <p className="text-base font-medium text-black">
-                    Datos de postulación
-                  </p>
-                </div>
-                {/**Descripción de datos de postulación */}
-                <div className="ml-10 mr-4 text-sm font-light text-gray-700">
-                  <p>
-                    Fecha límite de postulación:{' '}
-                    <span>{entry.deadlineAt.toLocaleDateString()}</span>
-                  </p>
-                </div>
+                <p className="text-base font-medium text-black">
+                  Datos del evento
+                </p>
               </div>
-            )}
+              {/**Descripción de datos del servicio */}
+              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+                <p>
+                  Tipo de evento: <span>{entry.eventType}</span>
+                </p>
+                <p>
+                  Fecha del evento:{' '}
+                  <span>{entry.eventDate?.toLocaleDateString()}</span>
+                </p>
+                <p>
+                  Lugar del evento: <span>{entry.eventAddress}</span>
+                </p>
+              </div>
+              {/**Header de datos del estudiante */}
+              <div className="ml-2 flex items-center">
+                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
+                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
+                </svg>
+
+                <p className="text-base font-medium text-black">
+                  Datos del servicio
+                </p>
+              </div>
+              {/**Descripción de datos del estudiante */}
+              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+                <p>Duración del servicio: {entry.serviceLength}</p>
+                <p>
+                  Dispone de equipo de sonido:{' '}
+                  {(entry.hasSoundEquipment == true && <span>Si</span>) ||
+                    (entry.hasSoundEquipment == false && <span>No</span>)}
+                </p>
+                <p>Tipo de músico requerido: {entry.musicianRequired}</p>
+              </div>
+              {/**Header de datos de postulación */}
+              <div className="ml-2 flex items-center">
+                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
+                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
+                </svg>
+                <p className="text-base font-medium text-black">
+                  Datos de postulación
+                </p>
+              </div>
+              {/**Descripción de datos de postulación */}
+              <div className="ml-10 mr-4 text-sm font-light text-gray-700">
+                <p>
+                  Fecha límite de postulación:{' '}
+                  <span>{entry.deadlineAt.toLocaleDateString()}</span>
+                </p>
+              </div>
+            </div>
+          )}
           {/**Caso se convocatoria de docente */}
-          {entry.callingType === 'Clases de música' &&
-            expandedStates[index] && (
-              <div className="pb-4 pt-2">
-                {/**Header de datos del servicio */}
-                <div className="ml-2 flex items-center">
-                  <svg
-                    viewBox="0 0 512 512"
-                    className="h-8 w-8 fill-sky-500 p-2"
-                  >
-                    <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                  </svg>
+          {entry.callingType === docente && expandedStates[index] && (
+            <div className="pb-4 pt-2">
+              {/**Header de datos del servicio */}
+              <div className="ml-2 flex items-center">
+                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
+                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
+                </svg>
 
-                  <p className="text-base font-medium text-black">
-                    Datos del servicio
-                  </p>
-                </div>
-                {/**Descripción de datos del servicio */}
-                <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
-                  <p>
-                    En casa del docente:
-                    {(entry.atHome == true && <span>Si</span>) ||
-                      (entry.atHome == false && <span>No</span>)}
-                  </p>
-                  <p>
-                    Duración del servicio: <span>{entry.contractTime}</span>
-                  </p>
-                  <p>
-                    Horario disponible: <span>{entry.availableSchedule}</span>
-                  </p>
-                </div>
-                {/**Header de datos del estudiante */}
-                <div className="ml-2 flex items-center">
-                  <svg
-                    viewBox="0 0 512 512"
-                    className="h-8 w-8 fill-sky-500 p-2"
-                  >
-                    <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                  </svg>
-
-                  <p className="text-base font-medium text-black">
-                    Datos del estudiante
-                  </p>
-                </div>
-                {/**Descripción de datos del estudiante */}
-                <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
-                  <p>
-                    Instrumento deseado: <span>{entry.instrumentLiked}</span>
-                  </p>
-                  <p>
-                    Cuenta con instrumento:{' '}
-                    {(entry.hasInstrument == true && <span>Si</span>) ||
-                      (entry.hasInstrument == false && <span>No</span>)}
-                  </p>
-                  <p>
-                    Edad del estudiante:{' '}
-                    {(entry.hasSoundEquipment == true && <span>Si</span>) ||
-                      (entry.hasSoundEquipment == false && <span>No</span>)}
-                  </p>
-                  <p>Repertorio de interés: {entry.repertoireLiked}</p>
-                </div>
-                {/**Header de datos de postulación */}
-                <div className="ml-2 flex items-center">
-                  <svg
-                    viewBox="0 0 512 512"
-                    className="h-8 w-8 fill-sky-500 p-2"
-                  >
-                    <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-                  </svg>
-                  <p className="text-base font-medium text-black">
-                    Datos de postulación
-                  </p>
-                </div>
-                {/**Descripción de datos de postulación */}
-                <div className="ml-10 mr-4 text-sm font-light text-gray-700">
-                  <p>
-                    Fecha límite de postulación:{' '}
-                    <span>{entry.deadlineAt.toLocaleDateString()}</span>
-                  </p>
-                </div>
+                <p className="text-base font-medium text-black">
+                  Datos del servicio
+                </p>
               </div>
-            )}
+              {/**Descripción de datos del servicio */}
+              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+                <p>
+                  En casa del docente:
+                  {(entry.atHome == true && <span>Si</span>) ||
+                    (entry.atHome == false && <span>No</span>)}
+                </p>
+                <p>
+                  Duración del servicio: <span>{entry.contractTime}</span>
+                </p>
+                <p>
+                  Horario disponible: <span>{entry.availableSchedule}</span>
+                </p>
+              </div>
+              {/**Header de datos del estudiante */}
+              <div className="ml-2 flex items-center">
+                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
+                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
+                </svg>
+
+                <p className="text-base font-medium text-black">
+                  Datos del estudiante
+                </p>
+              </div>
+              {/**Descripción de datos del estudiante */}
+              <div className="mb-2 ml-10 mr-4 text-sm font-light text-gray-700">
+                <p>
+                  Instrumento deseado: <span>{entry.instrumentLiked}</span>
+                </p>
+                <p>
+                  Cuenta con instrumento:{' '}
+                  {(entry.hasInstrument == true && <span>Si</span>) ||
+                    (entry.hasInstrument == false && <span>No</span>)}
+                </p>
+                <p>
+                  Edad del estudiante:{' '}
+                  {(entry.hasSoundEquipment == true && <span>Si</span>) ||
+                    (entry.hasSoundEquipment == false && <span>No</span>)}
+                </p>
+                <p>Repertorio de interés: {entry.repertoireLiked}</p>
+              </div>
+              {/**Header de datos de postulación */}
+              <div className="ml-2 flex items-center">
+                <svg viewBox="0 0 512 512" className="h-8 w-8 fill-sky-500 p-2">
+                  <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
+                </svg>
+                <p className="text-base font-medium text-black">
+                  Datos de postulación
+                </p>
+              </div>
+              {/**Descripción de datos de postulación */}
+              <div className="ml-10 mr-4 text-sm font-light text-gray-700">
+                <p>
+                  Fecha límite de postulación:{' '}
+                  <span>{entry.deadlineAt.toLocaleDateString()}</span>
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       ))}
       {editIsOpen &&
