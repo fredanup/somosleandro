@@ -5,7 +5,6 @@ import DeleteCallingModal from './modals/deleteCallingModal';
 import TeachingCallingModal from './modals/teachingCallingModal';
 import EventCallingModal from './modals/eventCallingModal';
 import { trpc } from 'utils/trpc';
-import { useSession } from 'next-auth/react';
 import Message from 'pages/utilities/message';
 
 export default function CallingSmallScreen({
