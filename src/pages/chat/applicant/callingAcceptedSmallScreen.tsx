@@ -38,6 +38,7 @@ export default function CallingAcceptedSmallScreen({
     });
   };
 
+  //Mostrar spinner mientras se obtienen datos de la base de datos
   if (isLoading) {
     return <Spinner />;
   }
@@ -50,7 +51,7 @@ export default function CallingAcceptedSmallScreen({
     return (
       <Message
         text={
-          'Que mala suerte, aún no tienes un cliente pero sigue intentando puedes mejorar tu perfil'
+          'Que mala suerte, aún no tienes un cliente interesado pero sigue intentando puedes mejorar tu perfil'
         }
       />
     );
@@ -75,12 +76,16 @@ export default function CallingAcceptedSmallScreen({
               height={100}
               alt="Logo"
             />
-            <div>
-              <p className="text-base font-medium text-black">
-                {entry.Calling.User?.name}
-              </p>
-              <p className="text-sm font-light text-gray-500">
-                Requiere: {entry.Calling.callingType}
+            <div className="w-full">
+              <div className="flex flex-row items-center justify-between">
+                <p className="text-base font-medium text-black">
+                  {entry.Calling.User?.name}
+                </p>
+                <p className="text-sm font-light text-gray-500">16:39 p.m.</p>
+              </div>
+
+              <p className="text-sm font-light text-gray-500 italic">
+                Haga clic para iniciar la conversación
               </p>
               <p className="text-sm font-light text-gray-500">
                 Vence: {entry.Calling.deadlineAt.toLocaleDateString()}
@@ -95,10 +100,9 @@ export default function CallingAcceptedSmallScreen({
                 className="h-4 w-4 cursor-pointer focus:outline-none fill-gray-500"
                 viewBox="0 0 576 512"
               >
-                <path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z" />
+                <path d="M287.9 0c9.2 0 17.6 5.2 21.6 13.5l68.6 141.3 153.2 22.6c9 1.3 16.5 7.6 19.3 16.3s.5 18.1-5.9 24.5L433.6 328.4l26.2 155.6c1.5 9-2.2 18.1-9.6 23.5s-17.3 6-25.3 1.7l-137-73.2L151 509.1c-8.1 4.3-17.9 3.7-25.3-1.7s-11.2-14.5-9.7-23.5l26.2-155.6L31.1 218.2c-6.5-6.4-8.7-15.9-5.9-24.5s10.3-14.9 19.3-16.3l153.2-22.6L266.3 13.5C270.4 5.2 278.7 0 287.9 0zm0 79L235.4 187.2c-3.5 7.1-10.2 12.1-18.1 13.3L99 217.9 184.9 303c5.5 5.5 8.1 13.3 6.8 21L171.4 443.7l105.2-56.2c7.1-3.8 15.6-3.8 22.6 0l105.2 56.2L384.2 324.1c-1.3-7.7 1.2-15.5 6.8-21l85.9-85.1L358.6 200.5c-7.8-1.2-14.6-6.1-18.1-13.3L287.9 79z" />
               </svg>
-
-              <p className="text-gray-500 text-sm font-medium">Charlar</p>
+              <p className="text-gray-500 text-sm font-medium">Calificación</p>
             </div>
             <div className="flex flex-row gap-2 items-center">
               <svg

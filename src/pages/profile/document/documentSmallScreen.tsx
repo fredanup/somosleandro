@@ -3,6 +3,7 @@ import { trpc } from 'utils/trpc';
 import DocumentModal from './modals/documentModal';
 import DocumentCard from './cards/documentCard';
 import { useSession } from 'next-auth/react';
+import Spinner from 'pages/utilities/spinner';
 
 export default function DocumentSmallScreen({ userId }: { userId: string }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function DocumentSmallScreen({ userId }: { userId: string }) {
   };
 
   if (status === 'loading') {
-    return <div>Cargando...</div>;
+    return <Spinner />;
   }
   const closeModal = () => {
     setIsOpen(false);

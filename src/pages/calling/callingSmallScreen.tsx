@@ -6,6 +6,7 @@ import TeachingCallingModal from './modals/teachingCallingModal';
 import EventCallingModal from './modals/eventCallingModal';
 import { trpc } from 'utils/trpc';
 import Message from 'pages/utilities/message';
+import Spinner from 'pages/utilities/spinner';
 
 export default function CallingSmallScreen({
   onCardSelect,
@@ -19,32 +20,36 @@ export default function CallingSmallScreen({
     trpc.calling.getUserCallings.useQuery();
   //Control de expansión de llave angular
   const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
-  //Control de apertura de modal de edición
+  //Hook de estado que controla la apertura del modal de edición
   const [editIsOpen, setEditIsOpen] = useState(false);
-  //Control de apertura de modal de eliminación
+  //Hook de estado que controla la apertura del modal de eliminación
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
-  //Selección de registro en interfaz
+
+  //Selección de registro en interfaz. Hook pendiente por revisar
   const [selectedCalling, setSelectedCalling] = useState<IEditCalling | null>(
     null,
   );
   //Constantes para la comparación con registros de la base de datos
   const musico = 'Músico(s) para evento';
   const docente = 'Clases de música';
+
+  //Función de apertura del modal ChooseCallingModal
   const openModal = () => {
     setIsOpen(true);
   };
 
+  //Función de apertura del modal ChooseCallingModal
   const closeModal = () => {
     setIsOpen(false);
   };
 
-  //Apertura de modal y envío de datos del registro
+  //Función de apertura de modal de edición
   const openEditModal = (calling: IEditCalling) => {
     setSelectedCalling(calling);
     setEditIsOpen(true);
   };
 
-  //Cierre de modal
+  //Función de cierre de modal de edición
   const closeEditModal = () => {
     setEditIsOpen(false);
   };
@@ -60,6 +65,7 @@ export default function CallingSmallScreen({
     setDeleteIsOpen(false);
   };
 
+  //Efecto para cerrar inicialmente todas las llaves angulares
   useEffect(() => {
     // Si es que hay registros en bd, establecer tamaño de arreglo y dar el valor de false a cada registro
     if (userCallings) {
@@ -67,6 +73,7 @@ export default function CallingSmallScreen({
     }
   }, [userCallings]);
 
+  //Función para controlar la apertura y cierre de cada llave angular
   const handleToggle = (index: number) => {
     setExpandedStates((prevStates) => {
       //pasar los elementos de prevStates a newStates
@@ -78,8 +85,9 @@ export default function CallingSmallScreen({
     });
   };
 
+  //Mostrar spinner mientras se obtienen datos de la base de datos
   if (isLoading) {
-    return <div>Fetching callings...</div>;
+    return <Spinner />;
   }
 
   const handleCardClick = (data: IUserCalling) => {
@@ -101,7 +109,7 @@ export default function CallingSmallScreen({
       {!userCallings || userCallings.length === 0 ? (
         <Message
           text={
-            'Ups, parece que usted no ha creado ninguna convocatoria. Pulse el botón (+)'
+            'Ups, parece que usted no ha creado ninguna convocatoria. Pulse el botón (+) para crear una'
           }
         />
       ) : (

@@ -9,30 +9,30 @@ export default function ChooseCallingModal({
   isOpen: boolean;
   onClose: () => void;
 }) {
+  //Hooks de estado que controlan la apertura de los modales 1 y 2
   const [isModal1Open, setIsModal1Open] = useState(false);
   const [isModal2Open, setIsModal2Open] = useState(false);
+
+  //Estilizado del fondo detrás del modal. Evita al usuario salirse del modal antes de elegir alguna opción
   const overlayClassName = isOpen
-    ? 'fixed top-0 left-0 w-full h-full bg-gray-800 opacity-60 z-20'
+    ? 'fixed top-0 left-0 w-full h-full rounded-lg bg-gray-800 opacity-60 z-20'
     : 'hidden';
+  //Función de apertura del modal 1
   const openModal1 = () => {
     setIsModal1Open(true);
   };
-
+  //Función de cierre del modal 1
   const closeModal1 = () => {
     setIsModal1Open(false);
   };
-
+  //Función de apertura del modal 2
   const openModal2 = () => {
     setIsModal2Open(true);
   };
-
+  //Función de cierre del modal 2
   const closeModal2 = () => {
     setIsModal2Open(false);
   };
-
-  if (!isOpen) {
-    return null; // No renderizar el modal si no está abierto
-  }
 
   return (
     <>
