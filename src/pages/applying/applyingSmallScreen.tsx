@@ -88,7 +88,7 @@ export default function ApplyingSmallScreen({
           </div>
 
           {/**Drop down menu */}
-          <div className="cursor-pointer flex flex-row items-center gap-4 border-t border-gray-200 pt-1">
+          <div className="cursor-pointer flex flex-row items-center gap-4 border-t border-gray-200 pt-2">
             <div className="flex flex-row gap-2 items-center">
               <svg
                 className="h-4 w-4 cursor-pointer focus:outline-none fill-gray-500"
