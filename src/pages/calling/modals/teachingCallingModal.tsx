@@ -144,7 +144,6 @@ const TeachingCallingModal = ({
         <p className="text-justify text-base font-light text-gray-500">
           Complete cada uno de los campos presentados a continuación:
         </p>
-        {/**header y cuerpo de datos de convocatoria */}
 
         {/**CUERPO 1*/}
         <div className="flex flex-col gap-2">
@@ -244,7 +243,7 @@ const TeachingCallingModal = ({
 
         <div className="flex flex-col gap-2">
           <p className="text-sm font-medium text-slate-900">
-            Tiempo que desea recibir el servicio:
+            Por cuántos meses o clases tomará el servicio:
           </p>
           <input
             type="text"
@@ -256,7 +255,7 @@ const TeachingCallingModal = ({
 
         <div className="flex flex-col gap-2">
           <p className="text-sm font-medium text-slate-900">
-            Qué horario tiene disponible:
+            En qué horario puede recibir las clases:
           </p>
           <input
             type="text"
