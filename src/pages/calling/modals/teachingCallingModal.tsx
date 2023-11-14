@@ -137,71 +137,84 @@ const TeachingCallingModal = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className="absolute left-0 top-0 z-30 h-full w-full overflow-auto bg-white px-6 pb-12 pt-6 md:pb-6"
+      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform z-30 h-5/6 w-11/12 overflow-auto rounded-lg bg-white p-6"
     >
-      <h1 className="mb-2 text-xl font-medium text-slate-900">
-        Crear convocatoria
-      </h1>
-      <p className="mb-2 text-justify text-sm font-light text-gray-500">
-        Complete cada uno de los campos presentados a continuación:
-      </p>
-      {/**header y cuerpo de datos de convocatoria */}
-      {/**HEADER 1*/}
-      <div className="mb-2 flex items-center gap-2">
-        <svg
-          viewBox="0 0 512 512"
-          className="h-4 w-4 cursor-pointer items-center justify-center fill-gray-500"
-        >
-          <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-        </svg>
-        <p className="text-base font-bold text-gray-700">
-          Datos de convocatoria
+      <div className="flex flex-col gap-4">
+        <h1 className="text-xl font-medium text-black">Crear convocatoria</h1>
+        <p className="text-justify text-sm font-light text-gray-500">
+          Complete cada uno de los campos presentados a continuación:
         </p>
-      </div>
-      {/**CUERPO 1*/}
-      <div className="grid grid-cols-2 items-center gap-4 text-sm font-light text-gray-700">
-        <p>Nro de postulantes:</p>
-        <input
-          type="text"
-          className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-          value={nroPostulantes}
-          onChange={(event) => setNroPostulante(event.target.value)}
-        />
-        <p>Fecha límite de postulación:</p>
-        <DatePicker
-          id="datepicker1"
-          selected={fechaLimitePostulacion}
-          onChange={handlePostulacionDateChange}
-          dateFormat="dd/MM/yyyy"
-          className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-        />
-      </div>
-      {/**header y cuerpo de datos del evento */}
-      {/**HEADER 2*/}
-      <div className="mb-2 flex items-center gap-2">
-        <svg
-          viewBox="0 0 512 512"
-          className="h-4 w-4 cursor-pointer items-center justify-center fill-gray-500"
-        >
-          <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-        </svg>
-        <p className="text-base font-bold text-gray-700">
-          Datos del estudiante
-        </p>
-      </div>
-      {/**CUERPO 2*/}
-      <div className="grid grid-cols-2 items-center gap-4 text-sm font-light text-gray-700">
-        <p>Instrumento de interés:</p>
-        <input
-          type="text"
-          className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-          value={instrumentoInteres}
-          onChange={(event) => setInstrumentoInteres(event.target.value)}
-        />
-        <p>Cuenta con el instrumento:</p>
-        <label className="relative flex items-center">
+        {/**header y cuerpo de datos de convocatoria */}
+
+        {/**CUERPO 1*/}
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">
+            Nro de postulantes:
+          </p>
+          <input
+            type="text"
+            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            value={nroPostulantes}
+            onChange={(event) => setNroPostulante(event.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">Fecha límite:</p>
+          <DatePicker
+            id="datepicker1"
+            selected={fechaLimitePostulacion}
+            onChange={handlePostulacionDateChange}
+            dateFormat="dd/MM/yyyy"
+            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+          />
+        </div>
+
+        {/**CUERPO 2*/}
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">
+            Instrumento de interés:
+          </p>
+          <input
+            type="text"
+            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            value={instrumentoInteres}
+            onChange={(event) => setInstrumentoInteres(event.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">
+            Edad del estudiante:
+          </p>
+          <input
+            type="text"
+            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            value={edadEstudiante}
+            onChange={(event) => setEdadEstudiante(event.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">
+            Repertorio que desea aprender:
+          </p>
+          <input
+            type="text"
+            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            value={repertorioInteres}
+            onChange={(event) => setRepertorioInteres(event.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-row items-center justify-between">
+          <p className="text-sm font-medium text-slate-900">
+            Cuenta con el instrumento:
+          </p>
           <Toggle
-            className={'text-sm font-medium text-white'}
+            className={
+              'text-sm font-medium text-white inline-block align-middle '
+            }
             checked={tieneInstrumento}
             icons={{
               checked: 'Si',
@@ -209,40 +222,17 @@ const TeachingCallingModal = ({
             }}
             onChange={handleInstrumentoToggle}
           />
-        </label>
-        <p>Edad del estudiante:</p>
-        <input
-          type="text"
-          className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-          value={edadEstudiante}
-          onChange={(event) => setEdadEstudiante(event.target.value)}
-        />
-        <p>Repertorio que desea aprender:</p>
-        <input
-          type="text"
-          className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-          value={repertorioInteres}
-          onChange={(event) => setRepertorioInteres(event.target.value)}
-        />
-      </div>
-      {/**header y cuerpo de datos del servicio */}
-      {/**HEADER 3*/}
-      <div className="mb-2 flex items-center gap-2">
-        <svg
-          viewBox="0 0 512 512"
-          className="h-4 w-4 cursor-pointer items-center justify-center fill-gray-500"
-        >
-          <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z" />
-        </svg>
-        <p className="text-base font-bold text-gray-700">Datos del servicio</p>
-      </div>
-      {/**CUERPO 2*/}
-      <div className="grid grid-cols-2 items-center gap-4 text-sm font-light text-gray-700">
-        <p>Desea clases a domicilio:</p>
+        </div>
 
-        <label className="relative flex items-center">
+        {/**CUERPO 2*/}
+        <div className="flex flex-row items-center justify-between">
+          <p className="text-sm font-medium text-slate-900">
+            Desea clases a domicilio:
+          </p>
           <Toggle
-            className={'text-sm font-medium text-white'}
+            className={
+              'text-sm font-medium text-white inline-block align-middle '
+            }
             checked={clasesADomicilio}
             icons={{
               checked: 'Si',
@@ -250,46 +240,58 @@ const TeachingCallingModal = ({
             }}
             onChange={handleClasesADomicilioToggle}
           />
-        </label>
-        <p>Tiempo que desea recibir el servicio:</p>
-        <input
-          type="text"
-          className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-          value={tiempoContrata}
-          onChange={(event) => setTiempoContrata(event.target.value)}
-        />
-        <p>Qué horario tiene disponible:</p>
-        <input
-          type="text"
-          className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-          value={horarioDisponible}
-          onChange={(event) => setHorarioDisponible(event.target.value)}
-        />
-      </div>
-      <div className="mt-2 text-sm font-light text-gray-700">
-        <p>Detalles adicionales:</p>
-        <textarea
-          value={detalles}
-          onChange={(event) => setDetalles(event.target.value)}
-          className=" h-14 w-full rounded-md border border-gray-300 p-2"
-        ></textarea>
-      </div>
-      <div className="mt-4">
-        <div className="flex justify-center gap-2">
-          <button
-            type="submit"
-            className="w-full rounded-full border bg-green-500 px-4 py-1 text-base font-semibold text-white"
-          >
-            Continuar
-          </button>
-          <button
-            type="button"
-            className="w-full rounded-full border bg-gray-600 px-4 py-1 text-base font-semibold text-white"
-            onClick={onClose}
-          >
-            Cancelar
-          </button>
         </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">
+            Tiempo que desea recibir el servicio:
+          </p>
+          <input
+            type="text"
+            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            value={tiempoContrata}
+            onChange={(event) => setTiempoContrata(event.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">
+            Qué horario tiene disponible:
+          </p>
+          <input
+            type="text"
+            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            value={horarioDisponible}
+            onChange={(event) => setHorarioDisponible(event.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium text-slate-900">
+            Detalles adicionales:
+          </p>
+          <textarea
+            value={detalles}
+            onChange={(event) => setDetalles(event.target.value)}
+            className="h-14 w-full rounded-md border border-gray-300 p-2"
+          ></textarea>
+        </div>
+      </div>
+
+      <div className="mt-4 pt-4 flex flex-row justify-end gap-2 border-t border-gray-200">
+        <button
+          type="button"
+          className="rounded-lg border bg-gray-500 px-4 py-1 text-sm font-medium text-white"
+          onClick={onClose}
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          className="rounded-lg border bg-sky-500 px-4 py-1 text-sm font-medium text-white"
+        >
+          Continuar
+        </button>
       </div>
     </form>
   );

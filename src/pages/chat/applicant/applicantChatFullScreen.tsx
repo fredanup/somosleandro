@@ -166,7 +166,7 @@ export default function ApplicantChatFullScreen({
             </div>
 
             {/**Chat space */}
-            <div className={`grow overflow-auto bg-sky-100`}>
+            <div className={`grow overflow-auto bg-gray-200`}>
               <div className="flex flex-col p-4" ref={messageRef}>
                 {/**Se muestran los mensajes cargados en el segundo useEffect de acuerdo a la sala proporcionada*/}
                 {messages?.map((m, index) => {
