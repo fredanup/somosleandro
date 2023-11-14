@@ -141,7 +141,7 @@ const TeachingCallingModal = ({
     >
       <div className="flex flex-col gap-4">
         <h1 className="text-xl font-medium text-black">Crear convocatoria</h1>
-        <p className="text-justify text-sm font-light text-gray-500">
+        <p className="text-justify text-base font-light text-gray-500">
           Complete cada uno de los campos presentados a continuación:
         </p>
         {/**header y cuerpo de datos de convocatoria */}
@@ -281,14 +281,14 @@ const TeachingCallingModal = ({
       <div className="mt-4 pt-4 flex flex-row justify-end gap-2 border-t border-gray-200">
         <button
           type="button"
-          className="rounded-lg border bg-gray-500 px-4 py-1 text-sm font-medium text-white"
+          className="rounded-lg border bg-gray-500 px-4 py-1 text-base font-medium text-white"
           onClick={onClose}
         >
           Cancelar
         </button>
         <button
           type="submit"
-          className="rounded-lg border bg-sky-500 px-4 py-1 text-sm font-medium text-white"
+          className="rounded-lg border bg-sky-500 px-4 py-1 text-base font-medium text-white"
         >
           Continuar
         </button>
