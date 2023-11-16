@@ -17,7 +17,7 @@ export default function DocumentSmallScreen({ userId }: { userId: string }) {
   };
 
   if (status === 'loading') {
-    return <Spinner />;
+    return <Spinner text="Cargando sesión" />;
   }
   const closeModal = () => {
     setIsOpen(false);

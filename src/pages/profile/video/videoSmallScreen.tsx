@@ -3,6 +3,7 @@ import { trpc } from 'utils/trpc';
 import VideoSmallCard from './card/videoSmallCard';
 import VideoModal from './modal/videoModal';
 import { useSession } from 'next-auth/react';
+import Spinner from 'pages/utilities/spinner';
 
 export default function VideoSmallScreen({ userId }: { userId: string }) {
   const { data, isLoading } = trpc.video.getUserVideos.useQuery({ userId });
@@ -16,7 +17,7 @@ export default function VideoSmallScreen({ userId }: { userId: string }) {
     setIsOpen(false);
   };
   if (status === 'loading') {
-    return <div>Cargando...</div>;
+    return <Spinner text="Cargando sesión" />;
   }
 
   return (
