@@ -155,6 +155,7 @@ const TeachingCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={nroPostulantes}
             onChange={(event) => setNroPostulante(event.target.value)}
+            required
           />
         </div>
 
@@ -166,6 +167,7 @@ const TeachingCallingModal = ({
             onChange={handlePostulacionDateChange}
             dateFormat="dd/MM/yyyy"
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            required
           />
         </div>
 
@@ -179,6 +181,7 @@ const TeachingCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={instrumentoInteres}
             onChange={(event) => setInstrumentoInteres(event.target.value)}
+            required
           />
         </div>
 
@@ -191,6 +194,7 @@ const TeachingCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={edadEstudiante}
             onChange={(event) => setEdadEstudiante(event.target.value)}
+            required
           />
         </div>
 
@@ -203,6 +207,7 @@ const TeachingCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={repertorioInteres}
             onChange={(event) => setRepertorioInteres(event.target.value)}
+            required
           />
         </div>
 
@@ -250,6 +255,7 @@ const TeachingCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={tiempoContrata}
             onChange={(event) => setTiempoContrata(event.target.value)}
+            required
           />
         </div>
 
@@ -262,6 +268,7 @@ const TeachingCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={horarioDisponible}
             onChange={(event) => setHorarioDisponible(event.target.value)}
+            required
           />
         </div>
 

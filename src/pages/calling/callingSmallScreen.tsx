@@ -13,59 +13,69 @@ export default function CallingSmallScreen({
 }: {
   onCardSelect: (data: IUserCalling) => void;
 }) {
+  /**
+   * Declaraciones de hooks de estado
+   */
+  //Hook de estado que controla la apertura del modal de creación de convocatoria
   const [isOpen, setIsOpen] = useState(false);
-
-  //Obtener los registros de bd
-  const { data: userCallings, isLoading } =
-    trpc.calling.getUserCallings.useQuery();
-  //Control de expansión de llave angular
-  const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
   //Hook de estado que controla la apertura del modal de edición
   const [editIsOpen, setEditIsOpen] = useState(false);
   //Hook de estado que controla la apertura del modal de eliminación
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
-
   //Selección de registro en interfaz. Hook pendiente por revisar
   const [selectedCalling, setSelectedCalling] = useState<IEditCalling | null>(
     null,
   );
+  //Control de expansión de llave angular
+  const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
+
+  /**
+   * Declaraciones de constantes
+   */
   //Constantes para la comparación con registros de la base de datos
   const musico = 'Músico(s) para evento';
   const docente = 'Clases de música';
 
+  /**
+   * Consultas a base de datos
+   */
+  //Obtener los registros de bd
+  const { data: userCallings, isLoading } =
+    trpc.calling.getUserCallings.useQuery();
+
+  /**
+   * Funciones de apertura y cierre de modales
+   */
   //Función de apertura del modal ChooseCallingModal
   const openModal = () => {
     setIsOpen(true);
   };
-
   //Función de apertura del modal ChooseCallingModal
   const closeModal = () => {
     setIsOpen(false);
   };
-
   //Función de apertura de modal de edición
   const openEditModal = (calling: IEditCalling) => {
     setSelectedCalling(calling);
     setEditIsOpen(true);
   };
-
   //Función de cierre de modal de edición
   const closeEditModal = () => {
     setEditIsOpen(false);
   };
-
-  //Apertura de modal y envío de datos del registro
+  //Función de apertura de modal de eliminación
   const openDeleteModal = (calling: IEditCalling) => {
     setSelectedCalling(calling);
     setDeleteIsOpen(true);
   };
-
-  //Cierre de modal
+  //Función de cierre de modal de eliminación
   const closeDeleteModal = () => {
     setDeleteIsOpen(false);
   };
 
-  //Efecto para cerrar inicialmente todas las llaves angulares
+  /**
+   * Hook de efecto inicial: Cierra inicialmente todas las llaves angulares
+   */
   useEffect(() => {
     // Si es que hay registros en bd, establecer tamaño de arreglo y dar el valor de false a cada registro
     if (userCallings) {
@@ -73,7 +83,10 @@ export default function CallingSmallScreen({
     }
   }, [userCallings]);
 
-  //Función para controlar la apertura y cierre de cada llave angular
+  /**
+   * Función para controlar la apertura y cierre de cada llave angular
+   * @param index Parametro utilizado para detectar sobre qué índice del arreglo el usuario hizo clic
+   */
   const handleToggle = (index: number) => {
     setExpandedStates((prevStates) => {
       //pasar los elementos de prevStates a newStates
@@ -84,15 +97,21 @@ export default function CallingSmallScreen({
       return newStates;
     });
   };
-
-  //Mostrar spinner mientras se obtienen datos de la base de datos
-  if (isLoading) {
-    return <Spinner />;
-  }
-
+  /**
+   *
+   * @param data Parámetro utilizado para recibir los datos del registro sobre el cual el usuario hizo clic y pasarlos a la función
+   * onCardSelect que es parámetro del componente hijo y es enviado como argumento desde el componente padre mediante la función handleCardSelect
+   * definido en el padre para poder obtener los datos del hijo y almacenarlos en la variable de estado selectedCard mediante la función de estado
+   * setSelectedCard
+   */
   const handleCardClick = (data: IUserCalling) => {
     onCardSelect(data);
   };
+
+  //Mostrar spinner mientras se obtienen datos de la base de datos
+  if (isLoading) {
+    return <Spinner text="Cargando registros" />;
+  }
 
   return (
     <>

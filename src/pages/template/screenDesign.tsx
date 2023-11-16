@@ -16,10 +16,10 @@ export default function ScreenDesign({
     <>
       {/*/Contenedor principal se ubica a la derecha del menú en dispositivos de pantalla grande y en toda la pantalla en móviles**/}
       <div className="flex h-full w-full flex-col md:flex md:flex-row md:gap-2">
-        {/* Contenedor izquierdo */}
-        <div className="relative flex h-full w-full flex-col rounded-lg bg-sky-950 pb-8 drop-shadow-lg md:w-1/3 md:pb-0">
+        {/* Contenedor izquierdo [SmallScreen].Dato importante: El padding de bottom es bastante para que el menú no tape al contenido */}
+        <div className="relative flex h-full w-full flex-col rounded-lg bg-sky-950 pb-12 drop-shadow-lg md:w-1/3 md:pb-0">
           {/**Header */}
-          <div className="border-b border-sky-500 flex flex-row items-center justify-between px-6 py-1.5">
+          <div className="flex flex-row items-center justify-between px-6 py-1.5">
             <p className="text-white text-lg font-semibold">{header}</p>
             <Image
               className="h-10 w-10 drop-shadow-lg rounded-lg bg-white p-1.5"

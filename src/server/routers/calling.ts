@@ -99,7 +99,7 @@ export const callingRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
         orderBy: {
-          createdAt: 'asc',
+          createdAt: 'desc',
         },
       });
     } catch (error) {

@@ -16,8 +16,6 @@ import ApplyingFullScreen from './applying/applyingFullScreen';
 
 import { type IUserCalling } from '../utils/auth';
 
-import CallingRoomSmallScreen from './chat/creator/callingRoomSmallScreen';
-
 import ChatFullScreen from './chat/creator/chatFullScreen';
 import CallingAcceptedSmallScreen from './chat/applicant/callingAcceptedSmallScreen';
 
@@ -76,12 +74,12 @@ export default function Main() {
   }, []);
 
   //Nota. Es necesario unificar los tipos usados para evitar redundancia y para obtener simplicidad
-  // Función que recibe los datos de la tarjeta seleccionada de tipo IUseCalling y establece el valor de selectedCard, es un tipo de descriptor de acceso PODRÍA OMITIRSE
+  // Función que recibe los datos de la tarjeta seleccionada de tipo IUseCalling y establece el valor de selectedCard, es un tipo de descriptor de acceso
   const handleCardSelect = (data: IUserCalling | null) => {
     setSelectedCard(data);
   };
 
-  // Función que recibe los datos de la tarjeta seleccionada de tipo ApplicantRoomType y establece el valor de selectedCard, es un tipo de descriptor de acceso PODRÍA OMITIRSE
+  // Función que recibe los datos de la tarjeta seleccionada de tipo ApplicantRoomType y establece el valor de selectedCard, es un tipo de descriptor de acceso
   const handleRoomCardSelect = (data: ApplicantRoomType | null) => {
     setRoomCard(data);
   };
@@ -89,7 +87,7 @@ export default function Main() {
   //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
   if (status === 'loading') {
     // Se muestra el spinner mientra se verifica el estado de autenticación
-    return <Spinner />;
+    return <Spinner text="Cargando sesión" />;
   }
 
   //Si la sesión no existe se redirige al inicio de sesión
@@ -105,8 +103,13 @@ export default function Main() {
 
   return (
     <>
+      {/**
+       * Contenedor principal
+       * Ocupa toda la pantalla
+       */}
       <div className="m-0 box-border h-screen w-screen border-0 bg-slate-200 drop-shadow-lg rounded-lg md:flex md:flex-row md:h-screen md:w-screen md:gap-2">
-        {/**Menú de navegación
+        {/**
+         * Menú de navegación
          * En móviles es fijo y se ubica en la parte inferior. En escritorio se ubica a la izquierda
          */}
         <nav
@@ -216,7 +219,7 @@ export default function Main() {
           <ScreenDesign
             header="Chat con postulantes"
             smallScreenBody={
-              <CallingRoomSmallScreen onCardSelect={handleCardSelect} />
+              <CallingSmallScreen onCardSelect={handleCardSelect} />
             }
             fullScreenBody={<ChatFullScreen selectedCard={selectedCard} />}
           />
@@ -246,6 +249,7 @@ export default function Main() {
             fullScreenBody={<ProfileFullScreen />}
           />
         )}
+        {opt === 6 && <Spinner text="demo" />}
       </div>
     </>
   );

@@ -40,7 +40,7 @@ export default function CallingAcceptedSmallScreen({
 
   //Mostrar spinner mientras se obtienen datos de la base de datos
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner text="Cargando registros" />;
   }
 
   const handleCardClick = (data: ApplicantRoomType | null) => {

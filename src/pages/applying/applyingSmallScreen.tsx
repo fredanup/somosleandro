@@ -39,7 +39,7 @@ export default function ApplyingSmallScreen({
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner text="Cargando registro" />;
   }
 
   if (!userCallings || userCallings.length === 0) {

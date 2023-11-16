@@ -144,6 +144,7 @@ const EventCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={nroPostulantes}
             onChange={(event) => setNroPostulante(event.target.value)}
+            required
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -154,6 +155,7 @@ const EventCallingModal = ({
             onChange={handlePostulacionDateChange}
             dateFormat="dd/MM/yyyy"
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+            required
           />
         </div>
         {/**CUERPO 2*/}
@@ -164,6 +166,7 @@ const EventCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={tipoEvento}
             onChange={(event) => setTipoEvento(event.target.value)}
+            required
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -176,6 +179,7 @@ const EventCallingModal = ({
             dateFormat="dd/MM/yyyy"
             onChange={handleEventoDateChange}
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
+            required
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -187,6 +191,7 @@ const EventCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={direccionEvento}
             onChange={(event) => setDireccionEvento(event.target.value)}
+            required
           />
         </div>
         {/**CUERPO 3*/}
@@ -199,6 +204,7 @@ const EventCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={duracionServicio}
             onChange={(event) => setDuracionServicio(event.target.value)}
+            required
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -210,6 +216,7 @@ const EventCallingModal = ({
             className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
             value={musicoRequerido}
             onChange={(event) => setMusicoRequerido(event.target.value)}
+            required
           />
         </div>
         <div className="flex flex-row items-center justify-between">

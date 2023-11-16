@@ -12,33 +12,38 @@ export default function CallingFullScreen({
 }: {
   selectedCard: IUserCalling | null;
 }) {
-  //Obtener los registros de bd
-  const utils = trpc.useContext();
+  /**
+   * Declaraciones de hooks de estado
+   */
   const [notification, setNotification] = useState('');
   const [callingId, setCallingId] = useState('');
   const [applicantChosen, setAppliantChosen] =
     useState<ApplicantRoomType | null>(null);
-  const applicantChange = trpc.applicantRoom.applicantChange.useMutation();
   const [applicants, setApplicants] = useState<ApplicantRoomType[] | null>([]);
 
-  //const utils = api.useContext();
+  /**
+   * Consultas a base de datos
+   */
+  const utils = trpc.useUtils();
+  const applicantChange = trpc.applicantRoom.applicantChange.useMutation();
   const applicantsQuery = trpc.applicantRoom.getApplicantsByCalling.useQuery({
     callingId: callingId,
   });
-
   const acceptApplicant = trpc.applicantRoom.acceptApplicant.useMutation({
     onSettled: async () => {
       await utils.applicantRoom.getApplicantsByCalling.invalidate();
       await utils.user.findMany.invalidate();
     },
   });
-
   const rejectApplicant = trpc.applicantRoom.rejectApplicant.useMutation({
     onSettled: async () => {
       await utils.applicantRoom.getApplicantsByCalling.invalidate();
     },
   });
 
+  /**
+   * Hook de efecto inicial
+   */
   useEffect(() => {
     if (selectedCard) {
       // Verifica si se obtuvieron datos de la consulta
@@ -80,17 +85,26 @@ export default function CallingFullScreen({
   return (
     <>
       {/**Contenedor general */}
-      <div className="flex h-full w-full flex-row gap-2">
+      <div className="flex flex-row h-full w-full gap-2">
         {/**Contenedor de postulantes */}
-        <div className="flex w-1/3 flex-col rounded-lg bg-white">
+        <div className="flex flex-col w-1/3 rounded-lg ">
           {/**Header */}
-          <div className="flex w-full flex-row rounded-t-lg bg-green-400 px-4 py-2">
-            <h1 className="text-xl font-semibold text-white">Postulantes</h1>
+          <div className="bg-sky-950 rounded-t-lg flex flex-row items-center justify-between px-6 py-1.5">
+            <p className="text-white text-lg font-semibold">Postulantes</p>
+            <Image
+              className="h-10 w-10 drop-shadow-lg rounded-lg bg-white p-1.5"
+              src="/icons/Logo.svg"
+              width={100}
+              height={100}
+              alt="Logo"
+            />
           </div>
+          {/**Body */}
           <div className="grow overflow-auto rounded-b-lg bg-white">
             {selectedCard ? (
               applicants !== null && applicants.length > 0 ? (
                 applicants?.map((entry, index) => (
+                  //Card de postulante
                   <div
                     className={`flex w-full cursor-pointer flex-row items-center gap-2 border-b-2 border-gray-100 p-2 ${
                       entry.applyStatus === 'accepted' ? 'bg-green-200' : ''
