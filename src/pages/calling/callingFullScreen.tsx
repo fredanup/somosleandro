@@ -24,7 +24,7 @@ export default function CallingFullScreen({
   /**
    * Consultas a base de datos
    */
-  const utils = trpc.useUtils();
+  const utils = trpc.useContext();
   const applicantChange = trpc.applicantRoom.applicantChange.useMutation();
   const applicantsQuery = trpc.applicantRoom.getApplicantsByCalling.useQuery({
     callingId: callingId,
