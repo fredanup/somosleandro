@@ -25,6 +25,7 @@ export default function User() {
 
     // setAccount(userData.data?.acc as string);
   }, [
+    userData,
     userData.data?.address,
     userData.data?.lastName,
     userData.data?.name,

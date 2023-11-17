@@ -1,11 +1,13 @@
+/*
 import { paymentSchema } from '../../utils/auth';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 
+
 export const paymentRouter = createTRPCRouter({
   processPayment: protectedProcedure.input(paymentSchema).mutation(async () => {
     try {
-      /*  
+      
         const paymentData=await ctx.prisma.payment.create({
           data: {            
               transaction_amount:input.transactionAmount,
@@ -43,7 +45,7 @@ export const paymentRouter = createTRPCRouter({
               status: response.status,              
             },
           };
-     */
+     
     } catch (error) {
       console.error(error);
       throw new TRPCError({
@@ -53,3 +55,4 @@ export const paymentRouter = createTRPCRouter({
     }
   }),
 });
+*/

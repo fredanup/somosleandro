@@ -1,5 +1,5 @@
 import { type ChangeEvent, useState } from 'react';
-import { ApplicantRoomType } from 'server/routers/room';
+import type { ApplicantRoomType } from 'server/routers/room';
 import PaymentDetails from './paymentDetails';
 
 export default function Payment({

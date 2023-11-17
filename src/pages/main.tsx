@@ -19,7 +19,7 @@ import { type IUserCalling } from '../utils/auth';
 import ChatFullScreen from './chat/creator/chatFullScreen';
 import CallingAcceptedSmallScreen from './chat/applicant/callingAcceptedSmallScreen';
 
-import { ApplicantRoomType } from 'server/routers/room';
+import type { ApplicantRoomType } from 'server/routers/room';
 import ApplicantChatFullScreen from './chat/applicant/applicantChatFullScreen';
 import Spinner from './utilities/spinner';
 
