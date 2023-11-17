@@ -5,7 +5,6 @@ import { observable } from '@trpc/server/observable';
 import { prisma } from '../prisma';
 
 export const applicantRoomRouter = createTRPCRouter({
- 
   getApplicantsByCalling: protectedProcedure
     .input(z.object({ callingId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -189,8 +188,9 @@ export const applicantRoomRouter = createTRPCRouter({
         console.log(error);
       }
     }),
-    //Emite el evento APPLICANT_CHANGE. Nota falta estudiar el propósito de esto 
+    
     applicantChange: publicProcedure.mutation(() => {
+      //Emite el evento APPLICANT_CHANGE. Nota falta estudiar el propósito de esto 
       ee.emit(Events.APPLICANT_CHANGE);
     }),
   
@@ -264,11 +264,12 @@ export const applicantRoomRouter = createTRPCRouter({
           };
         });
       }),
-  //Actualiza la sala del usuario logeado y emite un evento personalizado llamado INGRESAR SALA mostrando al resto los atributos roomId y userId proporcionados,
-  //se ha "agregado una sala a un usuario"
+
   addRoom: publicProcedure
     .input(z.object({ roomId: z.string(), userId: z.string() }))
     .mutation(async ({ input }) => {
+        //Actualiza la sala del usuario logeado y emite un evento personalizado llamado INGRESAR SALA mostrando al resto los atributos roomId y userId proporcionados,
+        //se ha "agregado una sala a un usuario"
       const user = await prisma?.user.updateMany({
         where: {
           id: input.userId,
