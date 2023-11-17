@@ -5,6 +5,7 @@ import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
 import { type IEditCalling } from '../../../utils/auth';
 import { trpc } from 'utils/trpc';
+import CommitButton from 'pages/utilities/commitButton';
 
 const EventCallingModal = ({
   isOpen,
@@ -255,12 +256,7 @@ const EventCallingModal = ({
         >
           Cancelar
         </button>
-        <button
-          type="submit"
-          className="rounded-lg border bg-sky-500 px-4 py-1 text-base font-medium text-white"
-        >
-          Continuar
-        </button>
+        <CommitButton />
       </div>
     </form>
   );

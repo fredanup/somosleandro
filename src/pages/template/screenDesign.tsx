@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Header from 'pages/utilities/header';
 import { type ReactNode } from 'react';
 
 interface BodyProps {
@@ -19,16 +19,7 @@ export default function ScreenDesign({
         {/* Contenedor izquierdo [SmallScreen].Dato importante: El padding de bottom es bastante para que el menú no tape al contenido */}
         <div className="relative flex h-full w-full flex-col rounded-lg bg-sky-950 pb-12 drop-shadow-lg md:w-1/3 md:pb-0">
           {/**Header */}
-          <div className="flex flex-row items-center justify-between px-6 py-1.5">
-            <p className="text-white text-lg font-semibold">{header}</p>
-            <Image
-              className="h-10 w-10 drop-shadow-lg rounded-lg bg-white p-1.5"
-              src="/icons/Logo.svg"
-              width={100}
-              height={100}
-              alt="Logo"
-            />
-          </div>
+          <Header text={header} />
           {/**body */}
           <div className="grow overflow-auto rounded-b-lg bg-white">
             {smallScreenBody}

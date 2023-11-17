@@ -28,7 +28,9 @@ export default function CallingSmallScreen({
   );
   //Control de expansión de llave angular
   const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
-
+  const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
+    null,
+  );
   /**
    * Declaraciones de constantes
    */
@@ -97,15 +99,18 @@ export default function CallingSmallScreen({
       return newStates;
     });
   };
+
   /**
    *
    * @param data Parámetro utilizado para recibir los datos del registro sobre el cual el usuario hizo clic y pasarlos a la función
    * onCardSelect que es parámetro del componente hijo y es enviado como argumento desde el componente padre mediante la función handleCardSelect
    * definido en el padre para poder obtener los datos del hijo y almacenarlos en la variable de estado selectedCard mediante la función de estado
-   * setSelectedCard
+   * setSelectedCard. Además guarda el valor del índice seleccionado en la card por el usuario. Este valor se utilizará posteriormente para dar color
+   * a la card y el usuario entienda en qué card se encuentra
    */
-  const handleCardClick = (data: IUserCalling) => {
+  const handleCardClick = (data: IUserCalling, index: number) => {
     onCardSelect(data);
+    setSelectedCardIndex(index);
   };
 
   //Mostrar spinner mientras se obtienen datos de la base de datos
@@ -134,10 +139,13 @@ export default function CallingSmallScreen({
       ) : (
         <>
           {userCallings?.map((entry, index) => (
+            //Card
             <div
               key={index}
-              className="cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg bg-white m-4"
-              onClick={() => handleCardClick(entry)}
+              className={`cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg m-4 ${
+                selectedCardIndex === index ? 'bg-sky-100' : ' bg-white' // Cambia el color si es la tarjeta seleccionada
+              }`}
+              onClick={() => handleCardClick(entry, index)}
             >
               {/**Header */}
               <div className="flex flex-row justify-between">
