@@ -4,7 +4,6 @@ import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import { createTRPCNext } from '@trpc/next';
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type { NextPageContext } from 'next';
-import { env } from 'server/env';
 import type { AppRouter } from 'server/routers/_app';
 import superjson from 'superjson';
 
@@ -14,7 +13,7 @@ import superjson from 'superjson';
 function getEndingLink(ctx: NextPageContext | undefined) {
   if (typeof window === 'undefined') {
     return httpBatchLink({
-      url: `${env.APP_URL}/api/trpc`,
+      url: `${process.env.APP_URL}/api/trpc`,
       headers() {
         if (!ctx?.req?.headers) {
           return {};
@@ -28,7 +27,7 @@ function getEndingLink(ctx: NextPageContext | undefined) {
     });
   }
   const client = createWSClient({
-    url: env.WS_URL,
+    url: process.env.WS_URL ?? "ws://localhost:3001",
   });
   return wsLink<AppRouter>({
     client,

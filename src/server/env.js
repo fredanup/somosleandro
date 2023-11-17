@@ -8,8 +8,6 @@ require('dotenv').config();
  */
 const envSchema = z.object({
   DATABASE_URL: z.string().url(),
-  WS_URL: z.string(),
-  APP_URL: z.string(),
   NODE_ENV: z.enum(['development', 'test', 'production']),
   NEXTAUTH_SECRET: z.string(),
   NEXTAUTH_URL: z.string().url(),
