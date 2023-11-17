@@ -7,6 +7,7 @@ import { trpc } from 'utils/trpc';
 import { useEffect, useState } from 'react';
 import { type ApplicantRoomType } from 'server/routers/room';
 import Header from 'pages/utilities/header';
+import Warning from 'pages/utilities/warning';
 
 export default function CallingFullScreen({
   selectedCard,
@@ -47,6 +48,7 @@ export default function CallingFullScreen({
       await utils.user.findMany.invalidate();
     },
   });
+
   //Mutación que actualiza la sala en la que se encuentra el postulante para que no sea capaz de poder comunicarse con el cliente. Una vez que se produce la actualización en base de datos
   //se comunica a todos los oyentes del cambio. Nota: QUIZÁ no sea necesario emitir el evento esto puesto que el único oyente es el cliente, aunque podría ser útil en caso otros postulantes deseasen participar
   //partiendo de la exclusión de éste. Adicionalmente invalida los registros presentes en caché para actualizarse con los nuevos obtenidos desde la base de datos
@@ -195,18 +197,10 @@ export default function CallingFullScreen({
                   </div>
                 ))
               ) : (
-                <div className="flex h-full w-full flex-col items-center justify-center ">
-                  <p className="text-center text-lg font-black text-gray-500">
-                    {notification}
-                  </p>
-                </div>
+                <Warning text={notification} />
               )
             ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center">
-                <p className="text-center text-lg font-black text-gray-500">
-                  {notification}
-                </p>
-              </div>
+              <Warning text={notification} />
             )}
           </div>
         </div>
@@ -216,20 +210,21 @@ export default function CallingFullScreen({
           {/**Header */}
           <Header text="Perfil del postulante" />
           {applicantChosen !== null && (
+            //Body
             <div>
               {/*Foto y datos personales*/}
-              <div className="pb-2">
+              <div className="flex flex-col items-center p-9">
                 <Image
-                  className="m-auto mt-4 rounded-full"
+                  className="rounded-full"
                   src={applicantChosen.Applicant.image || ''}
                   width={95}
                   height={100}
                   alt="Logo"
                 />
-                <p className="text-m mt-2 text-center text-base font-medium text-gray-700">
+                <p className="text-m text-base font-medium text-gray-700">
                   {applicantChosen.Applicant.name}
                 </p>
-                <p className="text-center text-sm font-normal text-gray-500">
+                <p className="text-sm font-normal text-gray-500">
                   {applicantChosen.Applicant.email}
                 </p>
               </div>
@@ -242,11 +237,7 @@ export default function CallingFullScreen({
             </div>
           )}
           {applicantChosen === null && (
-            <div className="flex h-full w-full flex-col items-center justify-center">
-              <p className="text-center text-lg font-black text-gray-500">
-                No ha seleccionado a ningún postulante
-              </p>
-            </div>
+            <Warning text="No ha seleccionado a ningún postulante" />
           )}
         </div>
       </div>

@@ -22,6 +22,7 @@ export default function CallingSmallScreen({
   const [editIsOpen, setEditIsOpen] = useState(false);
   //Hook de estado que controla la apertura del modal de eliminación
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
+
   //Selección de registro en interfaz. Hook pendiente por revisar
   const [selectedCalling, setSelectedCalling] = useState<IEditCalling | null>(
     null,
@@ -82,6 +83,7 @@ export default function CallingSmallScreen({
     // Si es que hay registros en bd, establecer tamaño de arreglo y dar el valor de false a cada registro
     if (userCallings) {
       setExpandedStates(Array(userCallings.length).fill(false));
+      //Emite el evento de cambio de postulante Nota: Revisar esto--para detectar si se agregó o eliminó a algún postulante mientras se utiliza este componente--
     }
   }, [userCallings]);
 
@@ -108,7 +110,7 @@ export default function CallingSmallScreen({
    * setSelectedCard. Además guarda el valor del índice seleccionado en la card por el usuario. Este valor se utilizará posteriormente para dar color
    * a la card y el usuario entienda en qué card se encuentra
    */
-  const handleCardClick = (data: IUserCalling, index: number) => {
+  const handleCardClick = (data: IUserCalling, index: number | null) => {
     onCardSelect(data);
     setSelectedCardIndex(index);
   };
@@ -210,13 +212,9 @@ export default function CallingSmallScreen({
               {/**Drop down menu */}
               <div className="cursor-pointer flex flex-row items-center gap-4 border-t border-gray-200 pt-2">
                 <div className="flex flex-row gap-2 items-center">
-                  <svg
-                    className="h-4 w-4 cursor-pointer focus:outline-none fill-gray-500"
-                    viewBox="0 0 576 512"
-                  >
-                    <path d="M406.5 399.6C387.4 352.9 341.5 320 288 320H224c-53.5 0-99.4 32.9-118.5 79.6C69.9 362.2 48 311.7 48 256C48 141.1 141.1 48 256 48s208 93.1 208 208c0 55.7-21.9 106.2-57.5 143.6zm-40.1 32.7C334.4 452.4 296.6 464 256 464s-78.4-11.6-110.5-31.7c7.3-36.7 39.7-64.3 78.5-64.3h64c38.8 0 71.2 27.6 78.5 64.3zM256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-272a40 40 0 1 1 0-80 40 40 0 1 1 0 80zm-88-40a88 88 0 1 0 176 0 88 88 0 1 0 -176 0z" />
-                  </svg>
-
+                  <p className="inline-flex items-center rounded bg-pink-500 p-1.5 text-sm font-semibold text-white">
+                    10
+                  </p>
                   <p className="text-gray-500 text-sm font-medium">
                     Postulantes
                   </p>
