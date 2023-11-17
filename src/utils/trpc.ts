@@ -4,16 +4,23 @@ import { wsLink, createWSClient } from '@trpc/client/links/wsLink';
 import { createTRPCNext } from '@trpc/next';
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type { NextPageContext } from 'next';
+import getConfig from 'next/config';
 import type { AppRouter } from 'server/routers/_app';
 import superjson from 'superjson';
 
 // ℹ️ Type-only import:
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { publicRuntimeConfig } = getConfig();
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const { APP_URL, WS_URL } = publicRuntimeConfig;
+
 function getEndingLink(ctx: NextPageContext | undefined) {
   if (typeof window === 'undefined') {
     return httpBatchLink({
-      url: `${process.env.APP_URL}/api/trpc`,
+      url: `${APP_URL}/api/trpc`,
       headers() {
         if (!ctx?.req?.headers) {
           return {};
@@ -27,7 +34,8 @@ function getEndingLink(ctx: NextPageContext | undefined) {
     });
   }
   const client = createWSClient({
-    url: process.env.WS_URL ?? "ws://localhost:3001",
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    url: WS_URL,
   });
   return wsLink<AppRouter>({
     client,

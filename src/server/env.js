@@ -7,7 +7,7 @@ require('dotenv').config();
  * It has to be a `.js`-file to be imported there.
  */
 const envSchema = z.object({
-  DATABASE_URL: z.string().url(),
+  DATABASE_URL: z.string().url(),  
   NODE_ENV: z.enum(['development', 'test', 'production']),
   NEXTAUTH_SECRET: z.string(),
   NEXTAUTH_URL: z.string().url(),
