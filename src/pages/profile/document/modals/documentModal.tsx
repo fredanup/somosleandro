@@ -16,7 +16,7 @@ const DocumentModal = ({
   //2. Limpiar campos
   const [academicDocument, setDocument] = useState('');
 
-  //Mutación para cancelar o permitir la subida de archivos
+  //Hook de estado para cancelar o permitir la subida de archivos
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
   //Hook que permite usar queries
@@ -99,8 +99,6 @@ const DocumentModal = ({
       setSubmitDisabled(true);
     }
   }, [acceptedFiles, apiUtils.document.getUserDocuments, presignedUrl]);
-
-  if (!isOpen) return null;
 
   return (
     <>
