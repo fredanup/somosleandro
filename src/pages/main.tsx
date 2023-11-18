@@ -235,7 +235,7 @@ export default function Main() {
         )}
         {opt === 4 && (
           <ScreenDesign
-            header="Clientes interesados en ti"
+            header="Tus clientes"
             smallScreenBody={
               <CallingAcceptedSmallScreen onCardSelect={handleRoomCardSelect} />
             }
@@ -244,7 +244,7 @@ export default function Main() {
         )}
         {opt === 5 && (
           <ScreenDesign
-            header="Mi perfil"
+            header="Tu perfil"
             smallScreenBody={<ProfileSmallScreen />}
             fullScreenBody={<ProfileFullScreen />}
           />

@@ -26,6 +26,7 @@ export default function CallingFullScreen({
   //Hook de estado que almacena los datos de un objeto ApplicantRoomType seleccionado por el usuario de una lista de objetos ApplicantRoomType
   const [applicantChosen, setAppliantChosen] =
     useState<ApplicantRoomType | null>(null);
+  //Hook de estado utilizado para recordar en qué card se encuentra el usuario
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
     null,
   );
@@ -211,7 +212,7 @@ export default function CallingFullScreen({
           <Header text="Perfil del postulante" />
           {applicantChosen !== null && (
             //Body
-            <div>
+            <div className="flex flex-col gap-4 p-6">
               {/*Foto y datos personales*/}
               <div className="flex flex-col items-center p-9">
                 <Image
