@@ -36,24 +36,26 @@ export default function VideoSmallCard({
               userId || ''
             }/${object?.key}`}
             title={object?.key}
-            className="h-40 w-full rounded-lg"
+            className="h-40 w-full rounded-t-lg"
             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           ></iframe>
-          <div className="ml-4 mr-4 flex">
+          <div className="px-4 py-2 flex flex-row items-center gap-4">
             <Image
-              className="mb-auto mr-2 mt-2 h-12 w-12 rounded-full"
+              className="h-12 w-12 rounded-full"
               src={userData.data?.image || ''}
               width={100}
               height={100}
               alt="Logo"
             />
-            <div className="pb-2">
-              <p className="text-m font-medium text-black">{object?.title}</p>
-              <p className="text-sm font-light text-gray-400">
-                {object?.author}
+            <div className="flex flex-col">
+              <p className="text-base font-medium text-black">
+                {object?.title}
               </p>
               <p className="text-sm font-light text-gray-400">
-                {userData.data?.name}
+                Autor: {object?.author}
+              </p>
+              <p className="text-sm font-light text-gray-400">
+                Interpreta: {userData.data?.name}
               </p>
             </div>
           </div>
