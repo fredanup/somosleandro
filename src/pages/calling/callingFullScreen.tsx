@@ -228,6 +228,15 @@ export default function CallingFullScreen({
                 <p className="text-sm font-normal text-gray-500">
                   {applicantChosen.Applicant.email}
                 </p>
+                <div className="flex flex-row cursor-pointer gap-2 mt-4 items-center bg-sky-500 rounded-lg drop-shadow-lg px-2 py-1">
+                  <svg
+                    className="h-4 w-4 cursor-pointer focus:outline-none fill-white"
+                    viewBox="0 0 576 512"
+                  >
+                    <path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z" />
+                  </svg>
+                  <p className="text-white text-base font-medium">Charlar</p>
+                </div>
               </div>
               {/*Documentos*/}
               <DocumentSmallScreen userId={applicantChosen.Applicant.id} />
@@ -240,6 +249,7 @@ export default function CallingFullScreen({
           {applicantChosen === null && (
             <Warning text="No ha seleccionado a ningún postulante" />
           )}
+          {}
         </div>
       </div>
     </>

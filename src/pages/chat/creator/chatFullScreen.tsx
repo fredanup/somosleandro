@@ -10,6 +10,8 @@ import {
 import { trpc } from 'utils/trpc';
 import { type Session } from 'next-auth';
 import Payment from './modal/payment';
+import Spinner from 'pages/utilities/spinner';
+import Warning from 'pages/utilities/warning';
 
 function MessageItem({
   message,
@@ -46,28 +48,39 @@ export default function ChatFullScreen({
 }: {
   selectedCard: IUserCalling | null;
 }) {
+  //Declaración de hook usado para obtener la sesión y de esta manera se sepa quién escribe escribe el texto
   const { data: session, status } = useSession();
+  /**
+   * Declaraciones de hooks de estado
+   */
+  //Hook de estado que controla la apertura del modal de pago
   const [isOpen, setIsOpen] = useState(false);
+  //Hook de estado que almacena el mensaje a enviarse
   const [message, setMessage] = useState('');
-  //Se inicializa la variable roomId de tipo string
+  //Hook de estado que almacena en qué sala se guardará el mensaje. Nota:revisar esto
   const [roomId, setRoomId] = useState('');
-  //Se inicializa la variable isRoomChanged de tipo bool con el valor de false, VERIFICA SI SE HA CAMBIADO DE SALA
+  //Hook de estado que almacena los datos de la sala sobre la que el usuario hizo clic
   const [room, setRoom] = useState<ApplicantRoomType | null>(null);
+  //Hook de estado que almacena el cambio de sala. Se inicializa la variable isRoomChanged de tipo bool con el valor de false, VERIFICA SI SE HA CAMBIADO DE SALA.
   const [isRoomChanged, setIsRoomChanged] = useState(false);
+  //Hook de estado que almacena el id de la convocatoria, es útil para realizar consultas a base de datos
   const [callingId, setCallingId] = useState('');
+  //Hook de estado que controla la visualización de notificaciones en función de la existencia de registros en la base de datos o la selección de alguna card de convocatoria
   const [notification, setNotification] = useState('');
-  //Se llenan con las suscripciones
-
-  //Se inicializa la variable messages que es un arreglo donde cada elemento, tiene el tipo o estructura MessageType que se definió previamente junto con los campos que se mostrarían
+  //Se inicializa la variable messages que es un arreglo donde cada elemento, tiene el tipo o estructura MessageType que se definió previamente junto con los campos que se mostrarán
   const [messages, setMessages] = useState<MessageType[]>([]);
+
+  //Hook de estado usado para almacenar todas las salas de una convocatoria obtenidas desde una consulta a la base de datos. Las salas visualmente se aprecian como perfiles de los postulantes.
   const [rooms, setRooms] = useState<ApplicantRoomType[]>([]);
-  //Hace referencia a un nodo del DOM que es un div, iniciando en null
-  const messageRef = useRef<HTMLDivElement>(null);
-  //Lista a todas las salas creadas
-  const roomsQuery = trpc.room.findMany.useQuery({ callingId });
-  //Lista todos los mensajes de la sala con id roomId, mostrando los campos usuario y sala, RECUERDA! ACÁ roomId es null
-  const messageQuery = trpc.message.findMany.useQuery({ roomId });
+  //Hook de estado usado para almacenar los datos personales de un postulante a partir de la sala en la que se encuentra
   const [user, setUser] = useState<UserType | null>(null);
+  //Hace referencia a un nodo del DOM que es un div, iniciando en null. Es el contenedor (Div html) en el cual se mostrarán los mensajes
+  const messageRef = useRef<HTMLDivElement>(null);
+  //Consulta hecha para obtener todas las salas de una determinada convocatoria. Depende del valor de callingId por lo que debe ser llenado inicialmente con un useEffect
+  const roomsQuery = trpc.room.findManyAccepted.useQuery({ callingId });
+  //Lista todos los mensajes de la sala especificada, mostrando los campos usuario y sala. Depende del valor de roomId por lo que debe ser llenado inicialmente
+  const messageQuery = trpc.message.findMany.useQuery({ roomId });
+
   //Aquí viene lo importante!!
   //ACTUALIZA la sala del usuario con el ID DE ROOM proporcionado y Emite el evento Enter_Room con un objeto asociado que tiene los ID DEL USUARIO E ID DE LA SALA, AHORA ES NULO, YA QUE NO SE ALCANZÓ NINGÚN VALOR, acá solo se inicializa
   const updateRoom = trpc.user.updateRoom.useMutation();
@@ -89,6 +102,8 @@ export default function ChatFullScreen({
   //Otra vez se cargan los usuarios de la sala en users por la suscripción
   //Cuando se ingrese a una sala se cargarán los mensajes de esa sala si es que hay y Emite el evento ENTER_ROOM con la entrada de datos como adjunto Y LA ENTRADA CONTIENE EL ID de la sala
   useEffect(() => {
+    setRooms([]); //Limpieza de las salas de la convocatoria
+
     if (selectedCard) {
       // Verifica si se obtuvieron datos de la consulta
 
@@ -122,9 +137,10 @@ export default function ChatFullScreen({
     }
   }, [messages]);
 
+  //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
   if (status === 'loading') {
-    // Aquí puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el estado de autenticación
-    return null;
+    // Se muestra el spinner mientra se verifica el estado de autenticación
+    return <Spinner text="Cargando sesión" />;
   }
 
   //Retorna un objeto con dos objetos en su interior: 1 objeto que tiene todos los mensajes de la sala y 2 un objeto con todos los usuarios
@@ -345,18 +361,10 @@ export default function ChatFullScreen({
             </div>
           </div>
         ) : (
-          <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white drop-shadow-lg">
-            <p className="text-center text-lg font-black text-gray-500">
-              {notification}
-            </p>
-          </div>
+          <Warning text={notification} />
         )
       ) : (
-        <div className="flex h-full w-full flex-col items-center justify-center rounded-lg bg-white drop-shadow-lg">
-          <p className="text-center text-lg font-black text-black">
-            {notification}
-          </p>
-        </div>
+        <Warning text={notification} />
       )}
     </>
   );

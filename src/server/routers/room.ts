@@ -113,7 +113,7 @@ export const roomRouter = createTRPCRouter({
       ee.emit(Events.ENTER_ROOM, input);
     }),
 
-  findMany: protectedProcedure
+  findManyAccepted: protectedProcedure
     .input(z.object({ callingId: z.string() }))
     .query(async ({ input }) => {
       //Lista a todos los usuarios y lo más importante es que se pueden obtener a TODOS LOS USUARIOS DE LA SALA
@@ -147,7 +147,7 @@ export const roomRouter = createTRPCRouter({
             },
           },
         },
-        where: { callingId: input.callingId },
+        where: { callingId: input.callingId, applyStatus: 'accepted', },
       });
     }),
 

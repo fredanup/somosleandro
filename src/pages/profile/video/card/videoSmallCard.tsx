@@ -18,7 +18,7 @@ export default function VideoSmallCard({
         </svg>
 
         <p className="text-slate-500 justify-content">
-          Ups, parece que aún no has subido ningún documento
+          Ups, parece que aún no has subido ningún vídeo
         </p>
       </div>
     );
