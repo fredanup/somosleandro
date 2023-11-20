@@ -189,6 +189,7 @@ export const applicantRoomRouter = createTRPCRouter({
       }
     }),
     
+    //TIP SÚPER IMPORTANTE: **LOS EVENTOS QUE TIENEN EL MISMO NOMBRE QUE LA MUTACIÓN ES PORQUE SON "SU INSTANCIA" Y TIENEN UNA SUSCRIPCIÓN ASOCIADA**
     applicantChange: publicProcedure.mutation(() => {
       //Emite el evento APPLICANT_CHANGE. Nota falta estudiar el propósito de esto 
       ee.emit(Events.APPLICANT_CHANGE);
@@ -213,7 +214,7 @@ export const applicantRoomRouter = createTRPCRouter({
       onApplicantChange: publicProcedure.subscription(() => {
         return observable<ApplicantRoomType[]>((emit) => {
           const onMessage = async () => {
-            //Lista a las salas que están pendientes de aprobación o que fueron aceptadas en forma descendente de creación
+            //Lista las salas que están pendientes de aprobación o que fueron aceptadas en forma descendente de creación
             const applicantRooms = await prisma.applicantRoom.findMany({
               orderBy: {
                 createdAt: 'desc',

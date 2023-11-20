@@ -34,7 +34,7 @@ export default function CallingFullScreen({
    * Consultas a base de datos
    */
   const utils = trpc.useContext();
-  const applicantChange = trpc.applicantRoom.applicantChange.useMutation();
+
   //Obtiene a los postulantes de una sala a partir del valor del hook de estado callingId obtenido mediante la selección de una card en el componente callingSmallScreen.
   //Dato: Inicialmente el hook de estado callingId es nulo.
   const applicantsQuery = trpc.applicantRoom.getApplicantsByCalling.useQuery({
@@ -72,8 +72,7 @@ export default function CallingFullScreen({
       if (applicantsQuery.data?.length) {
         //Almacena los registros en la variable applicants
         setApplicants(applicantsQuery.data);
-        //Emite el evento de cambio de postulante Nota: Revisar esto--para detectar si se agregó o eliminó a algún postulante mientras se utiliza este componente--
-        applicantChange.mutate();
+
         // Limpia la notificación puesto que si hay datos
         setNotification('');
       } else {
