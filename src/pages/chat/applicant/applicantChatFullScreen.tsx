@@ -1,39 +1,9 @@
-import type { Session } from 'next-auth';
-import { ApplicantRoomType, MessageType } from 'server/routers/room';
+import type { ApplicantRoomType, MessageType } from 'server/routers/room';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { trpc } from 'utils/trpc';
 import Image from 'next/image';
-
-function MessageItem({
-  message,
-  session,
-}: {
-  message: MessageType;
-  session: Session | null;
-}) {
-  return (
-    /**Si el atributo del mensaje con nombre de usuario corresponde al del usuario que se acaba de logear estilizar contenedor de una manera y si no de otra */
-    <div
-      className={`text-md mb-4 w-7/12 rounded-md p-4 text-gray-700 ${
-        message.userName === session?.user?.name
-          ? 'self-end bg-purple-200 text-black'
-          : 'bg-purple-900 text-white'
-      }`}
-    >
-      <div className="flex">
-        <time>
-          {/** Se da formato a la hora y nombre del usuario dentro del contenedor*/}
-          {message.createdAt.toLocaleTimeString('en-AU', {
-            timeStyle: 'short',
-          })}{' '}
-          - {message.userName}
-        </time>
-      </div>
-      {message.text}
-    </div>
-  );
-}
+import Message from 'pages/utilities/message';
 
 export default function ApplicantChatFullScreen({
   selectedCard,
@@ -172,7 +142,7 @@ export default function ApplicantChatFullScreen({
                 {messages?.map((m, index) => {
                   return (
                     /**Se carga el componente con los datos pasados como argumentos, recordando que siempre se mostrarán los últimos mensajes por messageRef*/
-                    <MessageItem
+                    <Message
                       key={index}
                       message={m}
                       session={session || null}

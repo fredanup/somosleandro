@@ -31,6 +31,9 @@ export const userRouter = createTRPCRouter({
         console.log(error);
       }
     }),
+    //Actualiza la sala del usuario de la sesión actual con aquella seleccionada por él mismo de la lista que tiene disponible y emite el evento ENTER_ROOM que contiene la sala 
+    //seleccionada por el usuario y al usuario actual quien seleccionó la sala.
+    //En términos simples: EL usuario actual elige a qué sala entrar y da a conocer a los oyentes la sala a la que entró
   updateRoom: protectedProcedure
     .input(z.object({ roomId: z.string() }))
     .mutation(async ({ input, ctx }) => {

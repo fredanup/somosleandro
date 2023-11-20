@@ -8,40 +8,11 @@ import {
   type UserType,
 } from 'server/routers/room';
 import { trpc } from 'utils/trpc';
-import { type Session } from 'next-auth';
 import Payment from './modal/payment';
 import Spinner from 'pages/utilities/spinner';
 import Warning from 'pages/utilities/warning';
-
-function MessageItem({
-  message,
-  session,
-}: {
-  message: MessageType;
-  session: Session | null;
-}) {
-  return (
-    /**Si el atributo del mensaje con nombre de usuario corresponde al del usuario que se acaba de logear estilizar contenedor de una manera y si no de otra */
-    <div
-      className={`text-md mb-4 w-7/12 rounded-md p-4 text-gray-700 ${
-        message.userName === session?.user?.name
-          ? 'self-end bg-purple-200 text-black'
-          : 'bg-purple-900 text-white'
-      }`}
-    >
-      <div className="flex">
-        <time>
-          {/** Se da formato a la hora y nombre del usuario dentro del contenedor*/}
-          {message.createdAt.toLocaleTimeString('en-AU', {
-            timeStyle: 'short',
-          })}{' '}
-          - {message.userName}
-        </time>
-      </div>
-      {message.text}
-    </div>
-  );
-}
+import Header from 'pages/utilities/header';
+import Message from 'pages/utilities/message';
 
 export default function ChatFullScreen({
   selectedCard,
@@ -55,22 +26,21 @@ export default function ChatFullScreen({
    */
   //Hook de estado que controla la apertura del modal de pago
   const [isOpen, setIsOpen] = useState(false);
-  //Hook de estado que almacena el mensaje a enviarse
+  //Hook de estado utilizado para almacenar el mensaje que el usuario tipea, para enviarse con la suscripción y para almacenarse en base de datos
   const [message, setMessage] = useState('');
-  //Hook de estado que almacena en qué sala se guardará el mensaje. Nota:revisar esto
+  //Hook de estado que almacena la sala sobre la que el usuario hizo clic y ayuda a obtener de la base de datos los mensajes de esa sala
   const [roomId, setRoomId] = useState('');
-  //Hook de estado que almacena los datos de la sala sobre la que el usuario hizo clic
+  //Hook de estado que almacena los datos de la sala sobre la que el usuario hizo clic. Se utiliza para mandar los datos de la sala al componente de pago
   const [room, setRoom] = useState<ApplicantRoomType | null>(null);
-  //Hook de estado que almacena el cambio de sala. Se inicializa la variable isRoomChanged de tipo bool con el valor de false, VERIFICA SI SE HA CAMBIADO DE SALA.
+  //Hook de estado que almacena el cambio de sala. Si cambia de valor se ejecuta el primer hook para cargar los mensajes de esa sala
   const [isRoomChanged, setIsRoomChanged] = useState(false);
-  //Hook de estado que almacena el id de la convocatoria, es útil para realizar consultas a base de datos
+  //Hook de estado que almacena el id de la convocatoria, es útil para realizar consultas a la base de datos
   const [callingId, setCallingId] = useState('');
   //Hook de estado que controla la visualización de notificaciones en función de la existencia de registros en la base de datos o la selección de alguna card de convocatoria
   const [notification, setNotification] = useState('');
-  //Se inicializa la variable messages que es un arreglo donde cada elemento, tiene el tipo o estructura MessageType que se definió previamente junto con los campos que se mostrarán
+  //Hook de estado usado para almacenar todos las mensajes de una sala que pertenece a una convocatoria obtenidas desde una consulta a la base de datos.
   const [messages, setMessages] = useState<MessageType[]>([]);
-
-  //Hook de estado usado para almacenar todas las salas de una convocatoria obtenidas desde una consulta a la base de datos. Las salas visualmente se aprecian como perfiles de los postulantes.
+  //Hook de estado usado para almacenar todas las salas de una convocatoria obtenidas desde una consulta a la base de datos. Las salas visualmente se aprecian como perfiles en una lista de postulantes.
   const [rooms, setRooms] = useState<ApplicantRoomType[]>([]);
   //Hook de estado usado para almacenar los datos personales de un postulante a partir de la sala en la que se encuentra
   const [user, setUser] = useState<UserType | null>(null);
@@ -82,7 +52,7 @@ export default function ChatFullScreen({
   const messageQuery = trpc.message.findMany.useQuery({ roomId });
 
   //Aquí viene lo importante!!
-  //ACTUALIZA la sala del usuario con el ID DE ROOM proporcionado y Emite el evento Enter_Room con un objeto asociado que tiene los ID DEL USUARIO E ID DE LA SALA, AHORA ES NULO, YA QUE NO SE ALCANZÓ NINGÚN VALOR, acá solo se inicializa
+  //EL usuario actual elige a qué sala entrar y da a conocer a los oyentes la sala a la que entró
   const updateRoom = trpc.user.updateRoom.useMutation();
   //Retorna un mensaje con los datos proporcionados por el usuario y Emite el evento SEND_MESSAGE junto con el mensaje retornado, acá solo se inicializa
   const sendMessageMutation = trpc.room.sendMessage.useMutation();
@@ -90,10 +60,14 @@ export default function ChatFullScreen({
   const addMessage = trpc.message.addMessage.useMutation();
   //Emite el evento ENTER_ROOM con la entrada proporcionada. LA ENTRADA DEBE SER UN OBJETO CON EL ID DE LA SALA, acá solo se inicializa
 
+  /**
+   * Funciones de apertura y cierre de modales
+   */
+  //Función de apertura del modal Payment
   const openModal = () => {
     setIsOpen(true);
   };
-
+  //Función de cierre del modal Payment
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -103,11 +77,7 @@ export default function ChatFullScreen({
   //Cuando se ingrese a una sala se cargarán los mensajes de esa sala si es que hay y Emite el evento ENTER_ROOM con la entrada de datos como adjunto Y LA ENTRADA CONTIENE EL ID de la sala
   useEffect(() => {
     setRooms([]); //Limpieza de las salas de la convocatoria
-
     if (selectedCard) {
-      // Verifica si se obtuvieron datos de la consulta
-
-      setNotification('No tiene a ningún postulante en esta convocatoria.');
       setCallingId(selectedCard.id);
       if (roomsQuery.data?.length) {
         setRooms(roomsQuery.data);
@@ -118,6 +88,8 @@ export default function ChatFullScreen({
           setMessages(messageQuery.data);
           // Se emite el evento ENTER_ROOM con la entrada proporcionada que en este caso es el ID de la sala del anterior USEEFFECT que pasó su valor al roomId global
         }
+      } else {
+        setNotification('No tiene a ningún postulante en esta convocatoria.');
       }
     } else {
       setNotification('No ha seleccionado ninguna card.');
@@ -144,13 +116,14 @@ export default function ChatFullScreen({
   }
 
   //Retorna un objeto con dos objetos en su interior: 1 objeto que tiene todos los mensajes de la sala y 2 un objeto con todos los usuarios
+  //En términos simples: Retorna el objeto mensaje enviado mediante el evento y la lista de todos los usuarios
   trpc.room.onSendMessage.useSubscription(undefined, {
     onData(data) {
-      //Busca al usuario de la sesión
+      //Busca al usuario de la sesión actual. Nota revisar
       const user = data.users.find((u) => u.id === session?.user?.id);
-      //Si la sala del usuario es la sala donde está el mensaje
+      //Si la sala del usuario actual es la sala del mensaje
       if (user?.roomId === data.message.applicantRoomId) {
-        //Llenar el buzón de mensajes con el nuevo mensaje agregándole la fecha de creación
+        //Llenar el buzón de mensajes previo con el nuevo mensaje agregándo la fecha de creación. Nota revisar
         setMessages((m) => {
           return [
             ...m,
@@ -171,18 +144,11 @@ export default function ChatFullScreen({
     <>
       {selectedCard ? (
         roomsQuery?.data !== null && roomsQuery?.data?.length !== null ? (
+          //Main container
           <div className="flex h-full w-full flex-row gap-2">
-            {/**Chat container */}
-
+            {/**Chat container or left container*/}
             {user !== null ? (
               <div className="flex w-2/3 flex-col rounded-lg bg-white">
-                {isOpen && (
-                  <Payment
-                    isOpen={isOpen}
-                    onClose={closeModal}
-                    selectedRoom={room}
-                  />
-                )}
                 {/**Header */}
                 <div className="flex flex-row gap-2 rounded-t-lg border-b border-gray-200 bg-white px-4 py-2">
                   <Image
@@ -228,11 +194,11 @@ export default function ChatFullScreen({
                 {/**Chat space */}
                 <div className={`grow overflow-auto bg-gray-200`}>
                   <div className="flex flex-col p-4" ref={messageRef}>
-                    {/**Se muestran los mensajes cargados en el segundo useEffect de acuerdo a la sala proporcionada*/}
+                    {/**Se muestran los mensajes de la sala seleccionada por el usuario actual cargados por el segundo useEffect*/}
                     {messages?.map((m, index) => {
                       return (
-                        /**Se carga el componente con los datos pasados como argumentos, recordando que siempre se mostrarán los últimos mensajes por messageRef*/
-                        <MessageItem
+                        /**Se carga el componente con los datos pasados como argumentos, recordando que siempre se mostrarán primero los últimos mensajes por messageRef*/
+                        <Message
                           key={index}
                           message={m}
                           session={session || null}
@@ -242,7 +208,7 @@ export default function ChatFullScreen({
                   </div>
                 </div>
                 {/**Input text */}
-                <div className="border-b-1 flex w-full flex-row items-center gap-3 rounded-b-lg bg-white p-3">
+                <div className="flex flex-row gap-4 w-full items-center rounded-b-lg bg-white p-3">
                   <svg viewBox="0 0 512 512" className="h-6 w-6 cursor-pointer">
                     <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
                   </svg>
@@ -258,8 +224,8 @@ export default function ChatFullScreen({
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault();
-                        /**Se crea el MENSAJE Y SE EMITE EL EVENTO SEND_MESSAGE QUE TIENE ASOCIADO EL MENSAJE. EL ID DEL CUARTO Y EL ID DEL USUARIO SON OBTENIDOS DEL VALOR FIJADO EN EL PRIMER
-                         * USEEFFECT Y EN EL ROUTER. AL EMITIRSE EL EVENTO SE MANDA EL MENSAJE CREADO Y SE LISTA A TODOS LOS USUARIOS POR LA SUSCRIPCIÓN. ENTONCES ES POSIBLE OBTENERSE EL ULTIMO MENSAJE
+                        /**Se crea el MENSAJE Y SE EMITE EL EVENTO SEND_MESSAGE QUE TIENE ASOCIADO EL MENSAJE. roomId ES OBTENIDO CUANDO EL USUARIO HACE CLIC EN UNA SALA Y EL TEXTO DE LO INGRESADO POR EL USUARIO
+                         * AL EMITIRSE EL EVENTO SE MANDA EL MENSAJE CREADO Y SE LISTA A TODOS LOS USUARIOS POR LA SUSCRIPCIÓN. ENTONCES ES POSIBLE OBTENERSE EL ULTIMO MENSAJE
                          * DE ESTA MANERA SE VA LLENANDO EL BUZÓN DE MENSAJES
                          */
                         sendMessageMutation.mutate({
@@ -267,7 +233,7 @@ export default function ChatFullScreen({
                           text: message,
                         });
                         /**
-                         * SE GUARDA EL MENSAJE EN BASE DE DATOS Y SE LIMPIA LOS DATOS DE MESSAGE
+                         * SE GUARDA EL MENSAJE EN BASE DE DATOS Y SE LIMPIA LOS DATOS DE MESSAGE PARA GUARDAR O ENVIAR OTRO MENSAJE
                          */
                         addMessage.mutate({
                           text: message,
@@ -281,6 +247,13 @@ export default function ChatFullScreen({
                     <path d="M192 0C139 0 96 43 96 96V256c0 53 43 96 96 96s96-43 96-96V96c0-53-43-96-96-96zM64 216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 89.1 66.2 162.7 152 174.4V464H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H216V430.4c85.8-11.7 152-85.3 152-174.4V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 70.7-57.3 128-128 128s-128-57.3-128-128V216z" />
                   </svg>
                 </div>
+                {isOpen && (
+                  <Payment
+                    isOpen={isOpen}
+                    onClose={closeModal}
+                    selectedRoom={room}
+                  />
+                )}
               </div>
             ) : (
               <div className="flex h-full w-full flex-col items-center justify-center bg-white">
@@ -289,30 +262,29 @@ export default function ChatFullScreen({
                 </p>
               </div>
             )}
-
+            {/**Contenedor de salas or right container */}
             <div className="flex w-1/3 flex-col rounded-lg bg-white">
               {/**Header */}
-              <div className="flex w-full flex-row rounded-t-lg bg-green-400 px-4 py-2">
-                <h1 className="text-xl font-semibold text-white">
-                  Postulantes
-                </h1>
-              </div>
+              <Header text="Postulantes" />
               <div className="grow overflow-auto">
-                {/**Profile card */}
+                {/**Room card */}
                 {rooms.map((room, index) => (
                   <div
-                    className="flex w-full cursor-pointer flex-row items-center gap-2 border-b-2 border-gray-100 p-2"
+                    className="flex flex-row gap-2 w-full items-center cursor-pointer border-b-2 border-gray-100 p-2"
                     key={index}
                     onClick={() => {
                       //SE CAMBIA EL VALOR DE LA SALA AL HACER CLIC EN OTRA SALA
                       setRoomId(room.id);
+                      //Se guarda los datos de la sala para el componente Payment
                       setRoom(room);
+                      //Se guarda los datos del postulante de la sala para el estilizado del chat
                       setUser(room.Applicant);
                       //ACTUALIZA la sala del usuario con el ID DE LA SALA proporcionado y Emite el evento Enter_Room que tiene un objeto con los ID DE USUARIO E ID DE SALA
                       //ENTONCES UN USUARIO SÓLO PUEDE ESTAR EN UNA SALA A LA VEZ
                       //LUEGO SE VUELVEN A CARGAR LOS USUARIOS DE LA SALA EN USERS
+                      //El usuario actual elige a qué sala entrar y da a conocer a los oyentes a qué sala entró
                       updateRoom.mutate({ roomId: room.id });
-                      //SE NOTIFICA EL CAMBIO DE SALA SI ES QUE HUBO Y SI HUBO SE CARGAN LOS MENSAJES DE ESA SALA
+                      //SE CAMBIA EL VALOR A isRoomChanged LO CUAL GENERA QUE SE VUELVA A EJECUTAR USEEFFCECT
                       setIsRoomChanged(!isRoomChanged);
                     }}
                   >

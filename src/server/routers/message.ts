@@ -15,7 +15,7 @@ export const messageRouter = createTRPCRouter({
   findOne: publicProcedure.input(z.string()).query(async ({ input }) => {
     return await prisma?.message?.findUnique({ where: { id: input } });
   }),
-  //Crea un mensaje en base de datos
+  //Crea un mensaje en base de datos con el texto ingresado por el usuario en la sala seleccionada por él
   addMessage: protectedProcedure
     .input(
       z.object({

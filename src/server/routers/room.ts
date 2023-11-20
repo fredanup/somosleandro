@@ -76,6 +76,7 @@ export type ApplicantRoomType = Prisma.ApplicantRoomGetPayload<
 >;
 export type UserType = Prisma.UserGetPayload<typeof user>;
 
+//Definición de tipo contiene un mensaje y un arreglo de usuarios
 type MessageOutputType = {
   message: MessageType;
   users: UserType[];
@@ -92,6 +93,7 @@ export const ee = new EventEmitter();
 export const roomRouter = createTRPCRouter({
   //Retorna un mensaje y añade el mensaje el emisor de eventos, LLENA TODOS LOS CAMPOS DE MESSAGE MENOS UPDATE
   //Y emite el evento SEND_MESSAGE con el mensaje creado en "caché"
+  //En términos simples: Se crea un objeto mensaje con el texto ingresado por el usuario y con el id de la sala seleccionado por el usuario y se hace conocer a los oyentes sobre el mensaje creado
   sendMessage: protectedProcedure
     .input(z.object({ text: z.string(), applicantRoomId: z.string() }))
     .mutation(({ ctx, input }) => {
@@ -161,11 +163,12 @@ export const roomRouter = createTRPCRouter({
   //retorna el mensaje redactado por el usuario y la lista de todos los usuarios de la sala
   onSendMessage: publicProcedure.subscription(() => {
     return observable<MessageOutputType>((emit) => {
-      //Retorna el mensaje pasado como argumento junto a la lista de usuarios
+      //Retorna el mensaje pasado como argumento junto a la lista de usuarios. onMessage debe ser del mismo tipo que el argumento del observable, es decir, MessageOutputType
       const onMessage = async (message: MessageType) => {
         //Listar a todos los usuarios
         const users = await prisma.user.findMany();
         // emit data to client
+        // Emite el mensaje recibido mediante el evento y adicionalmente la lista de todos los usuarios
         emit.next({ message, users });
       };
       //Parece que el mensaje que se crea al emitirse el evento SEND_MESSAGE se pasa como argumento de la función onMessage

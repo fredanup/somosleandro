@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { trpc } from 'utils/trpc';
 import type { ApplicantRoomType } from 'server/routers/room';
-import Message from 'pages/utilities/message';
+
 import Spinner from 'pages/utilities/spinner';
+import Advise from 'pages/utilities/advise';
 
 export default function CallingAcceptedSmallScreen({
   onCardSelect,
@@ -49,7 +50,7 @@ export default function CallingAcceptedSmallScreen({
 
   if (!userApplicationsAccepted || userApplicationsAccepted.length === 0) {
     return (
-      <Message
+      <Advise
         text={
           'Que mala suerte, aún no tienes un cliente interesado pero sigue intentando puedes mejorar tu perfil'
         }

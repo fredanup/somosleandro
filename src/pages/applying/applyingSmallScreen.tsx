@@ -3,9 +3,10 @@ import { trpc } from 'utils/trpc';
 import { useEffect, useState } from 'react';
 import { type IUserCalling } from '../../utils/auth';
 import Spinner from 'pages/utilities/spinner';
-import Message from 'pages/utilities/message';
+
 import MusicianDetailedCard from 'pages/utilities/musicianDetailedCard  ';
 import TeacherDetailedCard from 'pages/utilities/teacherDetailedCard';
+import Advise from 'pages/utilities/advise';
 
 export default function ApplyingSmallScreen({
   onCardSelect,
@@ -46,7 +47,7 @@ export default function ApplyingSmallScreen({
 
   if (!userCallings || userCallings.length === 0) {
     return (
-      <Message
+      <Advise
         text={'Ups, parece que aun nadie ha creado alguna convocatoria laboral'}
       />
     );

@@ -5,10 +5,10 @@ import DeleteCallingModal from './modals/deleteCallingModal';
 import TeachingCallingModal from './modals/teachingCallingModal';
 import EventCallingModal from './modals/eventCallingModal';
 import { trpc } from 'utils/trpc';
-import Message from 'pages/utilities/message';
 import Spinner from 'pages/utilities/spinner';
 import MusicianDetailedCard from 'pages/utilities/musicianDetailedCard  ';
 import TeacherDetailedCard from 'pages/utilities/teacherDetailedCard';
+import Advise from 'pages/utilities/advise';
 
 export default function CallingSmallScreen({
   onCardSelect,
@@ -136,7 +136,7 @@ export default function CallingSmallScreen({
         <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
       </svg>
       {!userCallings || userCallings.length === 0 ? (
-        <Message
+        <Advise
           text={
             'Ups, parece que usted no ha creado ninguna convocatoria. Pulse el botón (+) para crear una'
           }
