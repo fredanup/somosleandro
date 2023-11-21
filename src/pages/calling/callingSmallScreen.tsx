@@ -24,8 +24,6 @@ export default function CallingSmallScreen({
   const [editIsOpen, setEditIsOpen] = useState(false);
   //Hook de estado que controla la apertura del modal de eliminación
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
-  //Hook de estado que almacena el id de la convocatoria, es útil para realizar consultas a la base de datos
-  const [callingId, setCallingId] = useState('');
 
   const [applicantNumber, setApplicantNumber] = useState<{
     [key: string]: number;
@@ -55,8 +53,9 @@ export default function CallingSmallScreen({
   const { data: userCallings, isLoading } =
     trpc.calling.getUserCallings.useQuery();
 
-  const { data: applicantsAvailable } =
-    trpc.applicantRoom.getApplicantsByCalling.useQuery({ callingId });
+  //Obtener las postulaciones por convocatoria
+  const applicantsAvailable =
+    trpc.applicantRoom.getApplicantsOfMyCallings.useQuery();
 
   /**
    * Funciones de apertura y cierre de modales
@@ -92,18 +91,23 @@ export default function CallingSmallScreen({
    * Hook de efecto inicial: Cierra inicialmente todas las llaves angulares
    */
   useEffect(() => {
-    const totals: { [key: string]: number } = {};
     // Si es que hay registros en bd, establecer tamaño de arreglo y dar el valor de false a cada registro
     if (userCallings) {
       setExpandedStates(Array(userCallings.length).fill(false));
 
+      const totals: { [key: string]: number } = {};
       userCallings?.forEach((userCalling) => {
-        setCallingId(userCalling.id);
-        totals[userCalling.id.toString()] = applicantsAvailable?.length ?? 0;
+        const matchingApplicant = applicantsAvailable.data?.find(
+          (applicant) => applicant.callingId === userCalling.id,
+        );
+
+        totals[userCalling.id.toString()] =
+          (totals[userCalling.id.toString()] || 0) +
+          (!!matchingApplicant ? 1 : 0);
       });
       setApplicantNumber(totals);
     }
-  }, [applicantsAvailable?.length, userCallings]);
+  }, [applicantsAvailable.data, userCallings]);
 
   /**
    * Función para controlar la apertura y cierre de cada llave angular
@@ -119,6 +123,30 @@ export default function CallingSmallScreen({
       return newStates;
     });
   };
+
+  /**
+   * Retorna las salas de la convocatoria seleccionada por el usuario en callingSmallScreen
+   */
+  //Retorna las salas que están pendientes de aprobación o que fueron aceptadas
+  trpc.applicantRoom.onApplicantChange.useSubscription(undefined, {
+    onData(data) {
+      const totals: { [key: string]: number } = {};
+      data?.forEach((applicant) => {
+        const matchingApplicant = userCallings?.find(
+          (userCalling) => userCalling.id === applicant.callingId,
+        );
+        // Verificar si existe un usuario llamador correspondiente
+        if (matchingApplicant) {
+          totals[matchingApplicant.id.toString()] =
+            (totals[matchingApplicant.id.toString()] || 0) + 1;
+        }
+      });
+      setApplicantNumber(totals);
+    },
+    onError(err) {
+      console.error('Subscription error:', err);
+    },
+  });
 
   /**
    *
@@ -137,7 +165,11 @@ export default function CallingSmallScreen({
   if (isLoading) {
     return <Spinner text="Cargando registros" />;
   }
-
+  //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
+  if (status === 'loading') {
+    // Se muestra el spinner mientra se verifica el estado de autenticación
+    return <Spinner text="Cargando sesión" />;
+  }
   return (
     <>
       {/**Encabezado
@@ -231,7 +263,7 @@ export default function CallingSmallScreen({
               <div className="cursor-pointer flex flex-row items-center gap-4 border-t border-gray-200 pt-2">
                 <div className="flex flex-row gap-2 items-center">
                   <p className="inline-flex items-center rounded bg-pink-500 p-1.5 text-sm font-semibold text-white">
-                    {applicantNumber[entry.id.toString()]}
+                    {applicantNumber[entry.id.toString()] ?? 0}
                   </p>
                   <p className="text-gray-500 text-sm font-medium">
                     Postulantes

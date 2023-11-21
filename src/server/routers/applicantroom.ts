@@ -5,6 +5,55 @@ import { observable } from '@trpc/server/observable';
 import { prisma } from '../prisma';
 
 export const applicantRoomRouter = createTRPCRouter({
+  getApplicantsOfMyCallings: protectedProcedure  
+  .query(async ({ ctx }) => {
+    try {
+      return await ctx.prisma.applicantRoom.findMany({
+        orderBy: {
+          createdAt: 'desc',
+        },
+        where: {
+          applyStatus: {
+            in: ['pending', 'accepted'],
+          }, 
+          Calling: {
+            userId:ctx.session.user.id
+          }       
+        },
+        include: {
+          Applicant: true,
+          Calling: {
+            select: {
+              id: true,
+              applicantNumber: true,
+              deadlineAt: true,
+              instrumentLiked: true,
+              hasInstrument: true,
+              studentAge: true,
+              repertoireLiked: true,
+              atHome: true,
+              contractTime: true,
+              availableSchedule: true,
+              details: true,
+              callingTaken: true,
+              createdAt: true,
+              eventType: true,
+              eventDate: true,
+              eventAddress: true,
+              serviceLength: true,
+              hasSoundEquipment: true,
+              musicianRequired: true,
+              callingType: true,
+              userId: true,
+              User: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
+  }),
   getApplicantsByCalling: protectedProcedure
     .input(z.object({ callingId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -223,6 +272,7 @@ export const applicantRoomRouter = createTRPCRouter({
                 applyStatus: {
                   in: ['pending', 'accepted'],
                 },
+              
               },
               include: {
                 Applicant: true,
