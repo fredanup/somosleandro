@@ -24,6 +24,12 @@ export default function CallingSmallScreen({
   const [editIsOpen, setEditIsOpen] = useState(false);
   //Hook de estado que controla la apertura del modal de eliminación
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
+  //Hook de estado que almacena el id de la convocatoria, es útil para realizar consultas a la base de datos
+  const [callingId, setCallingId] = useState('');
+
+  const [applicantNumber, setApplicantNumber] = useState<{
+    [key: string]: number;
+  }>({});
 
   //Selección de registro en interfaz. Hook pendiente por revisar
   const [selectedCalling, setSelectedCalling] = useState<IEditCalling | null>(
@@ -45,9 +51,12 @@ export default function CallingSmallScreen({
   /**
    * Consultas a base de datos
    */
-  //Obtener los registros de bd
+  //Obtener las convocatorias creadas por el usuario actual
   const { data: userCallings, isLoading } =
     trpc.calling.getUserCallings.useQuery();
+
+  const { data: applicantsAvailable } =
+    trpc.applicantRoom.getApplicantsByCalling.useQuery({ callingId });
 
   /**
    * Funciones de apertura y cierre de modales
@@ -83,12 +92,18 @@ export default function CallingSmallScreen({
    * Hook de efecto inicial: Cierra inicialmente todas las llaves angulares
    */
   useEffect(() => {
+    const totals: { [key: string]: number } = {};
     // Si es que hay registros en bd, establecer tamaño de arreglo y dar el valor de false a cada registro
     if (userCallings) {
       setExpandedStates(Array(userCallings.length).fill(false));
-      //Emite el evento de cambio de postulante Nota: Revisar esto--para detectar si se agregó o eliminó a algún postulante mientras se utiliza este componente--
+
+      userCallings?.forEach((userCalling) => {
+        setCallingId(userCalling.id);
+        totals[userCalling.id.toString()] = applicantsAvailable?.length ?? 0;
+      });
+      setApplicantNumber(totals);
     }
-  }, [userCallings]);
+  }, [applicantsAvailable?.length, userCallings]);
 
   /**
    * Función para controlar la apertura y cierre de cada llave angular
@@ -216,7 +231,7 @@ export default function CallingSmallScreen({
               <div className="cursor-pointer flex flex-row items-center gap-4 border-t border-gray-200 pt-2">
                 <div className="flex flex-row gap-2 items-center">
                   <p className="inline-flex items-center rounded bg-pink-500 p-1.5 text-sm font-semibold text-white">
-                    10
+                    {applicantNumber[entry.id.toString()]}
                   </p>
                   <p className="text-gray-500 text-sm font-medium">
                     Postulantes

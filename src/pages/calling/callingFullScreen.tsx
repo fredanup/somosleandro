@@ -65,6 +65,7 @@ export default function CallingFullScreen({
   useEffect(() => {
     //Función empleada con los argumentos en null con el propósito de limpiar los campos y no se mantegan datos anteriores cuando se esté seleccionando otra card
     handleCardClick(null, null);
+    setApplicants(null);
     if (selectedCard) {
       // Almacena el valor del id de la convocatoria seleccionada a través del componente callingSmallScreen
       setCallingId(selectedCard.id);

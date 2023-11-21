@@ -76,7 +76,8 @@ export default function ChatFullScreen({
   //Otra vez se cargan los usuarios de la sala en users por la suscripción
   //Cuando se ingrese a una sala se cargarán los mensajes de esa sala si es que hay y Emite el evento ENTER_ROOM con la entrada de datos como adjunto Y LA ENTRADA CONTIENE EL ID de la sala
   useEffect(() => {
-    setRooms([]); //Limpieza de las salas de la convocatoria
+    //Limpieza de las salas de la convocatoria
+    setRooms([]);
     if (selectedCard) {
       setCallingId(selectedCard.id);
       if (roomsQuery.data?.length) {
@@ -265,7 +266,7 @@ export default function ChatFullScreen({
             {/**Contenedor de salas or right container */}
             <div className="flex w-1/3 flex-col rounded-lg bg-white">
               {/**Header */}
-              <Header text="Postulantes" />
+              <Header text="Postulantes aprobados" />
               <div className="grow overflow-auto">
                 {/**Room card */}
                 {rooms.map((room, index) => (
