@@ -24,7 +24,7 @@ export default function CallingSmallScreen({
   const [editIsOpen, setEditIsOpen] = useState(false);
   //Hook de estado que controla la apertura del modal de eliminación
   const [deleteIsOpen, setDeleteIsOpen] = useState(false);
-
+  //Hook de estado que almacena la cantidad de postulantes por convocatoria
   const [applicantNumber, setApplicantNumber] = useState<{
     [key: string]: number;
   }>({});
@@ -91,20 +91,24 @@ export default function CallingSmallScreen({
    * Hook de efecto inicial: Cierra inicialmente todas las llaves angulares
    */
   useEffect(() => {
-    // Si es que hay registros en bd, establecer tamaño de arreglo y dar el valor de false a cada registro
+    // Si es que hay registros en bd
     if (userCallings) {
+      //Establece el tamaño del arreglo y da el valor inicial de false a cada registro que controla la llave angular
       setExpandedStates(Array(userCallings.length).fill(false));
-
+      //Se establece una variable temporal para almacenar el tamaño por cada convocatoria el cual se pasará finalmente al hook setApplicantNumber
       const totals: { [key: string]: number } = {};
+      //Se toma a cada registro de las convocatorias de usuario y se compara con cada registro de las postulaciones disponibles para saber qué
+      //postulaciones corresponden a qué convocatorias
       userCallings?.forEach((userCalling) => {
         const matchingApplicant = applicantsAvailable.data?.find(
           (applicant) => applicant.callingId === userCalling.id,
         );
-
+        //De existir una coincidencia se crea un acumulador que cuenta el número de postulaciones por convocatoria, si no hay ninguna coincidencia para una convocatoria se establece el valor 0
         totals[userCalling.id.toString()] =
           (totals[userCalling.id.toString()] || 0) +
           (!!matchingApplicant ? 1 : 0);
       });
+      //Se guarda el total de postulaciones de cada convocatoria
       setApplicantNumber(totals);
     }
   }, [applicantsAvailable.data, userCallings]);
@@ -124,23 +128,24 @@ export default function CallingSmallScreen({
     });
   };
 
-  /**
-   * Retorna las salas de la convocatoria seleccionada por el usuario en callingSmallScreen
-   */
-  //Retorna las salas que están pendientes de aprobación o que fueron aceptadas
   trpc.applicantRoom.onApplicantChange.useSubscription(undefined, {
     onData(data) {
+      //Se establece una variable temporal para almacenar el tamaño por cada convocatoria el cual se pasará finalmente al hook setApplicantNumber
       const totals: { [key: string]: number } = {};
+      //Se toma a cada registro de las convocatorias de usuario y se compara con cada registro de las postulaciones disponibles para saber qué
+      //postulaciones corresponden a qué convocatorias
       data?.forEach((applicant) => {
         const matchingApplicant = userCallings?.find(
           (userCalling) => userCalling.id === applicant.callingId,
         );
         // Verificar si existe un usuario llamador correspondiente
         if (matchingApplicant) {
+          //De existir una coincidencia se crea un acumulador que cuenta el número de postulaciones por convocatoria, si no hay ninguna coincidencia para una convocatoria se establece el valor 0
           totals[matchingApplicant.id.toString()] =
             (totals[matchingApplicant.id.toString()] || 0) + 1;
         }
       });
+      //Se guarda el total de postulaciones de cada convocatoria
       setApplicantNumber(totals);
     },
     onError(err) {
@@ -165,11 +170,7 @@ export default function CallingSmallScreen({
   if (isLoading) {
     return <Spinner text="Cargando registros" />;
   }
-  //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
-  if (status === 'loading') {
-    // Se muestra el spinner mientra se verifica el estado de autenticación
-    return <Spinner text="Cargando sesión" />;
-  }
+
   return (
     <>
       {/**Encabezado

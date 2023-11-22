@@ -240,7 +240,7 @@ export const applicantRoomRouter = createTRPCRouter({
     
     //TIP SÚPER IMPORTANTE: **LOS EVENTOS QUE TIENEN EL MISMO NOMBRE QUE LA MUTACIÓN ES PORQUE SON "SU INSTANCIA" Y TIENEN UNA SUSCRIPCIÓN ASOCIADA**
     applicantChange: publicProcedure.mutation(() => {
-      //Emite el evento APPLICANT_CHANGE. Nota falta estudiar el propósito de esto 
+      //Emite el evento APPLICANT_CHANGE.
       ee.emit(Events.APPLICANT_CHANGE);
     }),
   

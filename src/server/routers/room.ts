@@ -17,6 +17,31 @@ const message = Prisma.validator<Prisma.MessageDefaultArgs>()({
   },
 });
 
+const calling=Prisma.validator<Prisma.CallingDefaultArgs>()({
+  select:{
+    id: true,
+    applicantNumber: true,
+    deadlineAt: true,
+    instrumentLiked: true,
+    hasInstrument: true,
+    studentAge: true,
+    repertoireLiked: true,
+    atHome: true,
+    contractTime: true,
+    availableSchedule: true,
+    details: true,
+    callingTaken: true,
+    eventType: true,
+    eventDate: true,
+    eventAddress: true,
+    serviceLength: true,
+    hasSoundEquipment: true,
+    musicianRequired: true,
+    callingType: true,
+    User: true,
+  }
+});
+
 //Valida qué campos de la tabla usuario se van a poder seleccionar o consultar
 const applicantRoom = Prisma.validator<Prisma.ApplicantRoomDefaultArgs>()({
   select: {
@@ -75,7 +100,7 @@ export type ApplicantRoomType = Prisma.ApplicantRoomGetPayload<
   typeof applicantRoom
 >;
 export type UserType = Prisma.UserGetPayload<typeof user>;
-
+export type CallingType = Prisma.CallingGetPayload<typeof calling>;
 //Definición de tipo contiene un mensaje y un arreglo de usuarios
 type MessageOutputType = {
   message: MessageType;
@@ -86,6 +111,7 @@ export enum Events {
   SEND_MESSAGE = 'SEND_MESSAGE',
   ENTER_ROOM = 'ENTER_ROOM',
   APPLICANT_CHANGE = 'APPLICANT_CHANGE',
+  CALLING_CHANGE='CALLING_CHANGE'
 }
 
 export const ee = new EventEmitter();

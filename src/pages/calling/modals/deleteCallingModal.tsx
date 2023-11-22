@@ -23,6 +23,7 @@ export default function DeleteCallingModal({
 
     if (selectedCalling !== null) {
       deleteCalling.mutate({ id: selectedCalling.id });
+
       onClose();
     }
   };

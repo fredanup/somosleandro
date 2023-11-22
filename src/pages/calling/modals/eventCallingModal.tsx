@@ -70,10 +70,7 @@ const EventCallingModal = ({
   const handleToggle = () => {
     setTieneEquipoSonido(!tieneEquipoSonido);
   };
-  if (status === 'loading') {
-    // Aquí puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el estado de autenticación
-    return <div className="text-center">Cargando...</div>;
-  }
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 

@@ -7,12 +7,14 @@ import Spinner from 'pages/utilities/spinner';
 import MusicianDetailedCard from 'pages/utilities/musicianDetailedCard  ';
 import TeacherDetailedCard from 'pages/utilities/teacherDetailedCard';
 import Advise from 'pages/utilities/advise';
+import type { CallingType } from 'server/routers/room';
 
 export default function ApplyingSmallScreen({
   onCardSelect,
 }: {
   onCardSelect: (data: IUserCalling) => void;
 }) {
+  const [callings, setCallings] = useState<CallingType[]>();
   //Obtener los registros de bd
   const { data: userCallings, isLoading } = trpc.calling.getCallings.useQuery();
   //Control de expansión de llave angular u ojo
@@ -26,6 +28,7 @@ export default function ApplyingSmallScreen({
     // Si es que hay registros en bd, establecer tamaño de arreglo y dar el valor de false a cada registro
     if (userCallings) {
       setExpandedStates(Array(userCallings.length).fill(false));
+      setCallings(userCallings);
     }
   }, [userCallings]);
 
@@ -41,11 +44,21 @@ export default function ApplyingSmallScreen({
     });
   };
 
+  trpc.calling.onCallingChange.useSubscription(undefined, {
+    onData(data) {
+      setCallings([]);
+      setCallings(data);
+    },
+    onError(err) {
+      console.error('Subscription error:', err);
+    },
+  });
+
   if (isLoading) {
     return <Spinner text="Cargando registro" />;
   }
 
-  if (!userCallings || userCallings.length === 0) {
+  if (!callings || callings.length === 0) {
     return (
       <Advise
         text={'Ups, parece que aun nadie ha creado alguna convocatoria laboral'}
@@ -60,7 +73,7 @@ export default function ApplyingSmallScreen({
   return (
     /**Card*/
     <>
-      {userCallings.map((entry, index) => (
+      {callings.map((entry, index) => (
         //Contenedor principal
         <div
           key={index}

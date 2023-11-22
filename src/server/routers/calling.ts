@@ -1,7 +1,10 @@
 import { z } from 'zod';
-
 import { callingSchema, editCallingSchema } from '../../utils/auth';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
+import type { CallingType} from './room';
+import { Events, ee } from './room';
+import { observable } from '@trpc/server/observable';
+import { prisma } from '../prisma';
 
 export const callingRouter = createTRPCRouter({
   createCalling: protectedProcedure
@@ -31,6 +34,7 @@ export const callingRouter = createTRPCRouter({
             callingType: input.callingType,
           },
         });
+        ee.emit(Events.CALLING_CHANGE);
       } catch (error) {
         console.log(error);
       }
@@ -134,6 +138,7 @@ export const callingRouter = createTRPCRouter({
             callingType: input.callingType,
           },
         });
+        ee.emit(Events.CALLING_CHANGE);
       } catch (error) {
         console.log(error);
       }
@@ -146,10 +151,18 @@ export const callingRouter = createTRPCRouter({
         await ctx.prisma.calling.delete({
           where: { id: input.id },
         });
+        ee.emit(Events.CALLING_CHANGE);
       } catch (error) {
         console.log(error);
       }
     }),
+
+  
+  //TIP SÚPER IMPORTANTE: **LOS EVENTOS QUE TIENEN EL MISMO NOMBRE QUE LA MUTACIÓN ES PORQUE SON "SU INSTANCIA" Y TIENEN UNA SUSCRIPCIÓN ASOCIADA**
+  callingChange: publicProcedure.mutation(() => {
+    //Emite el evento CALLING_CHANGE.
+    ee.emit(Events.CALLING_CHANGE);
+  }),
 
   findOne: protectedProcedure
     .input(z.string())
@@ -159,4 +172,48 @@ export const callingRouter = createTRPCRouter({
       });
       return singleCalling;
     }),
+
+    onCallingChange: publicProcedure.subscription(() => {
+      return observable<CallingType[]>((emit) => {
+        const onCalling = async () => {
+          //Lista las salas que están pendientes de aprobación o que fueron aceptadas en forma descendente de creación
+          const callings = await prisma.calling.findMany({
+            select: {
+              id: true,
+              applicantNumber: true,
+              deadlineAt: true,
+              instrumentLiked: true,
+              hasInstrument: true,
+              studentAge: true,
+              repertoireLiked: true,
+              atHome: true,
+              contractTime: true,
+              availableSchedule: true,
+              details: true,
+              callingTaken: true,
+              eventType: true,
+              eventDate: true,
+              eventAddress: true,
+              serviceLength: true,
+              hasSoundEquipment: true,
+              musicianRequired: true,
+              callingType: true,
+              User: true,
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
+          });
+          // emit data to client
+          emit.next(callings);
+        };
+        // eslint-disable-next-line @typescript-eslint/no-misused-promises
+        ee.on(Events.CALLING_CHANGE, onCalling);
+        return () => {
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          ee.off(Events.CALLING_CHANGE, onCalling);
+        };
+      });
+    }),
+
 });
