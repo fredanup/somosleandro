@@ -102,6 +102,56 @@ export const applicantRoomRouter = createTRPCRouter({
         console.log('error', error);
       }
     }),
+    getOnlyMyApplicants: protectedProcedure  
+    .query(async ({ ctx }) => {
+      try {
+        return await ctx.prisma.applicantRoom.findMany({
+          select: {        
+            id:true,    
+            applicantId:true,
+            callingId:true,          
+            applyStatus:true,   
+            Applicant:true,        
+            createdAt:true,
+            Calling:{
+              select: {
+                id:true,
+                applicantNumber:true,
+                deadlineAt:true,
+                instrumentLiked:true,
+                hasInstrument:true,
+                studentAge:true,
+                repertoireLiked:true,
+                atHome:true,
+                contractTime:true,
+                availableSchedule:true,
+                details:true,
+                callingTaken:true,
+                createdAt:true,
+                eventType:true,
+                eventDate:true,
+                eventAddress:true,
+                serviceLength:true,
+                hasSoundEquipment:true,
+                musicianRequired:true,
+                callingType:true,   
+                userId:true,
+                User:true,
+              }
+            }     
+          },          
+          orderBy: {
+            createdAt: "desc",
+          },
+          where:{
+            applicantId:ctx.session.user.id,          
+          },
+  
+        });
+      } catch (error) {
+        console.log("error", error);
+      }
+    }),
   getUserApplicationsAccepted: protectedProcedure.query(async ({ ctx }) => {
     try {
       return await ctx.prisma.applicantRoom.findMany({

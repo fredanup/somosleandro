@@ -14,14 +14,35 @@ export default function ApplyingSmallScreen({
 }: {
   onCardSelect: (data: IUserCalling) => void;
 }) {
+  const utils = trpc.useContext();
   const [callings, setCallings] = useState<CallingType[]>();
   //Obtener los registros de bd
   const { data: userCallings, isLoading } = trpc.calling.getCallings.useQuery();
+  //Consulta a la base de datos por las convocatorias a las cuales el usuario de la sesión actual se ha presentado
+  const myApplicants = trpc.applicantRoom.getOnlyMyApplicants.useQuery();
+  //Procedimiento que crea una nueva postulación, el argumento está pendiente
+  const createApplicant = trpc.applicantRoom.createApplicant.useMutation({
+    onSettled: async () => {
+      await utils.applicantRoom.getApplicantsByCalling.invalidate();
+    },
+  });
+
+  //Procedimiento que elimina una nueva postulación, el argumento está pendiente
+  const deleteStakeholder = trpc.applicantRoom.deleteApplicant.useMutation({
+    onSettled: async () => {
+      await utils.applicantRoom.getApplicantsByCalling.invalidate();
+    },
+  });
+
   //Control de expansión de llave angular u ojo
   const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
   //Constantes para la comparación con registros de la base de datos
   const musico = 'Músico(s) para evento';
   const docente = 'Clases de música';
+
+  const [callingStatus, setCallingStatus] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   //Efecto para cerrar inicialmente todas las llaves angulares
   useEffect(() => {
@@ -29,8 +50,19 @@ export default function ApplyingSmallScreen({
     if (userCallings) {
       setExpandedStates(Array(userCallings.length).fill(false));
       setCallings(userCallings);
+      // Crear un objeto para almacenar los pares de valores
+      const pairs: { [key: string]: boolean } = {};
+
+      userCallings?.forEach((calling) => {
+        const matchingApplicant = myApplicants.data?.find(
+          (applicant) => applicant.callingId === calling.id,
+        );
+        pairs[calling.id.toString()] = !!matchingApplicant;
+      });
+
+      setCallingStatus(pairs);
     }
-  }, [userCallings]);
+  }, [myApplicants.data, userCallings]);
 
   //Función para controlar la apertura y cierre de cada llave angular
   const handleToggle = (index: number) => {
@@ -54,6 +86,42 @@ export default function ApplyingSmallScreen({
     },
   });
 
+  const handleCardClick = (data: IUserCalling) => {
+    onCardSelect(data);
+  };
+
+  const handleSubmit = (calling: IUserCalling) => {
+    if (callingStatus[calling.id.toString()]) {
+      // Usuario ya ha postulado, realizar acción para cancelar
+      deleteStakeholder.mutate(
+        { callingId: calling.id },
+        {
+          onSuccess: () => {
+            // Actualizar el estado local y el texto del botón
+            setCallingStatus((prevStatus) => ({
+              ...prevStatus,
+              [calling.id.toString()]: false,
+            }));
+          },
+        },
+      );
+    } else {
+      // Usuario no ha postulado, realizar acción para postular
+      createApplicant.mutate(
+        { callingId: calling.id },
+        {
+          onSuccess: () => {
+            // Actualizar el estado local y el texto del botón
+            setCallingStatus((prevStatus) => ({
+              ...prevStatus,
+              [calling.id.toString()]: true,
+            }));
+          },
+        },
+      );
+    }
+  };
+
   if (isLoading) {
     return <Spinner text="Cargando registro" />;
   }
@@ -65,11 +133,6 @@ export default function ApplyingSmallScreen({
       />
     );
   }
-
-  const handleCardClick = (data: IUserCalling) => {
-    onCardSelect(data);
-  };
-
   return (
     /**Card*/
     <>
@@ -140,14 +203,26 @@ export default function ApplyingSmallScreen({
                 </p>
               </div>
             </div>
-            <div className="flex flex-row gap-2 items-center bg-sky-500 rounded-lg drop-shadow-lg px-2 py-1">
+            <div
+              className={`flex flex-row gap-2 items-center rounded-lg drop-shadow-lg px-2 py-1 ${
+                callingStatus[entry.id.toString()]
+                  ? 'bg-gray-400'
+                  : 'bg-sky-500 hover:bg-sky-400 active:bg-sky-300'
+              }`}
+              onClick={() => {
+                handleSubmit(entry);
+              }}
+            >
               <svg
                 className="h-4 w-4 cursor-pointer focus:outline-none fill-white"
                 viewBox="0 0 576 512"
               >
                 <path d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z" />
               </svg>
-              <p className="text-white text-sm font-medium">Postular</p>
+              <p className="text-white text-sm font-medium">
+                {' '}
+                {callingStatus[entry.id.toString()] ? 'Cancelar' : 'Postular'}
+              </p>
             </div>
           </div>
 
