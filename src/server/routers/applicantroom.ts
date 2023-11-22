@@ -5,7 +5,7 @@ import { observable } from '@trpc/server/observable';
 import { prisma } from '../prisma';
 
 export const applicantRoomRouter = createTRPCRouter({
-  getApplicantsOfMyCallings: protectedProcedure  
+  getApplicantsAvailable: protectedProcedure  
   .query(async ({ ctx }) => {
     try {
       return await ctx.prisma.applicantRoom.findMany({
@@ -15,10 +15,7 @@ export const applicantRoomRouter = createTRPCRouter({
         where: {
           applyStatus: {
             in: ['pending', 'accepted'],
-          }, 
-          Calling: {
-            userId:ctx.session.user.id
-          }       
+          }    
         },
         include: {
           Applicant: true,

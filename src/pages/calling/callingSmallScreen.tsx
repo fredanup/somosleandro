@@ -55,7 +55,7 @@ export default function CallingSmallScreen({
 
   //Obtener las postulaciones por convocatoria
   const applicantsAvailable =
-    trpc.applicantRoom.getApplicantsOfMyCallings.useQuery();
+    trpc.applicantRoom.getApplicantsAvailable.useQuery();
 
   /**
    * Funciones de apertura y cierre de modales
@@ -97,16 +97,18 @@ export default function CallingSmallScreen({
       setExpandedStates(Array(userCallings.length).fill(false));
       //Se establece una variable temporal para almacenar el tamaño por cada convocatoria el cual se pasará finalmente al hook setApplicantNumber
       const totals: { [key: string]: number } = {};
-      //Se toma a cada registro de las convocatorias de usuario y se compara con cada registro de las postulaciones disponibles para saber qué
+      //Se toma a cada registro de las postulaciones y se compara con cada registro de las convocatorias del usuario actual para saber qué
       //postulaciones corresponden a qué convocatorias
-      userCallings?.forEach((userCalling) => {
-        const matchingApplicant = applicantsAvailable.data?.find(
-          (applicant) => applicant.callingId === userCalling.id,
+      applicantsAvailable.data?.forEach((applicant) => {
+        const matchingApplicant = userCallings?.find(
+          (userCalling) => userCalling.id === applicant.callingId,
         );
-        //De existir una coincidencia se crea un acumulador que cuenta el número de postulaciones por convocatoria, si no hay ninguna coincidencia para una convocatoria se establece el valor 0
-        totals[userCalling.id.toString()] =
-          (totals[userCalling.id.toString()] || 0) +
-          (!!matchingApplicant ? 1 : 0);
+        // Verificar si existe un usuario llamador correspondiente
+        if (matchingApplicant) {
+          //De existir una coincidencia se crea un acumulador que cuenta el número de postulaciones por convocatoria, si no hay ninguna coincidencia para una convocatoria se establece el valor 0
+          totals[matchingApplicant.id.toString()] =
+            (totals[matchingApplicant.id.toString()] || 0) + 1;
+        }
       });
       //Se guarda el total de postulaciones de cada convocatoria
       setApplicantNumber(totals);
@@ -132,7 +134,7 @@ export default function CallingSmallScreen({
     onData(data) {
       //Se establece una variable temporal para almacenar el tamaño por cada convocatoria el cual se pasará finalmente al hook setApplicantNumber
       const totals: { [key: string]: number } = {};
-      //Se toma a cada registro de las convocatorias de usuario y se compara con cada registro de las postulaciones disponibles para saber qué
+      //Se toma a cada registro de las postulaciones y se compara con cada registro de las convocatorias del usuario actual para saber qué
       //postulaciones corresponden a qué convocatorias
       data?.forEach((applicant) => {
         const matchingApplicant = userCallings?.find(
