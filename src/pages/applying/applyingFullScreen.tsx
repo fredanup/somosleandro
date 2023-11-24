@@ -33,57 +33,55 @@ export default function ApplyingFullScreen({
 
   return (
     <>
-      <div className="flex h-full w-full flex-row gap-2 bg-slate-100">
-        <div className="w-full rounded-lg bg-white drop-shadow-lg">
-          {/**Header */}
-          <Header text="Perfil del cliente" />
-          {/**Body */}
-          <div className="flex flex-col gap-4 p-6">
-            {/**User profile */}
-            <div className="flex flex-row gap-4">
-              {/**User photo */}
-              <div className="bg-white drop-shadow-lg rounded-lg p-4 flex flex-col justify-center">
-                <Image
-                  src={selectedCard.User.image || '/avatar.jpg'}
-                  width={100}
-                  height={100}
-                  alt="Logo"
-                />
+      <div className="flex flex-col h-full w-full rounded-lg drop-shadow-lg">
+        {/**Header */}
+        <Header text="Perfil del cliente" />
+        {/**Body */}
+        <div className="flex flex-col gap-4 p-6 h-full grow overflow-auto rounded-b-lg bg-white">
+          {/**User profile */}
+          <div className="flex flex-row gap-4">
+            {/**User photo */}
+            <div className="bg-white drop-shadow-lg rounded-lg p-4 flex flex-col justify-center">
+              <Image
+                src={selectedCard.User.image || '/avatar.jpg'}
+                width={100}
+                height={100}
+                alt="Logo"
+              />
+            </div>
+            {/**User details */}
+            <div className="flex flex-col gap-4">
+              {/**Header and button */}
+              <div className="flex flex-row gap-4">
+                <h1 className="text-gray-950 text-lg font-semibold">
+                  Datos del cliente
+                </h1>
               </div>
-              {/**User details */}
-              <div className="flex flex-col gap-4">
-                {/**Header and button */}
-                <div className="flex flex-row gap-4">
-                  <h1 className="text-gray-950 text-lg font-semibold">
-                    Datos del cliente
-                  </h1>
-                </div>
-                {/**Client data */}
-                <div className="text-gray-500 text-base font-normal">
-                  <p>
-                    Datos: {userData.data?.name} {userData.data?.lastName}
-                  </p>
-                  <p>Correo: {userData.data?.email}</p>
-                  <p>Dni: -----</p>
-                  <p>Teléfono: {userData.data?.phone}</p>
-                  <p>Dirección: {userData.data?.address}</p>
-                </div>
+              {/**Client data */}
+              <div className="text-gray-500 text-base font-normal">
+                <p>
+                  Datos: {userData.data?.name} {userData.data?.lastName}
+                </p>
+                <p>Correo: {userData.data?.email}</p>
+                <p>Dni: -----</p>
+                <p>Teléfono: {userData.data?.phone}</p>
+                <p>Dirección: {userData.data?.address}</p>
               </div>
             </div>
-            {/**Datos de la convocatoria */}
-            <div className="flex flex-col">
-              <h1 className="text-gray-950 text-lg font-semibold">
-                Requiere: {selectedCard.callingType}
-              </h1>
-              {/**Descripción caso de convocatoria de música */}
-              {selectedCard.callingType === 'Músico(s) para evento' && (
-                <MusicianDetailedCard entry={selectedCard} />
-              )}
-              {/**Caso se convocatoria de docente */}
-              {selectedCard.callingType === 'Clases de música' && (
-                <TeacherDetailedCard entry={selectedCard} />
-              )}
-            </div>
+          </div>
+          {/**Datos de la convocatoria */}
+          <div className="flex flex-col">
+            <h1 className="text-gray-950 text-lg font-semibold">
+              Requiere: {selectedCard.callingType}
+            </h1>
+            {/**Descripción caso de convocatoria de música */}
+            {selectedCard.callingType === 'Músico(s) para evento' && (
+              <MusicianDetailedCard entry={selectedCard} />
+            )}
+            {/**Caso se convocatoria de docente */}
+            {selectedCard.callingType === 'Clases de música' && (
+              <TeacherDetailedCard entry={selectedCard} />
+            )}
           </div>
         </div>
       </div>

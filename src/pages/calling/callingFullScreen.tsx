@@ -133,124 +133,120 @@ export default function CallingFullScreen({
 
   return (
     <>
-      {/**Contenedor general */}
-      <div className="flex flex-row h-full w-full gap-2">
-        {/**Contenedor de postulantes */}
-        <div className="flex flex-col w-1/3 rounded-lg ">
-          {/**Header */}
-          <Header text="Postulantes" />
-          {/**Body */}
-          <div className="grow overflow-auto rounded-b-lg bg-white">
-            {selectedCard ? (
-              applicants !== null && applicants.length > 0 ? (
-                applicants?.map((entry, index) => (
-                  //Card de postulante
-                  <div
-                    className={`flex flex-row cursor-pointer gap-4 p-6 rounded-lg drop-shadow-lg items-center m-4 ${
-                      entry.applyStatus === 'accepted'
-                        ? selectedCardIndex === index
-                          ? 'bg-sky-100'
-                          : ' bg-white' // Cambia el color si es la tarjeta seleccionada
-                        : 'bg-yellow-200'
-                    }`} // Aplicar la clase si la tarjeta está aprobada
-                    key={index}
-                    onClick={() => handleCardClick(entry, index)}
-                  >
-                    {/**Foto del postulante*/}
-                    <Image
-                      className="h-14 w-14 rounded-full"
-                      src={entry.Applicant.image || '/avatar.png'}
-                      width={100}
-                      height={100}
-                      alt="Logo"
-                    />
-                    {/**Datos del postulante*/}
-                    <div className="flex flex-col">
-                      <p className="text-base font-medium text-black">
-                        {entry.Applicant.name} {entry.Applicant.lastName}
-                      </p>
-                      <p className="text-sm font-light text-gray-500">
-                        Fecha: {entry.createdAt.toLocaleDateString()}
-                      </p>
-                      <p className="text-sm font-light text-gray-500">
-                        Hora: {entry.createdAt.toLocaleTimeString()}
-                      </p>
-                    </div>
-                    {/**Botones de edición y aceptación */}
-                    <div className="ml-auto flex flex-row gap-4">
-                      <svg
-                        viewBox="0 0 512 512"
-                        className={`h-6 w-6 cursor-pointer fill-black ${
-                          entry.applyStatus === 'accepted' ? 'hidden' : 'block'
-                        }`}
-                        onClick={() => acceptAppliantStatus(entry.id)}
-                      >
-                        <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
-                      </svg>
-                      <svg
-                        viewBox="0 0 512 512"
-                        className="h-6 w-6 cursor-pointer fill-red-500"
-                        onClick={() => rejectAppliantStatus(entry.id)}
-                      >
-                        <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
-                      </svg>
-                    </div>
+      {/**Contenedor de postulantes */}
+      <div className="h-full flex flex-col w-1/3 rounded-lg">
+        {/**Header */}
+        <Header text="Postulantes" />
+        {/**Body */}
+        <div className="grow overflow-auto rounded-b-lg bg-white">
+          {selectedCard ? (
+            applicants !== null && applicants.length > 0 ? (
+              applicants?.map((entry, index) => (
+                //Card de postulante
+                <div
+                  className={`flex flex-row cursor-pointer gap-4 p-6 rounded-lg drop-shadow-lg items-center m-4 ${
+                    entry.applyStatus === 'accepted'
+                      ? selectedCardIndex === index
+                        ? 'bg-sky-100'
+                        : ' bg-white' // Cambia el color si es la tarjeta seleccionada
+                      : 'bg-yellow-200'
+                  }`} // Aplicar la clase si la tarjeta está aprobada
+                  key={index}
+                  onClick={() => handleCardClick(entry, index)}
+                >
+                  {/**Foto del postulante*/}
+                  <Image
+                    className="h-14 w-14 rounded-full"
+                    src={entry.Applicant.image || '/avatar.png'}
+                    width={100}
+                    height={100}
+                    alt="Logo"
+                  />
+                  {/**Datos del postulante*/}
+                  <div className="flex flex-col">
+                    <p className="text-base font-medium text-black">
+                      {entry.Applicant.name} {entry.Applicant.lastName}
+                    </p>
+                    <p className="text-sm font-light text-gray-500">
+                      Fecha: {entry.createdAt.toLocaleDateString()}
+                    </p>
+                    <p className="text-sm font-light text-gray-500">
+                      Hora: {entry.createdAt.toLocaleTimeString()}
+                    </p>
                   </div>
-                ))
-              ) : (
-                <Warning text={notification} />
-              )
+                  {/**Botones de edición y aceptación */}
+                  <div className="ml-auto flex flex-row gap-4">
+                    <svg
+                      viewBox="0 0 512 512"
+                      className={`h-6 w-6 cursor-pointer fill-black ${
+                        entry.applyStatus === 'accepted' ? 'hidden' : 'block'
+                      }`}
+                      onClick={() => acceptAppliantStatus(entry.id)}
+                    >
+                      <path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                    </svg>
+                    <svg
+                      viewBox="0 0 512 512"
+                      className="h-6 w-6 cursor-pointer fill-red-500"
+                      onClick={() => rejectAppliantStatus(entry.id)}
+                    >
+                      <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                    </svg>
+                  </div>
+                </div>
+              ))
             ) : (
               <Warning text={notification} />
-            )}
-          </div>
+            )
+          ) : (
+            <Warning text={notification} />
+          )}
         </div>
+      </div>
 
-        {/**Contenedor de visualización de perfil de estudiante */}
-        <div className="flex h-full w-2/3 flex-col rounded-lg bg-white">
-          {/**Header */}
-          <Header text="Perfil del postulante" />
-          {applicantChosen !== null && (
-            //Body
-            <div className="flex flex-col gap-4 p-6">
-              {/*Foto y datos personales*/}
-              <div className="flex flex-col items-center p-9">
-                <Image
-                  className="rounded-full"
-                  src={applicantChosen.Applicant.image || ''}
-                  width={95}
-                  height={100}
-                  alt="Logo"
-                />
-                <p className="text-m text-base font-medium text-gray-700">
-                  {applicantChosen.Applicant.name}
-                </p>
-                <p className="text-sm font-normal text-gray-500">
-                  {applicantChosen.Applicant.email}
-                </p>
-                <div className="flex flex-row cursor-pointer gap-2 mt-4 items-center bg-sky-500 rounded-lg drop-shadow-lg px-2 py-1">
-                  <svg
-                    className="h-4 w-4 cursor-pointer focus:outline-none fill-white"
-                    viewBox="0 0 576 512"
-                  >
-                    <path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z" />
-                  </svg>
-                  <p className="text-white text-base font-medium">Charlar</p>
-                </div>
+      {/**Contenedor de visualización de perfil de estudiante */}
+      <div className="flex h-full w-2/3 flex-col rounded-lg">
+        {/**Header */}
+        <Header text="Perfil del postulante" />
+        {applicantChosen !== null && (
+          //Body
+          <div className="flex flex-col gap-4 p-6 grow overflow-auto rounded-b-lg bg-white">
+            {/*Foto y datos personales*/}
+            <div className="flex flex-col items-center p-9">
+              <Image
+                className="rounded-full"
+                src={applicantChosen.Applicant.image || ''}
+                width={95}
+                height={100}
+                alt="Logo"
+              />
+              <p className="text-m text-base font-medium text-gray-700">
+                {applicantChosen.Applicant.name}
+              </p>
+              <p className="text-sm font-normal text-gray-500">
+                {applicantChosen.Applicant.email}
+              </p>
+              <div className="flex flex-row cursor-pointer gap-2 mt-4 items-center bg-sky-500 rounded-lg drop-shadow-lg px-2 py-1">
+                <svg
+                  className="h-4 w-4 cursor-pointer focus:outline-none fill-white"
+                  viewBox="0 0 576 512"
+                >
+                  <path d="M160 368c26.5 0 48 21.5 48 48v16l72.5-54.4c8.3-6.2 18.4-9.6 28.8-9.6H448c8.8 0 16-7.2 16-16V64c0-8.8-7.2-16-16-16H64c-8.8 0-16 7.2-16 16V352c0 8.8 7.2 16 16 16h96zm48 124l-.2 .2-5.1 3.8-17.1 12.8c-4.8 3.6-11.3 4.2-16.8 1.5s-8.8-8.2-8.8-14.3V474.7v-6.4V468v-4V416H112 64c-35.3 0-64-28.7-64-64V64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H309.3L208 492z" />
+                </svg>
+                <p className="text-white text-base font-medium">Charlar</p>
               </div>
-              {/*Documentos*/}
-              <DocumentSmallScreen userId={applicantChosen.Applicant.id} />
-              {/*Vídeo*/}
-              <VideoSmallScreen userId={applicantChosen.Applicant.id} />
-              {/**Calificaciones */}
-              <Rating />
             </div>
-          )}
-          {applicantChosen === null && (
-            <Warning text="No ha seleccionado a ningún postulante" />
-          )}
-          {}
-        </div>
+            {/*Documentos*/}
+            <DocumentSmallScreen userId={applicantChosen.Applicant.id} />
+            {/*Vídeo*/}
+            <VideoSmallScreen userId={applicantChosen.Applicant.id} />
+            {/**Calificaciones */}
+            <Rating />
+          </div>
+        )}
+        {applicantChosen === null && (
+          <Warning text="No ha seleccionado a ningún postulante" />
+        )}
       </div>
     </>
   );

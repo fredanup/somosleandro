@@ -146,10 +146,10 @@ export default function ChatFullScreen({
       {selectedCard ? (
         roomsQuery?.data !== null && roomsQuery?.data?.length !== null ? (
           //Main container
-          <div className="flex h-full w-full flex-row gap-2">
+          <div className="flex h-full w-full flex-row gap-2 ">
             {/**Chat container or left container*/}
             {user !== null ? (
-              <div className="flex w-2/3 flex-col rounded-lg bg-white">
+              <div className="flex w-2/3 flex-col rounded-lg bg-white h-full grow overflow-auto rounded-b-lg">
                 {/**Header */}
                 <div className="flex flex-row gap-2 rounded-t-lg border-b border-gray-200 bg-white px-4 py-2">
                   <Image
@@ -264,7 +264,7 @@ export default function ChatFullScreen({
               </div>
             )}
             {/**Contenedor de salas or right container */}
-            <div className="flex w-1/3 flex-col rounded-lg bg-white">
+            <div className="flex w-1/3 flex-col rounded-lg bg-white h-full grow overflow-auto rounded-b-lg">
               {/**Header */}
               <Header text="Postulantes aprobados" />
               <div className="grow overflow-auto">

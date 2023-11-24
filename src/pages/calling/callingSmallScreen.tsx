@@ -174,8 +174,8 @@ export default function CallingSmallScreen({
   }
 
   return (
-    <>
-      {/**Encabezado
+    <div>
+      {/**
        * Botón para agregar nueva convocatoria
        */}
       <svg
@@ -337,6 +337,6 @@ export default function CallingSmallScreen({
       )}
       {/**Ventana modal que se abre cuando se hace clic en agregar */}
       <ChooseCallingModal isOpen={isOpen} onClose={closeModal} />
-    </>
+    </div>
   );
 }
