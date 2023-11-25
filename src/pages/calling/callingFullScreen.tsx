@@ -30,6 +30,7 @@ export default function CallingFullScreen({
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
     null,
   );
+  const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
   /**
    * Consultas a base de datos
    */
@@ -62,6 +63,18 @@ export default function CallingFullScreen({
   /**
    * Hook de efecto inicial
    */
+  useEffect(() => {
+    const handleResize = () => {
+      setAnchoPantalla(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Limpia el event listener cuando el componente se desmonta
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   useEffect(() => {
     //Función empleada con los argumentos en null con el propósito de limpiar los campos y no se mantegan datos anteriores cuando se esté seleccionando otra card
     handleCardClick(null, null);
@@ -134,7 +147,7 @@ export default function CallingFullScreen({
   return (
     <>
       {/**Contenedor de postulantes */}
-      <div className="h-full flex flex-col w-1/3 rounded-lg">
+      <div className="h-screen flex flex-col w-full md:w-1/3 rounded-lg">
         {/**Header */}
         <Header text="Postulantes" />
         {/**Body */}
@@ -205,7 +218,13 @@ export default function CallingFullScreen({
       </div>
 
       {/**Contenedor de visualización de perfil de estudiante */}
-      <div className="flex h-full w-2/3 flex-col rounded-lg">
+      <div
+        className={`${
+          anchoPantalla <= 768 && applicantChosen === null
+            ? 'hidden'
+            : 'flex h-screen w-full md:w-2/3 flex-col rounded-lg'
+        }`}
+      >
         {/**Header */}
         <Header text="Perfil del postulante" />
         {applicantChosen !== null && (
