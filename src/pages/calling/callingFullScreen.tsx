@@ -30,6 +30,7 @@ export default function CallingFullScreen({
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
     null,
   );
+  const [noVisible, setNotVisible] = useState(false);
   const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
   /**
    * Consultas a base de datos
@@ -77,8 +78,9 @@ export default function CallingFullScreen({
   }, []);
   useEffect(() => {
     //Función empleada con los argumentos en null con el propósito de limpiar los campos y no se mantegan datos anteriores cuando se esté seleccionando otra card
-    handleCardClick(null, null);
+    handleCardClick(null, null, false);
     setApplicants(null);
+
     if (selectedCard) {
       // Almacena el valor del id de la convocatoria seleccionada a través del componente callingSmallScreen
       setCallingId(selectedCard.id);
@@ -139,15 +141,23 @@ export default function CallingFullScreen({
   const handleCardClick = (
     data: ApplicantRoomType | null,
     index: number | null,
+    show: boolean,
   ) => {
     setAppliantChosen(data);
     setSelectedCardIndex(index);
+    setNotVisible(show);
   };
 
   return (
     <>
       {/**Contenedor de postulantes */}
-      <div className="h-screen flex flex-col w-full md:w-1/3 rounded-lg">
+      <div
+        className={`${
+          noVisible && anchoPantalla <= 768 && applicantChosen !== null
+            ? 'hidden'
+            : 'h-screen flex flex-col w-full md:w-1/3 rounded-lg'
+        }`}
+      >
         {/**Header */}
         <Header text="Postulantes" />
         {/**Body */}
@@ -165,7 +175,9 @@ export default function CallingFullScreen({
                       : 'bg-yellow-200'
                   }`} // Aplicar la clase si la tarjeta está aprobada
                   key={index}
-                  onClick={() => handleCardClick(entry, index)}
+                  onClick={() => {
+                    handleCardClick(entry, index, true);
+                  }}
                 >
                   {/**Foto del postulante*/}
                   <Image
