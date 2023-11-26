@@ -102,7 +102,7 @@ export default function ApplicantChatFullScreen({
     <>
       {selectedCard ? (
         /**Chat container */
-        <div className="flex h-full w-full flex-col rounded-lg">
+        <div className="flex h-screen w-full flex-col rounded-lg pb-12 md:pb-0">
           {/**Header */}
           <div className="flex flex-row gap-2 rounded-t-lg border-b border-gray-200 bg-white px-4 py-2">
             <Image

@@ -44,6 +44,9 @@ export default function ChatFullScreen({
   const [rooms, setRooms] = useState<ApplicantRoomType[]>([]);
   //Hook de estado usado para almacenar los datos personales de un postulante a partir de la sala en la que se encuentra
   const [user, setUser] = useState<UserType | null>(null);
+  const [notVisible, setNotVisible] = useState(false);
+  const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
+
   //Hace referencia a un nodo del DOM que es un div, iniciando en null. Es el contenedor (Div html) en el cual se mostrarán los mensajes
   const messageRef = useRef<HTMLDivElement>(null);
   //Consulta hecha para obtener todas las salas de una determinada convocatoria. Depende del valor de callingId por lo que debe ser llenado inicialmente con un useEffect
@@ -78,6 +81,7 @@ export default function ChatFullScreen({
   useEffect(() => {
     //Limpieza de las salas de la convocatoria
     setRooms([]);
+
     if (selectedCard) {
       setCallingId(selectedCard.id);
       if (roomsQuery.data?.length) {
@@ -91,6 +95,7 @@ export default function ChatFullScreen({
         }
       } else {
         setNotification('No tiene a ningún postulante en esta convocatoria.');
+        setUser(null);
       }
     } else {
       setNotification('No ha seleccionado ninguna card.');
@@ -109,6 +114,22 @@ export default function ChatFullScreen({
       });
     }
   }, [messages]);
+
+  /**
+   * Hook de efecto inicial
+   */
+  useEffect(() => {
+    const handleResize = () => {
+      setAnchoPantalla(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Limpia el event listener cuando el componente se desmonta
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
   if (status === 'loading') {
@@ -146,10 +167,10 @@ export default function ChatFullScreen({
       {selectedCard ? (
         roomsQuery?.data !== null && roomsQuery?.data?.length !== null ? (
           //Main container
-          <div className="flex h-full w-full flex-row gap-2 ">
+          <div className="flex h-screen w-full flex-row gap-2 rounded-lg pb-12 md:pb-0">
             {/**Chat container or left container*/}
             {user !== null ? (
-              <div className="flex w-2/3 flex-col rounded-lg bg-white h-full grow overflow-auto rounded-b-lg">
+              <div className="flex h-full w-full flex-col ">
                 {/**Header */}
                 <div className="flex flex-row gap-2 rounded-t-lg border-b border-gray-200 bg-white px-4 py-2">
                   <Image
@@ -193,7 +214,7 @@ export default function ChatFullScreen({
                 </div>
 
                 {/**Chat space */}
-                <div className={`grow overflow-auto bg-gray-200`}>
+                <div className="grow overflow-auto bg-gray-200">
                   <div className="flex flex-col p-4" ref={messageRef}>
                     {/**Se muestran los mensajes de la sala seleccionada por el usuario actual cargados por el segundo useEffect*/}
                     {messages?.map((m, index) => {
@@ -257,79 +278,93 @@ export default function ChatFullScreen({
                 )}
               </div>
             ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center bg-white">
-                <p className="text-center text-lg font-black text-gray-500">
-                  Seleccione a un postulante de la lista
-                </p>
-              </div>
+              rooms.length > 0 && (
+                <div className="hidden md:flex md:h-full md:w-full md:flex-col md:items-center md:justify-center md:bg-white">
+                  <p className="text-center text-lg font-black text-gray-500">
+                    Seleccione a un postulante de la lista
+                  </p>
+                </div>
+              )
             )}
             {/**Contenedor de salas or right container */}
-            <div className="flex w-1/3 flex-col rounded-lg bg-white h-full grow overflow-auto rounded-b-lg">
+            <div
+              className={`${
+                notVisible && anchoPantalla <= 768 && user !== null
+                  ? 'hidden'
+                  : 'flex w-1/3 flex-col rounded-lg bg-white h-screen grow overflow-auto rounded-b-lg'
+              }`}
+            >
               {/**Header */}
               <Header text="Postulantes aprobados" />
-              <div className="grow overflow-auto">
+              <div className="grow overflow-auto rounded-b-lg bg-white">
                 {/**Room card */}
-                {rooms.map((room, index) => (
-                  <div
-                    className="flex flex-row gap-2 w-full items-center cursor-pointer border-b-2 border-gray-100 p-2"
-                    key={index}
-                    onClick={() => {
-                      //SE CAMBIA EL VALOR DE LA SALA AL HACER CLIC EN OTRA SALA
-                      setRoomId(room.id);
-                      //Se guarda los datos de la sala para el componente Payment
-                      setRoom(room);
-                      //Se guarda los datos del postulante de la sala para el estilizado del chat
-                      setUser(room.Applicant);
-                      //ACTUALIZA la sala del usuario con el ID DE LA SALA proporcionado y Emite el evento Enter_Room que tiene un objeto con los ID DE USUARIO E ID DE SALA
-                      //ENTONCES UN USUARIO SÓLO PUEDE ESTAR EN UNA SALA A LA VEZ
-                      //LUEGO SE VUELVEN A CARGAR LOS USUARIOS DE LA SALA EN USERS
-                      //El usuario actual elige a qué sala entrar y da a conocer a los oyentes a qué sala entró
-                      updateRoom.mutate({ roomId: room.id });
-                      //SE CAMBIA EL VALOR A isRoomChanged LO CUAL GENERA QUE SE VUELVA A EJECUTAR USEEFFCECT
-                      setIsRoomChanged(!isRoomChanged);
-                    }}
-                  >
-                    <Image
-                      className="h-8 w-8 rounded-full"
-                      src={room.Applicant.image || '/avatar.png'}
-                      width={100}
-                      height={100}
-                      alt="Logo"
-                    />
-                    <div>
-                      <div className="mb-1 flex flex-row gap-2">
-                        <p className="text-xs font-medium text-black">
-                          {room.Applicant.name} {room.Applicant.lastName}
-                        </p>
-                        <div className="flex flex-row items-center gap-2">
-                          <svg
-                            viewBox="0 0 512 512"
-                            className="h-2 w-2 fill-green-400"
-                          >
-                            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-                          </svg>
-                          <p className="text-xs font-light text-gray-600">
-                            En línea
+                {rooms.length > 0 ? (
+                  rooms.map((room, index) => (
+                    <div
+                      className="flex flex-row gap-2 w-full items-center cursor-pointer border-b-2 border-gray-100 p-2"
+                      key={index}
+                      onClick={() => {
+                        //SE CAMBIA EL VALOR DE LA SALA AL HACER CLIC EN OTRA SALA
+                        setRoomId(room.id);
+                        //Se define la variable notvisible para ocultar el panel de salas de postulantes
+                        setNotVisible(true);
+                        //Se guarda los datos de la sala para el componente Payment
+                        setRoom(room);
+                        //Se guarda los datos del postulante de la sala para el estilizado del chat
+                        setUser(room.Applicant);
+                        //ACTUALIZA la sala del usuario con el ID DE LA SALA proporcionado y Emite el evento Enter_Room que tiene un objeto con los ID DE USUARIO E ID DE SALA
+                        //ENTONCES UN USUARIO SÓLO PUEDE ESTAR EN UNA SALA A LA VEZ
+                        //LUEGO SE VUELVEN A CARGAR LOS USUARIOS DE LA SALA EN USERS
+                        //El usuario actual elige a qué sala entrar y da a conocer a los oyentes a qué sala entró
+                        updateRoom.mutate({ roomId: room.id });
+                        //SE CAMBIA EL VALOR A isRoomChanged LO CUAL GENERA QUE SE VUELVA A EJECUTAR USEEFFCECT
+                        setIsRoomChanged(!isRoomChanged);
+                      }}
+                    >
+                      <Image
+                        className="h-8 w-8 rounded-full"
+                        src={room.Applicant.image || '/avatar.png'}
+                        width={100}
+                        height={100}
+                        alt="Logo"
+                      />
+                      <div>
+                        <div className="mb-1 flex flex-row gap-2">
+                          <p className="text-xs font-medium text-black">
+                            {room.Applicant.name} {room.Applicant.lastName}
+                          </p>
+                          <div className="flex flex-row items-center gap-2">
+                            <svg
+                              viewBox="0 0 512 512"
+                              className="h-2 w-2 fill-green-400"
+                            >
+                              <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+                            </svg>
+                            <p className="text-xs font-light text-gray-600">
+                              En línea
+                            </p>
+                          </div>
+                          <p className="text-xs font-black text-gray-600">
+                            Ene. 12:45
                           </p>
                         </div>
-                        <p className="text-xs font-black text-gray-600">
-                          Ene. 12:45
-                        </p>
-                      </div>
-                      <div className="flex flex-row gap-2">
-                        <p className="text-xs font-light text-gray-600">
-                          Hola te puedo enseñar?
-                        </p>
-                        <svg
-                          viewBox="0 0 448 512"
-                          className="ml-auto h-4 w-4 fill-sky-400"
-                        >
-                          <path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z" />
-                        </svg>
+                        <div className="flex flex-row gap-2">
+                          <p className="text-xs font-light text-gray-600">
+                            Hola te puedo enseñar?
+                          </p>
+                          <svg
+                            viewBox="0 0 448 512"
+                            className="ml-auto h-4 w-4 fill-sky-400"
+                          >
+                            <path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <Warning text="No tiene a ningún postulante en esta convocatoria." />
+                )}
               </div>
             </div>
           </div>

@@ -30,7 +30,7 @@ export default function CallingFullScreen({
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
     null,
   );
-  const [noVisible, setNotVisible] = useState(false);
+  const [notVisible, setNotVisible] = useState(false);
   const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
   /**
    * Consultas a base de datos
@@ -153,7 +153,7 @@ export default function CallingFullScreen({
       {/**Contenedor de postulantes */}
       <div
         className={`${
-          noVisible && anchoPantalla <= 768 && applicantChosen !== null
+          notVisible && anchoPantalla <= 768 && applicantChosen !== null
             ? 'hidden'
             : 'h-screen flex flex-col w-full md:w-1/3 rounded-lg'
         }`}
