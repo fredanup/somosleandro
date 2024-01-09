@@ -21,6 +21,9 @@ const envSchema = z.object({
   AWS_S3_BUCKET_NAME: z.string(),
   MERCADO_PAGO_SAMPLE_PUBLIC_KEY: z.string(),
   MERCADO_PAGO_SAMPLE_ACCESS_TOKEN: z.string(),
+  WEB_PUSH_EMAIL: z.string(),
+  WEB_PUSH_PRIVATE_KEY: z.string(),
+  NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY: z.string()
 });
 const env = envSchema.safeParse(process.env);
 
