@@ -1,6 +1,7 @@
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+
+import { useState } from 'react';
 
 import CallingSmallScreen from './calling/callingSmallScreen';
 
@@ -37,41 +38,6 @@ export default function Main() {
 
   //Declaración de variable que recibe el objeto seleccionado de tipo ApplicantRoomType de un componente
   const [roomCard, setRoomCard] = useState<ApplicantRoomType | null>(null);
-
-  //Declaración de variable que controla la visibilidad del menú en dispositivos móviles
-  const [isMenuVisible, setIsMenuVisible] = useState(true);
-
-  //límite de desplazamiento hacia abajo en píxeles antes de que el menú se oculte.
-  const threshold = 200;
-
-  //Se ejecuta al renderizarse el componente por primera vez
-  useEffect(() => {
-    //representa la posición actual(en la coordenada Y <-a,a>) del scroll vertical de la página
-    let prevScrollY = window.scrollY;
-    //Declaración de la función manejadora del evento scroll
-    const handleScroll = () => {
-      //Se obtiene el valor actual del scroll vertical (en la coordenada Y <-a,a>)
-      const currentScrollY = window.scrollY;
-      //Se muestra el valor de la posición Y a fines de prueba
-      console.log(`valor de scroll ${currentScrollY}`);
-      //Cambia el valor de la variable isMenuVisible a true si el scroll actual es menor o igual a 200 píxeles, es decir, cuando estamos al inicio de la pantalla
-      //o si la posición del scroll actual en el eje Y es menor que el anterior, es decir, si estando abajo subimos ligeramente el cursor.
-      //En el caso que hayamos bajo más de 200 píxeles y además que nuestra posición actual sea menor (en el eje y) se ocultará el menú.
-      setIsMenuVisible(
-        currentScrollY <= threshold || currentScrollY < prevScrollY,
-      );
-      //se actualiza el valor de prevScrollY con el valor actual de currentScrollY, para que en el próximo ciclo del efecto se pueda comparar correctamente el scroll actual con el valor anterior.
-      prevScrollY = currentScrollY;
-      //Se muestra el valor de la posición del scroll actua a fines de verificación
-      console.log(`valor de scroll ${prevScrollY}`);
-    };
-    //Se agrega un evento de escucha al objeto global window para detectar el evento de scroll. Cuando se desencadena el evento, se llamará a la función handleScroll.
-    window.addEventListener('scroll', handleScroll);
-    //La función de retorno de useEffect se utiliza para limpiar el efecto. En este caso, se elimina el evento de escucha del scroll cuando el componente se desmonta para evitar fugas de memoria.
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   //Nota. Es necesario unificar los tipos usados para evitar redundancia y para obtener simplicidad
   // Función que recibe los datos de la tarjeta seleccionada de tipo IUseCalling y establece el valor de selectedCard, es un tipo de descriptor de acceso
@@ -113,9 +79,7 @@ export default function Main() {
          * En móviles es fijo y se ubica en la parte inferior. En escritorio se ubica a la izquierda
          */}
         <nav
-          className={`fixed inset-x-0 bottom-0 z-10 p-2 border-t border-gray-200 flex flex-row bg-white drop-shadow-lg justify-evenly items-center md:static md:flex md:h-full md:flex-col md:border-0 ${
-            isMenuVisible ? 'block' : 'hidden'
-          }`}
+          className={`fixed inset-x-0 bottom-0 z-10 p-2 border-t border-gray-200 flex flex-row bg-white drop-shadow-lg justify-evenly items-center md:static md:flex md:h-full md:flex-col md:border-0`}
         >
           <svg
             viewBox="0 0 512 512"
