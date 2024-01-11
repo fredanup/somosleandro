@@ -14,6 +14,7 @@ import CallingAcceptedSmallScreen from './chat/applicant/callingAcceptedSmallScr
 import type { ApplicantRoomType } from 'server/routers/room';
 import ApplicantChatFullScreen from './chat/applicant/applicantChatFullScreen';
 import Spinner from './utilities/spinner';
+import { trpc } from 'utils/trpc';
 
 export default function Main() {
   //Obtención de la sesión
@@ -118,6 +119,55 @@ export default function Main() {
         });
     }
   }, []);
+
+  const sendNotification = (
+    title: string | null,
+    message: string | null,
+  ): void => {
+    if (!subscription) {
+      console.error('Web push not subscribed');
+      return;
+    }
+
+    fetch('/api/notification', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        suscription: subscription,
+        data: { title, message },
+      }),
+    })
+      .then((response) => {
+        // Handle the response as needed
+        console.log('Notification sent:', response);
+      })
+      .catch((error) => {
+        console.error('Error sending notification:', error);
+        // Handle the error
+      });
+  };
+
+  trpc.room.onSendMessage.useSubscription(undefined, {
+    onData(data) {
+      //Busca al usuario de la sesión actual. Nota revisar
+      const user = data.users.find((u) => u.id === session?.user?.id);
+      //Si la sala del usuario actual es la sala del mensaje
+      if (user?.roomId === data.message.applicantRoomId) {
+        //Llenar el buzón de mensajes previo con el nuevo mensaje agregándo la fecha de creación. Nota revisar
+
+        if (data.message.userId !== session?.user?.id) {
+          // Verifica que el mensaje sea de otro usuario antes de mostrar la notificación
+
+          sendNotification(data.message.userName, data.message.text);
+        }
+      }
+    },
+    onError(err) {
+      console.error('Subscription error:', err);
+    },
+  });
 
   //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
   if (status === 'loading') {
@@ -248,12 +298,7 @@ export default function Main() {
             smallScreenBody={
               <CallingSmallScreen onCardSelect={handleCardSelect} />
             }
-            fullScreenBody={
-              <ChatFullScreen
-                suscription={subscription}
-                selectedCard={selectedCard}
-              />
-            }
+            fullScreenBody={<ChatFullScreen selectedCard={selectedCard} />}
           />
         )}
         {opt === 3 && (

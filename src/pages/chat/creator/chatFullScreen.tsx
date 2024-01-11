@@ -16,10 +16,8 @@ import Message from 'pages/utilities/message';
 
 export default function ChatFullScreen({
   selectedCard,
-  suscription,
 }: {
   selectedCard: IUserCalling | null;
-  suscription: PushSubscription | null;
 }) {
   //Declaración de hook usado para obtener la sesión y de esta manera se sepa quién escribe escribe el texto
   const { data: session, status } = useSession();
@@ -76,35 +74,6 @@ export default function ChatFullScreen({
   //Función de cierre del modal Payment
   const closeModal = () => {
     setIsOpen(false);
-  };
-
-  const sendNotification = (
-    title: string | null,
-    message: string | null,
-  ): void => {
-    if (!suscription) {
-      console.error('Web push not subscribed');
-      return;
-    }
-
-    fetch('/api/notification', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        suscription: suscription,
-        data: { title, message },
-      }),
-    })
-      .then((response) => {
-        // Handle the response as needed
-        console.log('Notification sent:', response);
-      })
-      .catch((error) => {
-        console.error('Error sending notification:', error);
-        // Handle the error
-      });
   };
 
   //SE CARGAN LOS MENSAJES DE LA SALA Y SE EMITE EL EVENTO ENTER_ROOM CON EL ID DE LA SALA
@@ -187,12 +156,6 @@ export default function ChatFullScreen({
             },
           ];
         });
-
-        if (data.message.userId !== session?.user?.id) {
-          // Verifica que el mensaje sea de otro usuario antes de mostrar la notificación
-
-          sendNotification(data.message.userName, data.message.text);
-        }
       }
     },
     onError(err) {
