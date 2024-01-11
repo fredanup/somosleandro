@@ -75,14 +75,6 @@ const Index: React.FC = () => {
         ),
       })
       .then((sub) => {
-        // Verifica que la suscripción tenga al menos el campo 'endpoint'
-        if (!sub || !sub.endpoint) {
-          console.error(
-            'Web push subscription is incomplete or missing endpoint.',
-          );
-          return;
-        }
-
         // TODO: deberías llamar a tu API para guardar los datos de la suscripción en el servidor
         setSubscription(sub);
         setIsSubscribed(true);

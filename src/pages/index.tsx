@@ -1,21 +1,8 @@
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import type { MouseEvent } from 'react';
 import { useEffect, useState } from 'react';
 
-const base64ToUint8Array = (base64: string) => {
-  const padding = '='.repeat((4 - (base64.length % 4)) % 4);
-  const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/');
-
-  const rawData = window.atob(b64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-};
 export default function Home() {
   //Declaración de variables
   const [email, setEmail] = useState('');
@@ -26,47 +13,6 @@ export default function Home() {
 
   //Inicialización de ruta
   const router = useRouter();
-
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
-  const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null,
-  );
-  const [registration, setRegistration] =
-    useState<ServiceWorkerRegistration | null>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      // run only in browser
-      navigator.serviceWorker.ready
-        .then((reg) => {
-          reg.pushManager
-            .getSubscription()
-            .then((sub) => {
-              if (
-                sub &&
-                !(
-                  sub.expirationTime &&
-                  Date.now() > sub.expirationTime - 5 * 60 * 1000
-                )
-              ) {
-                setSubscription(sub);
-                setIsSubscribed(true);
-              }
-            })
-            .catch((error) => {
-              // Maneja los errores de la solicitud
-              console.error('Error de red:', error);
-              // Realiza alguna acción en función del error de red
-            });
-          setRegistration(reg);
-        })
-        .catch((error) => {
-          // Maneja los errores de la solicitud
-          console.error('Error de red:', error);
-          // Realiza alguna acción en función del error de red
-        });
-    }
-  }, []);
 
   //Redireccion al usuario a Main
   useEffect(() => {
@@ -82,72 +28,6 @@ export default function Home() {
       });
     }
   }, [status, session, router]);
-
-  const subscribeButtonOnClick = (
-    event: MouseEvent<HTMLButtonElement>,
-  ): void => {
-    event.preventDefault();
-
-    if (!registration) {
-      console.error('Service Worker registration not found.');
-      return;
-    }
-
-    registration.pushManager
-      .subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64ToUint8Array(
-          'BJwvGYEOUTD1sPwR0UqBzDRvtmRZswpRVYfxzWH1X88X2NzpLWpRMwxij9GDbAXDnT4VsVJ50gGbiXbkjGM3Mpg',
-        ),
-      })
-      .then((sub) => {
-        // Verifica que la suscripción tenga al menos el campo 'endpoint'
-        if (!sub || !sub.endpoint) {
-          console.error(
-            'Web push subscription is incomplete or missing endpoint.',
-          );
-          return;
-        }
-
-        // TODO: deberías llamar a tu API para guardar los datos de la suscripción en el servidor
-        setSubscription(sub);
-        setIsSubscribed(true);
-
-        console.log('Web push subscribed!');
-        console.log(sub);
-      })
-      .catch((error) => {
-        console.error('Error subscribing to web push:', error);
-        // Maneja el error
-      });
-  };
-
-  const sendNotificationButtonOnClick = (
-    event: MouseEvent<HTMLButtonElement>,
-  ): void => {
-    event.preventDefault();
-
-    if (!subscription) {
-      console.error('Web push not subscribed');
-      return;
-    }
-
-    fetch('/api/notification', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(subscription),
-    })
-      .then((response) => {
-        // Handle the response as needed
-        console.log('Notification sent:', response);
-      })
-      .catch((error) => {
-        console.error('Error sending notification:', error);
-        // Handle the error
-      });
-  };
 
   return (
     <>
@@ -226,20 +106,10 @@ export default function Home() {
             {/**Botones y cartilla*/}
             <div className="mt-4 flex flex-col items-center gap-4">
               {/**Botón de inicio */}
-              <button
-                onClick={subscribeButtonOnClick}
-                className="w-full h-10 rounded-lg bg-sky-500 text-base font-semibold text-white hover:border-transparent hover:bg-sky-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2"
-                disabled={isSubscribed}
-              >
+              <button className="w-full h-10 rounded-lg bg-sky-500 text-base font-semibold text-white hover:border-transparent hover:bg-sky-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2">
                 Iniciar sesión
               </button>
-              <button
-                onClick={sendNotificationButtonOnClick}
-                className="w-full h-10 rounded-lg bg-sky-500 text-base font-semibold text-white hover:border-transparent hover:bg-sky-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-sky-400 focus:ring-offset-2"
-                disabled={!isSubscribed}
-              >
-                Send Notification
-              </button>
+
               {/**Label de alternativa */}
               <p className="text-base font-light text-gray-400">
                 o continuar con:

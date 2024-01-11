@@ -17,7 +17,6 @@ export default function ApplicantChatFullScreen({
   const [roomId, setRoomId] = useState('');
 
   const [notification, setNotification] = useState('');
-  //Se llenan con las suscripciones
 
   //Se inicializa la variable messages que es un arreglo donde cada elemento, tiene el tipo o estructura MessageType que se definió previamente junto con los campos que se mostrarían
   const [messages, setMessages] = useState<MessageType[]>([]);
@@ -29,7 +28,6 @@ export default function ApplicantChatFullScreen({
   const messageQuery = trpc.message.findMany.useQuery({ roomId });
 
   //Aquí viene lo importante!!
-  //ACTUALIZA la sala del usuario con el ID DE ROOM proporcionado y Emite el evento Enter_Room con un objeto asociado que tiene los ID DEL USUARIO E ID DE LA SALA, AHORA ES NULO, YA QUE NO SE ALCANZÓ NINGÚN VALOR, acá solo se inicializa
 
   //Retorna un mensaje con los datos proporcionados por el usuario y Emite el evento SEND_MESSAGE junto con el mensaje retornado, acá solo se inicializa
   const sendMessageMutation = trpc.room.sendMessage.useMutation();
@@ -44,6 +42,7 @@ export default function ApplicantChatFullScreen({
     if (selectedCard) {
       // Verifica si se obtuvieron datos de la consulta
       setRoomId(selectedCard.id);
+
       setNotification(''); // Limpia la notificación si hay datos
       //DADO QUE EN EL ANTERIOR USEEFFECT YA SE TIENE EL VALOR DE roomId, messageQuery ESTA VEZ SÍ TIENE DATOS
       if (messageQuery.data) {
@@ -135,12 +134,12 @@ export default function ApplicantChatFullScreen({
           </div>
 
           {/**Chat space */}
-          <div className={`grow overflow-auto bg-gray-200`}>
+          <div className="grow overflow-auto bg-gray-200">
             <div className="flex flex-col p-4" ref={messageRef}>
-              {/**Se muestran los mensajes cargados en el segundo useEffect de acuerdo a la sala proporcionada*/}
+              {/**Se muestran los mensajes de la sala seleccionada por el usuario actual cargados por el segundo useEffect*/}
               {messages?.map((m, index) => {
                 return (
-                  /**Se carga el componente con los datos pasados como argumentos, recordando que siempre se mostrarán los últimos mensajes por messageRef*/
+                  /**Se carga el componente con los datos pasados como argumentos, recordando que siempre se mostrarán primero los últimos mensajes por messageRef*/
                   <Message key={index} message={m} session={session || null} />
                 );
               })}

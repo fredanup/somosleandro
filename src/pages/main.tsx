@@ -1,25 +1,16 @@
 import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import CallingSmallScreen from './calling/callingSmallScreen';
-
 import CallingFullScreen from './calling/callingFullScreen';
-
 import ProfileSmallScreen from './profile/profileSmallScreen';
 import ProfileFullScreen from './profile/profileFullScreen';
-
 import ScreenDesign from './template/screenDesign';
-
 import ApplyingSmallScreen from './applying/applyingSmallScreen';
 import ApplyingFullScreen from './applying/applyingFullScreen';
-
 import { type IUserCalling } from '../utils/auth';
-
 import ChatFullScreen from './chat/creator/chatFullScreen';
 import CallingAcceptedSmallScreen from './chat/applicant/callingAcceptedSmallScreen';
-
 import type { ApplicantRoomType } from 'server/routers/room';
 import ApplicantChatFullScreen from './chat/applicant/applicantChatFullScreen';
 import Spinner from './utilities/spinner';
@@ -50,6 +41,84 @@ export default function Main() {
     setRoomCard(data);
   };
 
+  const [subscription, setSubscription] = useState<PushSubscription | null>(
+    null,
+  );
+  const [registration, setRegistration] =
+    useState<ServiceWorkerRegistration | null>(null);
+
+  const base64ToUint8Array = (base64: string) => {
+    const padding = '='.repeat((4 - (base64.length % 4)) % 4);
+    const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/');
+
+    const rawData = window.atob(b64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  };
+
+  const subscribeFunction = (): void => {
+    if (!registration) {
+      console.error('Service Worker registration not found.');
+      return;
+    }
+
+    registration.pushManager
+      .subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: base64ToUint8Array(
+          'BJwvGYEOUTD1sPwR0UqBzDRvtmRZswpRVYfxzWH1X88X2NzpLWpRMwxij9GDbAXDnT4VsVJ50gGbiXbkjGM3Mpg',
+        ),
+      })
+      .then((sub) => {
+        // TODO: deberías llamar a tu API para guardar los datos de la suscripción en el servidor
+        setSubscription(sub);
+
+        console.log('Web push subscribed!');
+        console.log(sub);
+      })
+      .catch((error) => {
+        console.error('Error subscribing to web push:', error);
+        // Maneja el error
+      });
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      // run only in browser
+      navigator.serviceWorker.ready
+        .then((reg) => {
+          reg.pushManager
+            .getSubscription()
+            .then((sub) => {
+              if (
+                sub &&
+                !(
+                  sub.expirationTime &&
+                  Date.now() > sub.expirationTime - 5 * 60 * 1000
+                )
+              ) {
+                setSubscription(sub);
+              }
+            })
+            .catch((error) => {
+              // Maneja los errores de la solicitud
+              console.error('Error de red:', error);
+              // Realiza alguna acción en función del error de red
+            });
+          setRegistration(reg);
+        })
+        .catch((error) => {
+          // Maneja los errores de la solicitud
+          console.error('Error de red:', error);
+          // Realiza alguna acción en función del error de red
+        });
+    }
+  }, []);
+
   //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
   if (status === 'loading') {
     // Se muestra el spinner mientra se verifica el estado de autenticación
@@ -65,6 +134,8 @@ export default function Main() {
         error,
       );
     });
+  } else {
+    subscribeFunction();
   }
 
   return (
@@ -177,7 +248,12 @@ export default function Main() {
             smallScreenBody={
               <CallingSmallScreen onCardSelect={handleCardSelect} />
             }
-            fullScreenBody={<ChatFullScreen selectedCard={selectedCard} />}
+            fullScreenBody={
+              <ChatFullScreen
+                suscription={subscription}
+                selectedCard={selectedCard}
+              />
+            }
           />
         )}
         {opt === 3 && (

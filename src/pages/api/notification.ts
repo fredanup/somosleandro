@@ -16,24 +16,24 @@ webPush.setVapidDetails(
 )
 
 
-const Notification = async (
+export default async function Notification (
   req: NextApiRequest,
   res: NextApiResponse
-) => {
+) {
   if (req.method === 'POST') {
-    const body = req.body as PushSubscription;
-    console.log('Received subscription:', body);
-    if (!body || !body.endpoint) {
+    const body = req.body as { suscription: PushSubscription; data: { title: string|null; message: string|null } };
+    
+    if (!body || !body.suscription  || !body.suscription.endpoint) {
       console.error('Web push subscription is incomplete or missing endpoint.');
       res.status(400).end();  // Retorna un código de estado 400 Bad Request
       return;
     }
     try {
       const response = await webPush.sendNotification(
-        body,
+        body.suscription,
         JSON.stringify({
-          title: 'Nueva notificación',
-          message: 'Alguien desea contactar contigo',
+          title: body.data.title,
+          message: body.data.message
         })
       );
       res.writeHead(response.statusCode, response.headers).end(response.body);
@@ -57,4 +57,4 @@ const Notification = async (
   }
 };
 
-export default Notification;
+

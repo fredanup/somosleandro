@@ -16,8 +16,10 @@ import Message from 'pages/utilities/message';
 
 export default function ChatFullScreen({
   selectedCard,
+  suscription,
 }: {
   selectedCard: IUserCalling | null;
+  suscription: PushSubscription | null;
 }) {
   //Declaración de hook usado para obtener la sesión y de esta manera se sepa quién escribe escribe el texto
   const { data: session, status } = useSession();
@@ -44,6 +46,7 @@ export default function ChatFullScreen({
   const [rooms, setRooms] = useState<ApplicantRoomType[]>([]);
   //Hook de estado usado para almacenar los datos personales de un postulante a partir de la sala en la que se encuentra
   const [user, setUser] = useState<UserType | null>(null);
+
   const [notVisible, setNotVisible] = useState(false);
   const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
 
@@ -73,6 +76,35 @@ export default function ChatFullScreen({
   //Función de cierre del modal Payment
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  const sendNotification = (
+    title: string | null,
+    message: string | null,
+  ): void => {
+    if (!suscription) {
+      console.error('Web push not subscribed');
+      return;
+    }
+
+    fetch('/api/notification', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        suscription: suscription,
+        data: { title, message },
+      }),
+    })
+      .then((response) => {
+        // Handle the response as needed
+        console.log('Notification sent:', response);
+      })
+      .catch((error) => {
+        console.error('Error sending notification:', error);
+        // Handle the error
+      });
   };
 
   //SE CARGAN LOS MENSAJES DE LA SALA Y SE EMITE EL EVENTO ENTER_ROOM CON EL ID DE LA SALA
@@ -155,6 +187,12 @@ export default function ChatFullScreen({
             },
           ];
         });
+
+        if (data.message.userId !== session?.user?.id) {
+          // Verifica que el mensaje sea de otro usuario antes de mostrar la notificación
+
+          sendNotification(data.message.userName, data.message.text);
+        }
       }
     },
     onError(err) {
@@ -254,6 +292,7 @@ export default function ChatFullScreen({
                           applicantRoomId: roomId,
                           text: message,
                         });
+
                         /**
                          * SE GUARDA EL MENSAJE EN BASE DE DATOS Y SE LIMPIA LOS DATOS DE MESSAGE PARA GUARDAR O ENVIAR OTRO MENSAJE
                          */

@@ -15,6 +15,8 @@ export default function CallingAcceptedSmallScreen({
     trpc.applicantRoom.getUserApplicationsAccepted.useQuery();
   //Control de expansión de llave angular u ojo
   const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
+  //EL usuario actual elige a qué sala entrar y da a conocer a los oyentes la sala a la que entró
+  const updateRoom = trpc.user.updateRoom.useMutation();
   //Constantes para la comparación con registros de la base de datos
   const musico = 'Músico(s) para evento';
   const docente = 'Clases de música';
@@ -63,7 +65,10 @@ export default function CallingAcceptedSmallScreen({
             <div
               key={index}
               className="cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg bg-white m-4"
-              onClick={() => handleCardClick(entry)}
+              onClick={() => {
+                handleCardClick(entry);
+                updateRoom.mutate({ roomId: entry.id });
+              }}
             >
               {/**Header */}
               <div className="flex flex-row gap-4 items-center">
