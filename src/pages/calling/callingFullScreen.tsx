@@ -155,6 +155,9 @@ export default function CallingFullScreen({
     setSelectedCardIndex(index);
     setNotVisible(show);
   };
+  const handleBackButton = (value: ApplicantRoomType | null) => {
+    setAppliantChosen(value);
+  };
 
   return (
     <>
@@ -167,7 +170,11 @@ export default function CallingFullScreen({
         }`}
       >
         {/**Header */}
-        <Header text="Postulantes" />
+        <Header
+          visible={false}
+          valueCarrier={handleBackButton}
+          text="Postulantes"
+        />
         {/**Body */}
         <div className="grow overflow-auto rounded-b-lg bg-white">
           {selectedCard ? (
@@ -246,7 +253,11 @@ export default function CallingFullScreen({
         }`}
       >
         {/**Header */}
-        <Header text="Perfil del postulante" />
+        <Header
+          visible={true}
+          valueCarrier={handleBackButton}
+          text="Perfil del postulante"
+        />
         {applicantChosen !== null && (
           //Body
           <div className="flex flex-col gap-4 p-6 grow overflow-auto rounded-b-lg bg-white">

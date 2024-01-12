@@ -188,7 +188,16 @@ export default function ChatFullScreen({
             {user !== null ? (
               <div className="flex h-full w-full flex-col ">
                 {/**Header */}
-                <div className="flex flex-row gap-2 rounded-t-lg border-b border-gray-200 bg-white px-4 py-2">
+                <div className="flex flex-row gap-4 rounded-t-lg border-b border-gray-200 bg-white px-4 py-2 items-center">
+                  <svg
+                    viewBox="0 0 448 512"
+                    className="h-4 w-4 fill-black cursor-pointer md:hidden"
+                    onClick={() => {
+                      setUser(null);
+                    }}
+                  >
+                    <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                  </svg>
                   <Image
                     className="h-10 w-10 rounded-full"
                     src={user.image || '/avatar.png'}
@@ -312,7 +321,11 @@ export default function ChatFullScreen({
               }`}
             >
               {/**Header */}
-              <Header text="Postulantes aprobados" />
+              <Header
+                visible={false}
+                valueCarrier={() => null}
+                text="Postulantes aprobados"
+              />
               <div className="grow overflow-auto rounded-b-lg bg-white">
                 {/**Room card */}
                 {rooms.length > 0 ? (
