@@ -44,7 +44,7 @@ export default function ScreenDesign({
               : 'relative h-full w-full flex flex-col rounded-lg pb-12 drop-shadow-lg md:w-1/3 md:pb-0'
           }`}
         >
-          <Header valueCarrier={() => null} text={header} />
+          <Header visible={false} valueCarrier={() => null} text={header} />
           {/**body */}
           <div className="grow overflow-auto rounded-b-lg bg-white">
             {smallScreenBody}
