@@ -11,7 +11,7 @@ const ProfileFullScreen = () => {
       {/*Contenedor principal para dispositivos de pantalla grande, es relative para que el modal sea absolute*/}
       <div className="relative h-full w-full flex flex-col overflow-auto rounded-lg bg-white drop-shadow-lg">
         {/**Header */}
-        <Header text="Tu perfil" />
+        <Header text="Tu perfil" valueCarrier={() => null} visible={false} />
         <div className="flex flex-col gap-4 p-6">
           <div className="flex flex-row items-center justify-between gap-2">
             <h2 className="text-lg font-bold text-slate-900">
