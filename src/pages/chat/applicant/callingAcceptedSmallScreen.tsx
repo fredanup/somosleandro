@@ -129,7 +129,10 @@ export default function CallingAcceptedSmallScreen({
                   </svg>
                   <p
                     className="text-gray-500 text-sm font-medium"
-                    onClick={() => handleToggle(index)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleToggle(index);
+                    }}
                   >
                     Detalles
                   </p>

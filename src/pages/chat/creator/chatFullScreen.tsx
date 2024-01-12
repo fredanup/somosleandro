@@ -44,7 +44,10 @@ export default function ChatFullScreen({
   const [rooms, setRooms] = useState<ApplicantRoomType[]>([]);
   //Hook de estado usado para almacenar los datos personales de un postulante a partir de la sala en la que se encuentra
   const [user, setUser] = useState<UserType | null>(null);
-
+  //Hook de estado utilizado para recordar en qué card se encuentra el usuario
+  const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
+    null,
+  );
   const [notVisible, setNotVisible] = useState(false);
   const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
 
@@ -74,6 +77,18 @@ export default function ChatFullScreen({
   //Función de cierre del modal Payment
   const closeModal = () => {
     setIsOpen(false);
+  };
+
+  /**
+   *
+   * @param data se usa para pasar como argumento los datos de la card seleccionada
+   * @param index se usa para pasar como argumento la posición actual de la card seleccinada
+   * Guarda el valor del índice seleccionado en la card por el usuario, éste valor se utiliza posteriormente para dar color
+   * a la card y que así el usuario entienda en qué card se encuentra.
+   */
+  const handleCardClick = (index: number | null, show: boolean) => {
+    setSelectedCardIndex(index);
+    setNotVisible(show);
   };
 
   //SE CARGAN LOS MENSAJES DE LA SALA Y SE EMITE EL EVENTO ENTER_ROOM CON EL ID DE LA SALA
@@ -303,9 +318,16 @@ export default function ChatFullScreen({
                 {rooms.length > 0 ? (
                   rooms.map((room, index) => (
                     <div
-                      className="flex flex-row gap-2 w-full items-center cursor-pointer border-b-2 border-gray-100 p-2"
+                      className={`flex flex-row cursor-pointer gap-4 p-4 rounded-lg drop-shadow-lg items-center m-4 ${
+                        room.applyStatus === 'accepted'
+                          ? selectedCardIndex === index
+                            ? 'bg-sky-100'
+                            : ' bg-white' // Cambia el color si es la tarjeta seleccionada
+                          : null
+                      }`} // Aplicar la clase si la tarjeta está aprobada
                       key={index}
                       onClick={() => {
+                        handleCardClick(index, true);
                         //SE CAMBIA EL VALOR DE LA SALA AL HACER CLIC EN OTRA SALA
                         setRoomId(room.id);
                         //Se define la variable notvisible para ocultar el panel de salas de postulantes
@@ -323,43 +345,28 @@ export default function ChatFullScreen({
                         setIsRoomChanged(!isRoomChanged);
                       }}
                     >
+                      {/**Foto del postulante*/}
                       <Image
-                        className="h-8 w-8 rounded-full"
+                        className="h-14 w-14 rounded-full"
                         src={room.Applicant.image || '/avatar.png'}
                         width={100}
                         height={100}
                         alt="Logo"
                       />
-                      <div>
-                        <div className="mb-1 flex flex-row gap-2">
-                          <p className="text-xs font-medium text-black">
+                      <div className="flex flex-col w-full">
+                        <div className="flex flex-row justify-between">
+                          <p className="text-base font-medium text-black">
                             {room.Applicant.name} {room.Applicant.lastName}
                           </p>
-                          <div className="flex flex-row items-center gap-2">
-                            <svg
-                              viewBox="0 0 512 512"
-                              className="h-2 w-2 fill-green-400"
-                            >
-                              <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-                            </svg>
-                            <p className="text-xs font-light text-gray-600">
-                              En línea
-                            </p>
-                          </div>
+
                           <p className="text-xs font-black text-gray-600">
                             Ene. 12:45
                           </p>
                         </div>
-                        <div className="flex flex-row gap-2">
+                        <div className="flex flex-row">
                           <p className="text-xs font-light text-gray-600">
                             Hola te puedo enseñar?
                           </p>
-                          <svg
-                            viewBox="0 0 448 512"
-                            className="ml-auto h-4 w-4 fill-sky-400"
-                          >
-                            <path d="M342.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 178.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l80 80c12.5 12.5 32.8 12.5 45.3 0l160-160zm96 128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 402.7 54.6 297.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l256-256z" />
-                          </svg>
                         </div>
                       </div>
                     </div>
