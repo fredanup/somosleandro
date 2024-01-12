@@ -35,7 +35,11 @@ export default function ApplyingFullScreen({
     <>
       <div className="flex flex-col h-full w-full rounded-lg drop-shadow-lg">
         {/**Header */}
-        <Header text="Perfil del cliente" />
+        <Header
+          text="Perfil del cliente"
+          valueCarrier={() => null}
+          visible={false}
+        />
         {/**Body */}
         <div className="flex flex-col gap-4 p-6 h-full grow overflow-auto rounded-b-lg bg-white">
           {/**User profile */}
