@@ -121,32 +121,6 @@ export default function Main() {
     }
   }, []);
 
-  useEffect(() => {
-    const handlePopstate = () => {
-      // Realiza las acciones deseadas al retroceder en la historia
-      // Puedes ajustar esto según tus necesidades específicas
-      if (opt === 1) {
-        // Si ya está en la primera opción, sal de la aplicación
-        // Puedes ajustar esto según tus necesidades específicas
-        // Aquí, simplemente salgo de la aplicación cerrando la pestaña
-        window.close();
-      } else {
-        // Si no está en la primera opción, vuelve a la primera opción
-        setOpt(1);
-        setSelectedCard(null);
-        setRoomCard(null);
-      }
-    };
-
-    // Escucha cambios en el historial al retroceder
-    window.addEventListener('popstate', handlePopstate);
-
-    return () => {
-      // Limpia el evento al desmontar el componente
-      window.removeEventListener('popstate', handlePopstate);
-    };
-  }, [opt]); // Dependencia agregada para que el efecto se ejecute al cambiar 'opt'
-
   const sendNotification = (
     title: string | null,
     message: string | null,
