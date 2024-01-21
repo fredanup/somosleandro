@@ -5,7 +5,7 @@ import CallingSmallScreen from './calling/callingSmallScreen';
 import CallingFullScreen from './calling/callingFullScreen';
 import ProfileSmallScreen from './profile/profileSmallScreen';
 import ProfileFullScreen from './profile/profileFullScreen';
-import ScreenDesign from './template/screenDesign';
+
 import ApplyingSmallScreen from './applying/applyingSmallScreen';
 import ApplyingFullScreen from './applying/applyingFullScreen';
 import { type IUserCalling } from '../utils/auth';
@@ -15,6 +15,7 @@ import type { ApplicantRoomType } from 'server/routers/room';
 import ApplicantChatFullScreen from './chat/applicant/applicantChatFullScreen';
 import Spinner from './utilities/spinner';
 import { trpc } from 'utils/trpc';
+import ScreenDesign from './template/screenDesign';
 
 export default function Main() {
   //Obtención de la sesión
@@ -86,6 +87,29 @@ export default function Main() {
         // Maneja el error
       });
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      // Obtén la longitud del historial
+      const historyLength = window.history.length;
+
+      // Verifica si la longitud del historial es mayor que 1 (no estamos en la primera pantalla)
+      if (historyLength > 1) {
+        // Retrocede a la primera opción del menú
+        setOpt(1);
+        setSelectedCard(null);
+        setRoomCard(null);
+      }
+    };
+
+    // Agrega el evento popstate
+    window.addEventListener('popstate', handlePopState);
+
+    // Limpia el evento al desmontar el componente
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [opt]); // Asegúrate de agregar 'opt' a la lista de dependencias
 
   useEffect(() => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
