@@ -171,7 +171,7 @@ export default function CallingFullScreen({
       >
         {/**Header */}
         <Header
-          visible={false}
+          arrowVisible={true}
           valueCarrier={handleBackButton}
           text="Postulantes"
         />
@@ -254,7 +254,7 @@ export default function CallingFullScreen({
       >
         {/**Header */}
         <Header
-          visible={true}
+          arrowVisible={true}
           valueCarrier={handleBackButton}
           text="Perfil del postulante"
         />

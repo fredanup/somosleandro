@@ -3,11 +3,11 @@ import Image from 'next/image';
 import type { ApplicantRoomType } from 'server/routers/room';
 
 export default function Header({
-  visible,
+  arrowVisible,
   text,
   valueCarrier,
 }: {
-  visible: boolean;
+  arrowVisible: boolean;
   text: string;
   valueCarrier: (value: ApplicantRoomType | null) => void;
 }) {
@@ -20,7 +20,9 @@ export default function Header({
       <svg
         viewBox="0 0 448 512"
         className={
-          visible ? `h-6 w-6 fill-white cursor-pointer md:hidden` : `hidden`
+          arrowVisible
+            ? `h-6 w-6 fill-white cursor-pointer md:hidden`
+            : `hidden`
         }
         onClick={() => {
           handleBackClick(null);
