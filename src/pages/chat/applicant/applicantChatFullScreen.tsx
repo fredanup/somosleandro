@@ -70,11 +70,6 @@ export default function ApplicantChatFullScreen({
     }
   }, [messages]);
 
-  if (status === 'loading') {
-    // Aquí puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el estado de autenticación
-    return null;
-  }
-
   //Retorna un objeto con dos objetos en su interior: 1 objeto que tiene todos los mensajes de la sala y 2 un objeto con todos los usuarios
   trpc.room.onSendMessage.useSubscription(undefined, {
     onData(data) {
@@ -98,6 +93,11 @@ export default function ApplicantChatFullScreen({
       console.error('Subscription error:', err);
     },
   });
+
+  if (status === 'loading') {
+    // Aquí puedes mostrar un spinner o cualquier indicador de carga mientras se verifica el estado de autenticación
+    return null;
+  }
 
   const handleBackButton = () => {
     onBackSelect(null);
