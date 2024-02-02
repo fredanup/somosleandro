@@ -8,6 +8,7 @@ import MusicianDetailedCard from 'pages/utilities/musicianDetailedCard  ';
 import TeacherDetailedCard from 'pages/utilities/teacherDetailedCard';
 import Advise from 'pages/utilities/advise';
 import type { CallingType } from 'server/routers/room';
+import Header from 'pages/utilities/header';
 
 export default function ApplyingSmallScreen({
   onCardSelect,
@@ -129,6 +130,11 @@ export default function ApplyingSmallScreen({
   return (
     /**Body*/
     <div>
+      <Header
+        arrowVisible={false}
+        text="Trabajos disponibles"
+        valueCarrier={() => null}
+      />
       {!callings || callings.length === 0 ? (
         <Advise
           text={
@@ -213,7 +219,8 @@ export default function ApplyingSmallScreen({
                       ? 'bg-gray-400'
                       : 'bg-sky-500 hover:bg-sky-400 active:bg-sky-300'
                   }`}
-                  onClick={() => {
+                  onClick={(event) => {
+                    event.stopPropagation();
                     handleSubmit(entry);
                   }}
                 >

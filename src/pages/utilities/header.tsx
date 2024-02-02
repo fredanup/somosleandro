@@ -1,8 +1,9 @@
 import Image from 'next/image';
+import { memo } from 'react';
 
 import type { ApplicantRoomType } from 'server/routers/room';
 
-export default function Header({
+const Header = ({
   arrowVisible,
   text,
   valueCarrier,
@@ -10,13 +11,14 @@ export default function Header({
   arrowVisible: boolean;
   text: string;
   valueCarrier: (value: ApplicantRoomType | null) => void;
-}) {
+}) => {
   //Hook de estado que almacena los datos de un objeto ApplicantRoomType seleccionado por el usuario de una lista de objetos ApplicantRoomType
   const handleBackClick = (value: ApplicantRoomType | null) => {
     valueCarrier(value);
   };
   return (
     <div className="bg-sky-950 rounded-t-lg flex-none flex flex-row items-center justify-between px-4 py-1.5">
+      {/**Botón atrás */}
       <svg
         viewBox="0 0 448 512"
         className={
@@ -40,4 +42,6 @@ export default function Header({
       />
     </div>
   );
-}
+};
+
+export default memo(Header);

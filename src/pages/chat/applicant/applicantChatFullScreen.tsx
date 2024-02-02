@@ -8,8 +8,10 @@ import Warning from 'pages/utilities/warning';
 
 export default function ApplicantChatFullScreen({
   selectedCard,
+  onBackSelect,
 }: {
   selectedCard: ApplicantRoomType | null;
+  onBackSelect: (data: ApplicantRoomType | null) => void;
 }) {
   const { data: session, status } = useSession();
   const [message, setMessage] = useState('');
@@ -97,13 +99,26 @@ export default function ApplicantChatFullScreen({
     },
   });
 
+  const handleBackButton = () => {
+    onBackSelect(null);
+  };
+
   return (
     <>
       {selectedCard ? (
         /**Chat container */
         <div className="flex h-screen w-full flex-col rounded-lg pb-12 md:pb-0">
           {/**Header */}
+
           <div className="flex flex-row gap-4 rounded-t-lg border-b border-gray-200 bg-white px-4 py-2 items-center">
+            {/**Botón atrás */}
+            <svg
+              viewBox="0 0 512 512"
+              className={`h-4 w-4 cursor-pointer md:hidden`}
+              onClick={handleBackButton}
+            >
+              <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+            </svg>
             <Image
               className="h-10 w-10 rounded-full"
               src={selectedCard.Calling.User.image || '/avatar.png'}

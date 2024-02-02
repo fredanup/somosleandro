@@ -11,8 +11,10 @@ import Warning from 'pages/utilities/warning';
 
 export default function CallingFullScreen({
   selectedCard,
+  onBackSelect,
 }: {
   selectedCard: IUserCalling | null;
+  onBackSelect: (data: IUserCalling | null) => void;
 }) {
   /**
    * Declaraciones de hooks de estado
@@ -76,6 +78,7 @@ export default function CallingFullScreen({
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
   useEffect(() => {
     //Función empleada con los argumentos en null con el propósito de limpiar los campos y no se mantegan datos anteriores cuando se esté seleccionando otra card
     handleCardClick(null, null, false);
@@ -157,6 +160,7 @@ export default function CallingFullScreen({
   };
   const handleBackButton = (value: ApplicantRoomType | null) => {
     setAppliantChosen(value);
+    onBackSelect(null);
   };
 
   return (
@@ -255,7 +259,7 @@ export default function CallingFullScreen({
         {/**Header */}
         <Header
           arrowVisible={true}
-          valueCarrier={handleBackButton}
+          valueCarrier={() => setAppliantChosen(null)}
           text="Perfil del postulante"
         />
         {applicantChosen !== null && (

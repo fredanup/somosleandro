@@ -16,8 +16,10 @@ import Message from 'pages/utilities/message';
 
 export default function ChatFullScreen({
   selectedCard,
+  onBackSelect,
 }: {
   selectedCard: IUserCalling | null;
+  onBackSelect: (data: IUserCalling | null) => void;
 }) {
   //Declaración de hook usado para obtener la sesión y de esta manera se sepa quién escribe escribe el texto
   const { data: session, status } = useSession();
@@ -178,6 +180,10 @@ export default function ChatFullScreen({
     },
   });
 
+  const handleBackButton = () => {
+    onBackSelect(null);
+  };
+
   return (
     <>
       {selectedCard ? (
@@ -322,8 +328,8 @@ export default function ChatFullScreen({
             >
               {/**Header */}
               <Header
-                visible={false}
-                valueCarrier={() => null}
+                arrowVisible={true}
+                valueCarrier={handleBackButton}
                 text="Postulantes aprobados"
               />
               <div className="grow overflow-auto rounded-b-lg bg-white">

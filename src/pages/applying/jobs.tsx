@@ -21,13 +21,17 @@ export default function Jobs() {
        * Ocupa toda la pantalla
        */}
       <ScreenDesign
-        header="Trabajos disponibles"
         selectedCard={selectedCard as IUserCalling}
         menu={<Menu optSelected={3} />}
         smallScreenBody={
           <ApplyingSmallScreen onCardSelect={handleCardSelect} />
         }
-        fullScreenBody={<ApplyingFullScreen selectedCard={selectedCard} />}
+        fullScreenBody={
+          <ApplyingFullScreen
+            selectedCard={selectedCard}
+            onBackSelect={handleCardSelect}
+          />
+        }
       />
     </>
   );

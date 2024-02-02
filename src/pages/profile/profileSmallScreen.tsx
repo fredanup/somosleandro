@@ -4,6 +4,7 @@ import DocumentSmallScreen from './document/documentSmallScreen';
 import VideoSmallScreen from './video/videoSmallScreen';
 import Rating from './rating/rating';
 import Spinner from 'pages/utilities/spinner';
+import Header from 'pages/utilities/header';
 
 const ProfileSmallScreen = () => {
   const { data: session, status } = useSession();
@@ -15,6 +16,7 @@ const ProfileSmallScreen = () => {
   }
   return (
     <div>
+      <Header arrowVisible={false} text="Tu perfil" valueCarrier={() => null} />
       <div className="flex flex-col gap-4 p-6">
         {/*Foto y datos personales*/}
         <div className="flex flex-col items-center p-9">

@@ -22,11 +22,15 @@ export default function Calling() {
        * Ocupa toda la pantalla
        */}
       <ScreenDesign
-        header="Tus convocatorias"
-        menu={<Menu optSelected={1} />}
         selectedCard={selectedCard as IUserCalling}
         smallScreenBody={<CallingSmallScreen onCardSelect={handleCardSelect} />}
-        fullScreenBody={<CallingFullScreen selectedCard={selectedCard} />}
+        fullScreenBody={
+          <CallingFullScreen
+            selectedCard={selectedCard}
+            onBackSelect={handleCardSelect}
+          />
+        }
+        menu={<Menu optSelected={1} />}
       />
     </>
   );

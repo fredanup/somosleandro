@@ -9,6 +9,7 @@ import Spinner from 'pages/utilities/spinner';
 import MusicianDetailedCard from 'pages/utilities/musicianDetailedCard  ';
 import TeacherDetailedCard from 'pages/utilities/teacherDetailedCard';
 import Advise from 'pages/utilities/advise';
+import Header from 'pages/utilities/header';
 
 export default function CallingSmallScreen({
   onCardSelect,
@@ -175,6 +176,11 @@ export default function CallingSmallScreen({
 
   return (
     <div>
+      <Header
+        arrowVisible={false}
+        text="Tus convocatorias"
+        valueCarrier={() => null}
+      />
       {/**
        * Botón para agregar nueva convocatoria
        */}

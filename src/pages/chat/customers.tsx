@@ -22,13 +22,17 @@ export default function ApprovedApplicant() {
        * Ocupa toda la pantalla
        */}
       <ScreenDesign
-        header="Tus clientes"
         selectedCard={roomCard as ApplicantRoomType}
         menu={<Menu optSelected={4} />}
         smallScreenBody={
           <CallingAcceptedSmallScreen onCardSelect={handleRoomCardSelect} />
         }
-        fullScreenBody={<ApplicantChatFullScreen selectedCard={roomCard} />}
+        fullScreenBody={
+          <ApplicantChatFullScreen
+            selectedCard={roomCard}
+            onBackSelect={handleRoomCardSelect}
+          />
+        }
       />
     </>
   );

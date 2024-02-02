@@ -4,6 +4,7 @@ import { trpc } from 'utils/trpc';
 import type { ApplicantRoomType } from 'server/routers/room';
 import Spinner from 'pages/utilities/spinner';
 import Advise from 'pages/utilities/advise';
+import Header from 'pages/utilities/header';
 
 export default function CallingAcceptedSmallScreen({
   onCardSelect,
@@ -52,6 +53,11 @@ export default function CallingAcceptedSmallScreen({
   return (
     //Body
     <div>
+      <Header
+        arrowVisible={false}
+        text="Tus clientes"
+        valueCarrier={() => null}
+      />
       {!userApplicationsAccepted || userApplicationsAccepted.length === 0 ? (
         <Advise
           text={

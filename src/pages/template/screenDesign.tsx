@@ -1,39 +1,35 @@
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import Header from 'pages/utilities/header';
-import Spinner from 'pages/utilities/spinner';
-import { useState, type ReactNode, useEffect } from 'react';
+import { useState, type ReactNode, useEffect, memo } from 'react';
 import type { ApplicantRoomType } from 'server/routers/room';
 import type { IUserCalling } from 'utils/auth';
-import { trpc } from 'utils/trpc';
 
 interface BodyProps {
-  header: string;
   smallScreenBody: ReactNode;
   fullScreenBody: ReactNode;
   menu: ReactNode;
   selectedCard: IUserCalling | ApplicantRoomType | null;
 }
 
-export default function ScreenDesign({
-  header,
+const ScreenDesign = ({
   smallScreenBody,
   fullScreenBody,
   menu,
   selectedCard,
-}: BodyProps) {
-  const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
+}: BodyProps) => {
+  const [anchoPantalla, setAnchoPantalla] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 0,
+  );
   //Obtención de la sesión
-  const { data: session, status } = useSession();
+  //const { data: session, status } = useSession();
   //Declaración de router empleado en caso de no obtener la sesión
-  const router = useRouter();
+  //const router = useRouter();
 
+  /*
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null,
   );
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
-
+*/
   useEffect(() => {
     const handleResize = () => {
       setAnchoPantalla(window.innerWidth);
@@ -47,6 +43,7 @@ export default function ScreenDesign({
     };
   }, []);
 
+  /*
   const base64ToUint8Array = (base64: string) => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4);
     const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -186,10 +183,11 @@ export default function ScreenDesign({
   } else {
     subscribeFunction();
   }
-
+*/
   return (
     <>
       <div className="m-0 box-border h-screen w-screen border-0 bg-slate-200 drop-shadow-lg rounded-lg md:flex md:flex-row md:h-screen md:w-screen md:gap-2">
+        {/**Nodo menú */}
         {menu}
         {/*/Contenedor principal se ubica a la derecha del menú en dispositivos de pantalla grande y en toda la pantalla en móviles**/}
         <div className="h-full w-full md:flex md:flex-row md:gap-2">
@@ -201,11 +199,6 @@ export default function ScreenDesign({
                 : 'relative h-full w-full flex flex-col rounded-lg pb-12 drop-shadow-lg md:w-1/3 md:pb-0'
             }`}
           >
-            <Header
-              arrowVisible={false}
-              valueCarrier={() => null}
-              text={header}
-            />
             {/**body */}
             <div className="grow overflow-auto rounded-b-lg bg-white">
               {smallScreenBody}
@@ -227,4 +220,6 @@ export default function ScreenDesign({
       </div>
     </>
   );
-}
+};
+
+export default memo(ScreenDesign);

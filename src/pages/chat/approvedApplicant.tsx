@@ -22,11 +22,15 @@ export default function ApprovedApplicant() {
        * Ocupa toda la pantalla
        */}
       <ScreenDesign
-        header="Salas con postulantes aprobados"
         selectedCard={selectedCard as IUserCalling}
         menu={<Menu optSelected={2} />}
         smallScreenBody={<CallingSmallScreen onCardSelect={handleCardSelect} />}
-        fullScreenBody={<ChatFullScreen selectedCard={selectedCard} />}
+        fullScreenBody={
+          <ChatFullScreen
+            selectedCard={selectedCard}
+            onBackSelect={handleCardSelect}
+          />
+        }
       />
     </>
   );

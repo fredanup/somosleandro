@@ -9,8 +9,10 @@ import TeacherDetailedCard from 'pages/utilities/teacherDetailedCard';
 
 export default function ApplyingFullScreen({
   selectedCard,
+  onBackSelect,
 }: {
   selectedCard: IUserCalling | null;
+  onBackSelect: (data: IUserCalling | null) => void;
 }) {
   const [userId, setUserId] = useState('');
   const [callingId, setCallingId] = useState('');
@@ -31,14 +33,18 @@ export default function ApplyingFullScreen({
     return <Warning text="Ud. debe seleccionar una convocatoria" />;
   }
 
+  const handleBackButton = () => {
+    onBackSelect(null);
+  };
+
   return (
     <>
       <div className="flex flex-col h-full w-full rounded-lg drop-shadow-lg">
         {/**Header */}
         <Header
           text="Perfil del cliente"
-          valueCarrier={() => null}
-          visible={false}
+          valueCarrier={handleBackButton}
+          arrowVisible={true}
         />
         {/**Body */}
         <div className="flex flex-col gap-4 p-6 h-full grow overflow-auto rounded-b-lg bg-white">

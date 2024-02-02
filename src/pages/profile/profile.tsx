@@ -11,7 +11,6 @@ export default function ApprovedApplicant() {
        * Ocupa toda la pantalla
        */}
       <ScreenDesign
-        header="Tu perfil"
         selectedCard={null}
         menu={<Menu optSelected={5} />}
         smallScreenBody={<ProfileSmallScreen />}
