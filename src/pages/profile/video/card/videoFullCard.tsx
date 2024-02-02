@@ -11,7 +11,11 @@ export default function VideoFullCard({
 }) {
   const userData = trpc.user.findOne.useQuery(userId);
   if (!objects || objects.length === 0) {
-    return <li className="text-slate-500">No objects uploaded yet.</li>;
+    return (
+      <li className="text-slate-500">
+        Ups, parece que aún no has subido ningún vídeo
+      </li>
+    );
   }
 
   return (

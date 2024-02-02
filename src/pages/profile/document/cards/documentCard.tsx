@@ -1,5 +1,6 @@
 import type { RouterOutputs } from 'utils/trpc';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export default function DocumentCard({
   objects,
@@ -8,6 +9,7 @@ export default function DocumentCard({
   objects: RouterOutputs['document']['getUserDocuments'];
   userId: string;
 }) {
+  const { data: session } = useSession();
   if (!objects || objects.length === 0) {
     return (
       <div className="flex flex-row gap-4">
@@ -16,7 +18,9 @@ export default function DocumentCard({
         </svg>
 
         <p className="text-slate-500 justify-content">
-          Ups, parece que aún no has subido ningún documento
+          {session?.user?.id === userId
+            ? 'Ups, parece que aún no has subido ningún documento'
+            : 'El postulante aún no ha subido ningún documento'}
         </p>
       </div>
     );

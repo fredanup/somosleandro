@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { trpc } from 'utils/trpc';
 import type { RouterOutputs } from 'utils/trpc';
@@ -9,6 +10,7 @@ export default function VideoSmallCard({
   objects: RouterOutputs['video']['getUserVideos'];
   userId: string;
 }) {
+  const { data: session } = useSession();
   const userData = trpc.user.findOne.useQuery(userId);
   if (!objects || objects.length === 0) {
     return (
@@ -18,7 +20,9 @@ export default function VideoSmallCard({
         </svg>
 
         <p className="text-slate-500 justify-content">
-          Ups, parece que aún no has subido ningún vídeo
+          {session?.user?.id === userId
+            ? 'Ups, parece que aún no has subido ningún documento'
+            : 'El postulante aún no ha subido ningún documento'}
         </p>
       </div>
     );
