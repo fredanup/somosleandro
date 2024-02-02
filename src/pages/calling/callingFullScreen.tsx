@@ -33,7 +33,9 @@ export default function CallingFullScreen({
     null,
   );
   const [notVisible, setNotVisible] = useState(false);
-  const [anchoPantalla, setAnchoPantalla] = useState<number>(window.innerWidth);
+  const [anchoPantalla, setAnchoPantalla] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 0,
+  );
   /**
    * Consultas a base de datos
    */
