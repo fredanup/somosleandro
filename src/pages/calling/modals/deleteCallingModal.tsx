@@ -59,8 +59,8 @@ export default function DeleteCallingModal({
                 <p className="text-sm font-light text-gray-500 text-justify">
                   ¿Esta seguro de eliminar el registro seleccionado? Todos los
                   datos y las conversaciones de esta convocatoria serán
-                  removidos permamente del servidor. Esta acción no se puede
-                  deshacer.
+                  removidos permanentemente del servidor. Esta acción no se
+                  puede deshacer.
                 </p>
                 <div className="mt-4 pt-4 flex flex-row justify-end gap-2 border-t border-gray-200">
                   <button

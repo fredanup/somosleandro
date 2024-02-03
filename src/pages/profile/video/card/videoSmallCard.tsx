@@ -21,8 +21,8 @@ export default function VideoSmallCard({
 
         <p className="text-slate-500 justify-content">
           {session?.user?.id === userId
-            ? 'Ups, parece que aún no has subido ningún documento'
-            : 'El postulante aún no ha subido ningún documento'}
+            ? 'Ups, parece que aún no has subido ningún vídeo'
+            : 'El postulante aún no ha subido ningún vídeo'}
         </p>
       </div>
     );
