@@ -19,6 +19,36 @@ const Menu = ({ optSelected }: { optSelected: number }) => {
     setOpt(optSelected);
   }, [optSelected]);
 
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      // Verificar si la nueva ruta es /applying/jobs
+      if (url === '/applying/jobs') {
+        // Cerrar la aplicación o realizar cualquier otra acción deseada
+        // En este ejemplo, simplemente cerramos la ventana/tab actual
+        window.close();
+      }
+    };
+
+    const handlePopState = () => {
+      // Manejar el evento de retroceso del navegador aquí
+      // Puedes verificar la ruta actual usando router.pathname
+      if (router.pathname === '/applying/jobs') {
+        // Cerrar la aplicación o realizar cualquier otra acción deseada
+        window.close();
+      }
+    };
+
+    // Suscribirse a los eventos
+    router.events.on('routeChangeComplete', handleRouteChange);
+    window.addEventListener('popstate', handlePopState);
+
+    // Limpiar suscripciones al desmontar el componente
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [router]);
+
   return (
     <>
       {/**
