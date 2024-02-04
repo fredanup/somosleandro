@@ -23,7 +23,7 @@ export default function Home() {
     }
     if (session) {
       // Si el usuario está autenticado, redirigir a la página protegida
-      router.replace('/applying/jobs').catch((error) => {
+      router.replace('/calling/calling').catch((error) => {
         // Manejar cualquier error que pueda ocurrir al redirigir
         console.error('Error al redirigir a la página principal:', error);
       });
