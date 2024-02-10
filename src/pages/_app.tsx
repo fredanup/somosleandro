@@ -50,6 +50,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta property="og:site_name" content="My awesome PWA app" />
         <meta property="og:url" content="https://yourdomain.com" />
         <meta property="og:image" content="/icons/og.png" />
+        <meta
+          name="facebook-domain-verification"
+          content="xolr78f1svxuohzdi82c1zkmuq0zpl"
+        />
         {/* add the following only if you want to add a startup image for Apple devices. */}
         <link
           rel="apple-touch-startup-image"
