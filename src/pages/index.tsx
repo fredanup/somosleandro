@@ -33,7 +33,7 @@ export default function Home() {
       ) : (
         <div className="h-screen w-screen bg-white flex flex-row items-end pb-12 justify-center bg-[url('/images/wallpaper.jpg')] bg-cover bg-center">
           {/**Contenedor principal*/}
-          <div className="flex flex-col gap-9 p-9 bg-white rounded-lg drop-shadow-lg w-3/4 opacity-90">
+          <div className="flex flex-col gap-9 p-9 bg-white rounded-lg drop-shadow-lg opacity-90">
             {/**Header */}
             <div className="flex-none items-center flex flex-col gap-4">
               <h1 className="font-poppins text-3xl text-gray-600 font-bold">
@@ -46,7 +46,7 @@ export default function Home() {
                 height={100}
                 alt="Logo"
               />
-              <p className="text-base font-light text-gray-500">
+              <p className="text-base font-light text-gray-500 text-center">
                 Seleccione un medio de autenticación
               </p>
             </div>
