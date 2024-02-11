@@ -6,7 +6,7 @@ services:
     env: node
     plan: free
     # NODE_ENV is development here in order for pnpm to install dev deps
-    buildCommand: NODE_ENV=development npm install && npm build
+    buildCommand: NODE_ENV=development npm install && npm run build
     startCommand: npm start
     healthCheckPath: /api/trpc/healthcheck
     # Preview Environment Initialization
