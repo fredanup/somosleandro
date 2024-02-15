@@ -55,7 +55,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         />
         <meta property="og:site_name" content="Somos Leandro" />
         <meta property="og:url" content="https://www.somosleandro.com" />
-        <meta property="og:image" content="/icons/og.png" />
+        <meta property="og:image" content="/icons/logo.png" />
         <meta
           name="facebook-domain-verification"
           content="xolr78f1svxuohzdi82c1zkmuq0zpl"
