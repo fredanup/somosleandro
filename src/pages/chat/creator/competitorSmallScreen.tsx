@@ -144,9 +144,7 @@ export default function CompetitorSmallScreen({
 
       {!userCallings || userCallings.length === 0 ? (
         <Advise
-          text={
-            'Ups, parece que usted no ha creado ninguna convocatoria. Pulse el botón (+) para crear una'
-          }
+          text={'Debes crear al menos una convocatoria para habilitar una sala'}
         />
       ) : (
         <>

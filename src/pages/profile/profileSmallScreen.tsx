@@ -3,7 +3,7 @@ import Image from 'next/image';
 import DocumentSmallScreen from './document/documentSmallScreen';
 import VideoSmallScreen from './video/videoSmallScreen';
 import Rating from './rating/rating';
-import Spinner from 'pages/utilities/spinner';
+
 import Header from 'pages/utilities/header';
 import { useState } from 'react';
 import UserData from './user/userData';
@@ -12,7 +12,7 @@ const ProfileSmallScreen = () => {
   //Hook de estado que controla la apertura del modal de creación de documentos
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   //Función de apertura del modal ChooseCallingModal
   const openModal = () => {
@@ -24,11 +24,6 @@ const ProfileSmallScreen = () => {
     setIsOpen(false);
   };
 
-  //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
-  if (status === 'loading') {
-    // Se muestra el spinner mientra se verifica el estado de autenticación
-    return <Spinner text="Cargando sesión" />;
-  }
   return (
     <>
       <Header arrowVisible={false} text="Tu perfil" valueCarrier={() => null} />

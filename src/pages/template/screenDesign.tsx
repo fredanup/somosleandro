@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import Spinner from 'pages/utilities/spinner';
 import { useState, type ReactNode, useEffect, memo } from 'react';
 import type { ApplicantRoomType } from 'server/routers/room';
 import type { IUserCalling } from 'utils/auth';
@@ -20,7 +21,7 @@ const ScreenDesign = ({
   //Declaración de variable de estado cuyo valor inicial va a depender de dónde se ejecuta. Si es en el cliente su valor será el ancho de la ventana del navegador
   //pero si está en el servidor será 0
   //Obtenemos la sesión de la bd
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   //Inicialización de ruta
   const router = useRouter();
   const [anchoPantalla, setAnchoPantalla] = useState<number>(
@@ -39,13 +40,6 @@ const ScreenDesign = ({
     useState<ServiceWorkerRegistration | null>(null);
 */
   useEffect(() => {
-    if (!session) {
-      // Si el usuario está autenticado, redirigir a la página protegida
-      router.replace('/').catch((error) => {
-        // Manejar cualquier error que pueda ocurrir al redirigir
-        console.error('Error al redirigir a la página principal:', error);
-      });
-    }
     //Actualiza el ancho de la pantalla cada que se cambia de ancho
     const handleResize = () => {
       setAnchoPantalla(window.innerWidth);
@@ -57,8 +51,32 @@ const ScreenDesign = ({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [router, session]);
+  }, []);
 
+  useEffect(() => {
+    if (status === 'loading') {
+      return; // Si la sesión está cargando, no hagas nada
+    }
+    if (!session) {
+      // Si el usuario no está autenticado, redirige a la página de inicio de sesión
+      router.replace('/login').catch((error) => {
+        console.error(
+          'Error al redirigir a la página de inicio de sesión:',
+          error,
+        );
+      });
+    }
+  }, [status, session, router]);
+
+  if (status === 'loading') {
+    // Muestra un spinner de carga mientras se carga la sesión
+    return <Spinner text="Cargando sesión" />;
+  }
+
+  if (!session) {
+    // Si la sesión no está disponible, no renderices nada
+    return null;
+  }
   /*
   const base64ToUint8Array = (base64: string) => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4);

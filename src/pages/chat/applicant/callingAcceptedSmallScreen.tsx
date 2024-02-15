@@ -61,7 +61,7 @@ export default function CallingAcceptedSmallScreen({
       {!userApplicationsAccepted || userApplicationsAccepted.length === 0 ? (
         <Advise
           text={
-            'Que mala suerte, aún no tienes un cliente interesado pero sigue intentando puedes mejorar tu perfil'
+            'Que mala suerte, aún no tienes un cliente interesado en ti pero sigue intentando puedes mejorar tu perfil'
           }
         />
       ) : (
