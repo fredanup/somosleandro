@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 import { trpc } from 'utils/trpc';
 import type { RouterOutputs } from 'utils/trpc';
 
@@ -10,6 +11,16 @@ export default function VideoFullCard({
   userId: string;
 }) {
   const userData = trpc.user.findOne.useQuery(userId);
+  const videoRef = useRef<HTMLIFrameElement>(null);
+  useEffect(() => {
+    if (!objects || objects.length === 0 || !videoRef.current) return;
+
+    videoRef.current.contentWindow?.postMessage(
+      '{"event":"command","func":"pauseVideo","args":""}',
+      '*',
+    );
+  }, [objects]);
+
   if (!objects || objects.length === 0) {
     return (
       <li className="text-slate-500">
@@ -17,7 +28,6 @@ export default function VideoFullCard({
       </li>
     );
   }
-
   return (
     <>
       {objects.map((object) => (
@@ -30,9 +40,10 @@ export default function VideoFullCard({
               userId || ''
             }/${object?.key}`}
             title={object?.key}
-            className="m-auto w-full"
+            className="m-auto w-full rounded-t-lg"
             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share;"
             allowFullScreen
+            ref={videoRef}
           ></iframe>
 
           <div className="ml-4 mr-4 flex">

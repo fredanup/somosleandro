@@ -18,6 +18,10 @@ export default function CallingAcceptedSmallScreen({
   const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
   //EL usuario actual elige a qué sala entrar y da a conocer a los oyentes la sala a la que entró
   const updateRoom = trpc.user.updateRoom.useMutation();
+  //Hook de estado utilizado para recordar qué card acaba de seleccionar el usuario
+  const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
+    null,
+  );
   //Constantes para la comparación con registros de la base de datos
   const musico = 'Músico(s) para evento';
   const docente = 'Clases de música';
@@ -46,8 +50,12 @@ export default function CallingAcceptedSmallScreen({
     return <Spinner text="Cargando registros" />;
   }
 
-  const handleCardClick = (data: ApplicantRoomType | null) => {
+  const handleCardClick = (
+    data: ApplicantRoomType | null,
+    index: number | null,
+  ) => {
     onCardSelect(data);
+    setSelectedCardIndex(index);
   };
 
   return (
@@ -70,9 +78,11 @@ export default function CallingAcceptedSmallScreen({
           {userApplicationsAccepted?.map((entry, index) => (
             <div
               key={index}
-              className="cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg bg-white m-4"
+              className={`cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg m-4 ${
+                selectedCardIndex === index ? 'bg-sky-100' : ' bg-white'
+              }`}
               onClick={() => {
-                handleCardClick(entry);
+                handleCardClick(entry, index);
                 updateRoom.mutate({ roomId: entry.id });
               }}
             >

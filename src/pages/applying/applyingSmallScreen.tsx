@@ -21,6 +21,10 @@ export default function ApplyingSmallScreen({
   const { data: userCallings, isLoading } = trpc.calling.getCallings.useQuery();
   //Consulta a la base de datos por las convocatorias a las cuales el usuario de la sesión actual se ha presentado
   const myApplicants = trpc.applicantRoom.getOnlyMyApplicants.useQuery();
+  //Hook de estado utilizado para recordar qué card acaba de seleccionar el usuario
+  const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
+    null,
+  );
   //Procedimiento que crea una nueva postulación, el argumento está pendiente
   const createApplicant = trpc.applicantRoom.createApplicant.useMutation({
     onSettled: async () => {
@@ -87,8 +91,9 @@ export default function ApplyingSmallScreen({
     },
   });
 
-  const handleCardClick = (data: IUserCalling) => {
+  const handleCardClick = (data: IUserCalling, index: number | null) => {
     onCardSelect(data);
+    setSelectedCardIndex(index);
   };
 
   const handleSubmit = (calling: IUserCalling) => {
@@ -148,8 +153,10 @@ export default function ApplyingSmallScreen({
             //Contenedor principal
             <div
               key={index}
-              className="cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg bg-white m-4"
-              onClick={() => handleCardClick(entry)}
+              className={`cursor-pointer flex flex-col gap-4 p-6 rounded-lg drop-shadow-lg m-4 ${
+                selectedCardIndex === index ? 'bg-sky-100' : ' bg-white'
+              }`}
+              onClick={() => handleCardClick(entry, index)}
             >
               {/**Header */}
               <div className="flex flex-row gap-4 items-center">

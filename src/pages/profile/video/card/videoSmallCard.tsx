@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 import { trpc } from 'utils/trpc';
 import type { RouterOutputs } from 'utils/trpc';
 
@@ -12,6 +13,17 @@ export default function VideoSmallCard({
 }) {
   const { data: session } = useSession();
   const userData = trpc.user.findOne.useQuery(userId);
+  const videoRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    if (!objects || objects.length === 0 || !videoRef.current) return;
+
+    videoRef.current.contentWindow?.postMessage(
+      '{"event":"command","func":"pauseVideo","args":""}',
+      '*',
+    );
+  }, [objects]);
+
   if (!objects || objects.length === 0) {
     return (
       <div className="flex flex-row gap-4">
@@ -42,6 +54,7 @@ export default function VideoSmallCard({
             title={object?.key}
             className="h-40 w-full rounded-t-lg"
             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            ref={videoRef}
           ></iframe>
           <div className="px-4 py-2 flex flex-row items-center gap-4">
             <Image
