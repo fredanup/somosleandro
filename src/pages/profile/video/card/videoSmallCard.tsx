@@ -53,7 +53,8 @@ export default function VideoSmallCard({
             }/${object?.key}`}
             title={object?.key}
             className="h-40 w-full rounded-t-lg"
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share;"
+            allowFullScreen
             ref={videoRef}
           ></iframe>
           <div className="px-4 py-2 flex flex-row items-center gap-4">
