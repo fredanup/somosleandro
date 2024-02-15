@@ -184,6 +184,24 @@ export default function ChatFullScreen({
     onBackSelect(null);
   };
 
+  // Función para enviar el mensaje
+  const sendMessage = () => {
+    // Se crea el MENSAJE Y SE EMITE EL EVENTO SEND_MESSAGE QUE TIENE ASOCIADO EL MENSAJE. roomId ES OBTENIDO CUANDO EL USUARIO HACE CLIC EN UNA SALA Y EL TEXTO DE LO INGRESADO POR EL USUARIO
+    // AL EMITIRSE EL EVENTO SE MANDA EL MENSAJE CREADO Y SE LISTA A TODOS LOS USUARIOS POR LA SUSCRIPCIÓN. ENTONCES ES POSIBLE OBTENERSE EL ULTIMO MENSAJE
+    // DE ESTA MANERA SE VA LLENANDO EL BUZÓN DE MENSAJES
+    sendMessageMutation.mutate({
+      applicantRoomId: roomId,
+      text: message,
+    });
+
+    // SE GUARDA EL MENSAJE EN BASE DE DATOS Y SE LIMPIA LOS DATOS DE MESSAGE PARA GUARDAR O ENVIAR OTRO MENSAJE
+    addMessage.mutate({
+      text: message,
+      roomId,
+    });
+    setMessage('');
+  };
+
   return (
     <>
       {selectedCard ? (
@@ -261,7 +279,7 @@ export default function ChatFullScreen({
                   </div>
                 </div>
                 {/**Input text */}
-                <div className="flex flex-row gap-4 w-full items-center rounded-b-lg bg-white p-3">
+                <div className="flex flex-row gap-4 w-full items-center rounded-b-lg bg-white p-3 mb-2">
                   <svg viewBox="0 0 512 512" className="h-6 w-6 cursor-pointer">
                     <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
                   </svg>
@@ -297,8 +315,12 @@ export default function ChatFullScreen({
                       }
                     }}
                   />
-                  <svg viewBox="0 0 512 512" className="h-6 w-6 cursor-pointer">
-                    <path d="M192 0C139 0 96 43 96 96V256c0 53 43 96 96 96s96-43 96-96V96c0-53-43-96-96-96zM64 216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 89.1 66.2 162.7 152 174.4V464H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h72 72c13.3 0 24-10.7 24-24s-10.7-24-24-24H216V430.4c85.8-11.7 152-85.3 152-174.4V216c0-13.3-10.7-24-24-24s-24 10.7-24 24v40c0 70.7-57.3 128-128 128s-128-57.3-128-128V216z" />
+                  <svg
+                    viewBox="0 0 576 512"
+                    className="h-6 w-6 cursor-pointer fill-sky-500"
+                    onClick={sendMessage}
+                  >
+                    <path d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z" />
                   </svg>
                 </div>
                 {isOpen && (
