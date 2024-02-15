@@ -12,7 +12,9 @@ const Header = ({
   text: string;
   valueCarrier: (value: ApplicantRoomType | null) => void;
 }) => {
-  //Hook de estado que almacena los datos de un objeto ApplicantRoomType seleccionado por el usuario de una lista de objetos ApplicantRoomType
+  /*Hook de estado que almacena los datos de un objeto ApplicantRoomType seleccionado por el usuario de una lista de objetos ApplicantRoomType,
+    para enviar esos datos al componente que lo está llamando
+  */
   const handleBackClick = (value: ApplicantRoomType | null) => {
     valueCarrier(value);
   };

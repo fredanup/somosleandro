@@ -30,13 +30,13 @@ export default function CallingSmallScreen({
     [key: string]: number;
   }>({});
 
-  //Selección de registro en interfaz. Hook pendiente por revisar
+  //Hook de estado que almacena el registro seleccionado
   const [selectedCalling, setSelectedCalling] = useState<IEditCalling | null>(
     null,
   );
-  //Control de expansión de llave angular
+  //Hook de estado que controla la expansión de llave angular
   const [expandedStates, setExpandedStates] = useState<boolean[]>([]);
-  //Hook de estado utilizado para recordar en qué card se encuentra el usuario
+  //Hook de estado utilizado para recordar qué card acaba de seleccionar el usuario
   const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(
     null,
   );
@@ -50,11 +50,11 @@ export default function CallingSmallScreen({
   /**
    * Consultas a base de datos
    */
-  //Obtener las convocatorias creadas por el usuario actual
+  //Obtener todas las convocatorias creadas por el usuario actual
   const { data: userCallings, isLoading } =
     trpc.calling.getUserCallings.useQuery();
 
-  //Obtener las postulaciones por convocatoria
+  //Obtener las todas postulaciones existentes ya sean aceptadas o pendientes de evaluación sin importar de qué convocatoria
   const applicantsAvailable =
     trpc.applicantRoom.getApplicantsAvailable.useQuery();
 
@@ -65,11 +65,11 @@ export default function CallingSmallScreen({
   const openModal = () => {
     setIsOpen(true);
   };
-  //Función de apertura del modal ChooseCallingModal
+  //Función de cierre del modal ChooseCallingModal
   const closeModal = () => {
     setIsOpen(false);
   };
-  //Función de apertura de modal de edición
+  //Función de selección de registro y apertura de modal de edición
   const openEditModal = (calling: IEditCalling) => {
     setSelectedCalling(calling);
     setEditIsOpen(true);
@@ -78,7 +78,7 @@ export default function CallingSmallScreen({
   const closeEditModal = () => {
     setEditIsOpen(false);
   };
-  //Función de apertura de modal de eliminación
+  //Función de selección de registro y apertura de modal de eliminación
   const openDeleteModal = (calling: IEditCalling) => {
     setSelectedCalling(calling);
     setDeleteIsOpen(true);
@@ -94,26 +94,27 @@ export default function CallingSmallScreen({
   useEffect(() => {
     // Si es que hay registros en bd
     if (userCallings) {
-      //Establece el tamaño del arreglo y da el valor inicial de false a cada registro que controla la llave angular
+      //Establece el tamaño del arreglo y da el valor inicial de false a cada índice que controla la llave angular
       setExpandedStates(Array(userCallings.length).fill(false));
-      //Se establece una variable temporal para almacenar el tamaño por cada convocatoria el cual se pasará finalmente al hook setApplicantNumber
+      //Se establece una variable temporal para almacenar el número de participantes por cada convocatoria el cual se pasará finalmente a la función del hook setApplicantNumber
       const totals: { [key: string]: number } = {};
-      //Se toma a cada registro de las postulaciones y se compara con cada registro de las convocatorias del usuario actual para saber qué
+      //Se toma a cada registro de las postulaciones y se compara con cada registro de las convocatorias creadas por el usuario actual para saber qué
       //postulaciones corresponden a qué convocatorias
       applicantsAvailable.data?.forEach((applicant) => {
         const matchingApplicant = userCallings?.find(
           (userCalling) => userCalling.id === applicant.callingId,
         );
-        // Verificar si existe un usuario llamador correspondiente
+        // Verificar si existe la coincidencia, es decir, si la postulación corresponde a la convocatoria
         if (matchingApplicant) {
           //De existir una coincidencia se crea un acumulador que cuenta el número de postulaciones por convocatoria, si no hay ninguna coincidencia para una convocatoria se establece el valor 0
           totals[matchingApplicant.id.toString()] =
             (totals[matchingApplicant.id.toString()] || 0) + 1;
         }
       });
-      //Se guarda el total de postulaciones de cada convocatoria
+      //Se guarda el total de postulaciones por cada convocatoria creada por el usuario
       setApplicantNumber(totals);
     }
+    //Se actualiza si hay nuevos postulantes o si el usuario crea una nueva convocatoria
   }, [applicantsAvailable.data, userCallings]);
 
   /**
@@ -133,9 +134,9 @@ export default function CallingSmallScreen({
 
   trpc.applicantRoom.onApplicantChange.useSubscription(undefined, {
     onData(data) {
-      //Se establece una variable temporal para almacenar el tamaño por cada convocatoria el cual se pasará finalmente al hook setApplicantNumber
+      //Se establece una variable temporal para almacenar el número de participantes por cada convocatoria el cual se pasará finalmente a la función del hook setApplicantNumber
       const totals: { [key: string]: number } = {};
-      //Se toma a cada registro de las postulaciones y se compara con cada registro de las convocatorias del usuario actual para saber qué
+      //Se toma a cada registro de las postulaciones y se compara con cada registro de las convocatorias creadas por el usuario actual para saber qué
       //postulaciones corresponden a qué convocatorias
       data?.forEach((applicant) => {
         const matchingApplicant = userCallings?.find(
@@ -156,12 +157,13 @@ export default function CallingSmallScreen({
     },
   });
 
+  //Nota: En cuanto a jerarquía de tipos tenemos: De más simple a más complejo-->Calling-->Edit-->UserCalling
   /**
    *
-   * @param data Parámetro utilizado para recibir los datos del registro sobre el cual el usuario hizo clic y pasarlos a la función
-   * onCardSelect que es parámetro del componente hijo y es enviado como argumento desde el componente padre mediante la función handleCardSelect
-   * definido en el padre para poder obtener los datos del hijo y almacenarlos en la variable de estado selectedCard mediante la función de estado
-   * setSelectedCard. Además guarda el valor del índice seleccionado en la card por el usuario. Este valor se utilizará posteriormente para dar color
+   * @param data Parámetro que recibe el registro seleccionado por el usuario.
+   * Dicho registro se envía a la función onCardSelect que es argumento del componente y es puente hacia el componente que lo está llamando
+   * de esta manera el componente que lo llama tiene acceso a esta información.
+   * Además guarda el valor del índice de la card seleccionada por el usuario. Este valor se utilizará posteriormente para dar color
    * a la card y el usuario entienda en qué card se encuentra
    */
   const handleCardClick = (data: IUserCalling, index: number | null) => {
@@ -175,7 +177,7 @@ export default function CallingSmallScreen({
   }
 
   return (
-    <div>
+    <>
       <Header
         arrowVisible={false}
         text="Tus convocatorias"
@@ -191,10 +193,10 @@ export default function CallingSmallScreen({
       >
         <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
       </svg>
-      {!userCallings || userCallings.length === 0 ? (
+      {userCallings == null || userCallings.length === 0 ? (
         <Advise
           text={
-            'Ups, parece que usted no ha creado ninguna convocatoria. Pulse el botón (+) para crear una'
+            'Ups, parece que usted no ha creado ninguna convocatoria. Pulse el botón (+) para crear una convocatoria'
           }
         />
       ) : (
@@ -352,6 +354,6 @@ export default function CallingSmallScreen({
       )}
       {/**Ventana modal que se abre cuando se hace clic en agregar */}
       <ChooseCallingModal isOpen={isOpen} onClose={closeModal} />
-    </div>
+    </>
   );
 }

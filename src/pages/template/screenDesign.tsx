@@ -1,3 +1,5 @@
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import { useState, type ReactNode, useEffect, memo } from 'react';
 import type { ApplicantRoomType } from 'server/routers/room';
 import type { IUserCalling } from 'utils/auth';
@@ -15,6 +17,12 @@ const ScreenDesign = ({
   menu,
   selectedCard,
 }: BodyProps) => {
+  //Declaración de variable de estado cuyo valor inicial va a depender de dónde se ejecuta. Si es en el cliente su valor será el ancho de la ventana del navegador
+  //pero si está en el servidor será 0
+  //Obtenemos la sesión de la bd
+  const { data: session } = useSession();
+  //Inicialización de ruta
+  const router = useRouter();
   const [anchoPantalla, setAnchoPantalla] = useState<number>(
     typeof window !== 'undefined' ? window.innerWidth : 0,
   );
@@ -31,6 +39,14 @@ const ScreenDesign = ({
     useState<ServiceWorkerRegistration | null>(null);
 */
   useEffect(() => {
+    if (!session) {
+      // Si el usuario está autenticado, redirigir a la página protegida
+      router.replace('/').catch((error) => {
+        // Manejar cualquier error que pueda ocurrir al redirigir
+        console.error('Error al redirigir a la página principal:', error);
+      });
+    }
+    //Actualiza el ancho de la pantalla cada que se cambia de ancho
     const handleResize = () => {
       setAnchoPantalla(window.innerWidth);
     };
@@ -41,7 +57,7 @@ const ScreenDesign = ({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [router, session]);
 
   /*
   const base64ToUint8Array = (base64: string) => {
@@ -184,33 +200,39 @@ const ScreenDesign = ({
     subscribeFunction();
   }
 */
+
   return (
     <>
-      <div className="m-0 box-border h-screen w-screen border-0 bg-slate-200 drop-shadow-lg rounded-lg md:flex md:flex-row md:h-screen md:w-screen md:gap-2">
+      <div className="m-0 box-border h-screen w-screen border-0 bg-slate-200 md:flex md:flex-row md:gap-2">
         {/**Nodo menú */}
         {menu}
         {/*/Contenedor principal se ubica a la derecha del menú en dispositivos de pantalla grande y en toda la pantalla en móviles**/}
         <div className="h-full w-full md:flex md:flex-row md:gap-2">
-          {/* Contenedor izquierdo [SmallScreen].Dato importante: El padding de bottom es bastante para que el menú no tape al contenido */}
+          {/* Contenedor izquierdo [SmallScreen].Dato importante: El padding de bottom es bastante para que el menú no tape al contenido 
+            El contenedor izquierdo se oculta si el ancho de la ventana es pequeño y se tiene seleccionado a una card
+        */}
           <div
             className={`${
               anchoPantalla <= 768 && selectedCard !== null
                 ? 'hidden'
-                : 'relative h-full w-full flex flex-col rounded-lg pb-12 drop-shadow-lg md:w-1/3 md:pb-0'
+                : 'relative h-full w-full flex flex-col pb-12 md:drop-shadow-lg md:rounded-lg md:w-1/3 md:pb-0'
             }`}
           >
             {/**body */}
+
             <div className="grow overflow-auto rounded-b-lg bg-white">
               {smallScreenBody}
             </div>
           </div>
 
-          {/* Contenedor derecho */}
+          {/* Contenedor derecho [FullScreen]. El contenedor derecho se muestra si el ancho de la ventana es pequeño y se tiene seleccionado a una card
+            de lo contrario, 
+        */}
           <div
             className={`${
               anchoPantalla <= 768 && selectedCard !== null
                 ? 'w-full'
-                : 'hidden md:block md:order-last md:flex md:flex-row md:gap-2 md:w-2/3 md:h-full md:rounded-lg md:drop-shadow-lg'
+                : 'hidden md:block md:flex md:flex-row md:gap-2 md:w-2/3 md:h-full md:rounded-lg md:drop-shadow-lg'
             }`}
           >
             {/**body */}
