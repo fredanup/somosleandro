@@ -151,6 +151,7 @@ export default function ApplicantChatFullScreen({
               </p>
               <p className="text-xs font-medium text-gray-400">En línea</p>
             </div>
+            {/*
             <div className="ml-auto flex flex-row items-center gap-4">
               <svg viewBox="0 0 512 512" className="h-4 w-4 cursor-pointer">
                 <path d="M149.1 64.8L138.7 96H64C28.7 96 0 124.7 0 160V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V160c0-35.3-28.7-64-64-64H373.3L362.9 64.8C356.4 45.2 338.1 32 317.4 32H194.6c-20.7 0-39 13.2-45.5 32.8zM256 192a96 96 0 1 1 0 192 96 96 0 1 1 0-192z" />
@@ -164,6 +165,7 @@ export default function ApplicantChatFullScreen({
                 <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
               </svg>
             </div>
+            */}
           </div>
 
           {/**Chat space */}
@@ -180,12 +182,14 @@ export default function ApplicantChatFullScreen({
           </div>
           {/**Input text */}
           <div className="border-b-1 flex w-full flex-row items-center gap-3 rounded-b-lg bg-white p-3 mb-2">
+            {/*
             <svg viewBox="0 0 512 512" className="h-6 w-6 cursor-pointer">
               <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
             </svg>
             <svg viewBox="0 0 512 512" className="h-6 w-6 cursor-pointer">
               <path d="M364.2 83.8c-24.4-24.4-64-24.4-88.4 0l-184 184c-42.1 42.1-42.1 110.3 0 152.4s110.3 42.1 152.4 0l152-152c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-152 152c-64 64-167.6 64-231.6 0s-64-167.6 0-231.6l184-184c46.3-46.3 121.3-46.3 167.6 0s46.3 121.3 0 167.6l-176 176c-28.6 28.6-75 28.6-103.6 0s-28.6-75 0-103.6l144-144c10.9-10.9 28.7-10.9 39.6 0s10.9 28.7 0 39.6l-144 144c-6.7 6.7-6.7 17.7 0 24.4s17.7 6.7 24.4 0l176-176c24.4-24.4 24.4-64 0-88.4z" />
             </svg>
+            */}
             <input
               className="w-full rounded-lg border px-3 py-2 leading-tight text-black shadow focus:outline-none"
               type="text"

@@ -122,140 +122,151 @@ const EventCallingModal = ({
     return null; // No renderizar el modal si no está abierto
   }
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform z-30 h-5/6 w-11/12 overflow-auto rounded-lg bg-white p-6"
-    >
-      <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-medium text-black">Crear convocatoria</h1>
-        <p className="text-justify text-base font-light text-gray-500">
-          Complete cada uno de los campos presentados a continuación:
-        </p>
-        {/**CUERPO 1*/}
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">
-            Nro de postulantes:
-          </p>
-          <input
-            type="text"
-            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
-            value={nroPostulantes}
-            onChange={(event) => setNroPostulante(event.target.value)}
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">Fecha límite:</p>
-          <DatePicker
-            id="datepicker1"
-            selected={fechaLimitePostulacion}
-            onChange={handlePostulacionDateChange}
-            dateFormat="dd/MM/yyyy"
-            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
-            required
-          />
-        </div>
-        {/**CUERPO 2*/}
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">Tipo de evento:</p>
-          <input
-            type="text"
-            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
-            value={tipoEvento}
-            onChange={(event) => setTipoEvento(event.target.value)}
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">
-            Fecha del evento:
-          </p>
-          <DatePicker
-            id="datepicker2"
-            selected={fechaEvento}
-            dateFormat="dd/MM/yyyy"
-            onChange={handleEventoDateChange}
-            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">
-            Lugar del evento:
-          </p>
-          <input
-            type="text"
-            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
-            value={direccionEvento}
-            onChange={(event) => setDireccionEvento(event.target.value)}
-            required
-          />
-        </div>
-        {/**CUERPO 3*/}
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">
-            Duración del servicio:
-          </p>
-          <input
-            type="text"
-            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
-            value={duracionServicio}
-            onChange={(event) => setDuracionServicio(event.target.value)}
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">
-            Tipo de músico requerido:
-          </p>
-          <input
-            type="text"
-            className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
-            value={musicoRequerido}
-            onChange={(event) => setMusicoRequerido(event.target.value)}
-            required
-          />
-        </div>
-        <div className="flex flex-row items-center justify-between">
-          <p className="text-sm font-medium text-slate-900">
-            Cuenta con equipo de sonido:
-          </p>
-          <Toggle
-            className={
-              'text-sm font-medium text-white inline-block align-middle '
-            }
-            checked={tieneEquipoSonido}
-            icons={{
-              checked: 'Si',
-              unchecked: 'No',
-            }}
-            onChange={handleToggle}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm font-medium text-slate-900">
-            Detalles adicionales:
-          </p>
-          <textarea
-            value={detalles}
-            onChange={(event) => setDetalles(event.target.value)}
-            className="h-14 w-full rounded-md border border-gray-300 p-2"
-          ></textarea>
-        </div>
-      </div>
+  //Estilizado del fondo detrás del modal. Evita al usuario salirse del modal antes de elegir alguna opción
+  const overlayClassName = isOpen
+    ? 'fixed top-0 left-0 w-full h-full rounded-lg bg-gray-800 opacity-60 z-20'
+    : 'hidden';
 
-      <div className="mt-4 pt-4 flex flex-row justify-end gap-2 border-t border-gray-200">
-        <button
-          type="button"
-          className="rounded-lg border bg-gray-500 px-4 py-1 text-base font-medium text-white"
-          onClick={onClose}
-        >
-          Cancelar
-        </button>
-        <CommitButton />
-      </div>
-    </form>
+  return (
+    <>
+      {/* Fondo borroso y no interactivo */}
+      <div className={overlayClassName}></div>
+      <form
+        onSubmit={handleSubmit}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform z-30 h-5/6 w-11/12 overflow-auto rounded-lg bg-white p-6"
+      >
+        <div className="flex flex-col gap-4">
+          <h1 className="text-xl font-medium text-black">Crear convocatoria</h1>
+          <p className="text-justify text-base font-light text-gray-500">
+            Complete cada uno de los campos presentados a continuación:
+          </p>
+          {/**CUERPO 1*/}
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">
+              Nro de postulantes:
+            </p>
+            <input
+              type="text"
+              className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+              value={nroPostulantes}
+              onChange={(event) => setNroPostulante(event.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">Fecha límite:</p>
+            <DatePicker
+              id="datepicker1"
+              selected={fechaLimitePostulacion}
+              onChange={handlePostulacionDateChange}
+              dateFormat="dd/MM/yyyy"
+              className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+              required
+            />
+          </div>
+          {/**CUERPO 2*/}
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">
+              Tipo de evento:
+            </p>
+            <input
+              type="text"
+              className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+              value={tipoEvento}
+              onChange={(event) => setTipoEvento(event.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">
+              Fecha del evento:
+            </p>
+            <DatePicker
+              id="datepicker2"
+              selected={fechaEvento}
+              dateFormat="dd/MM/yyyy"
+              onChange={handleEventoDateChange}
+              className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 shadow focus:outline-none"
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">
+              Lugar del evento:
+            </p>
+            <input
+              type="text"
+              className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+              value={direccionEvento}
+              onChange={(event) => setDireccionEvento(event.target.value)}
+              required
+            />
+          </div>
+          {/**CUERPO 3*/}
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">
+              Duración del servicio:
+            </p>
+            <input
+              type="text"
+              className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+              value={duracionServicio}
+              onChange={(event) => setDuracionServicio(event.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">
+              Tipo de músico requerido:
+            </p>
+            <input
+              type="text"
+              className="focus:shadow-outline w-full appearance-none rounded-lg border px-2 py-1 leading-tight text-gray-700 focus:outline-none"
+              value={musicoRequerido}
+              onChange={(event) => setMusicoRequerido(event.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-row items-center justify-between">
+            <p className="text-sm font-medium text-slate-900">
+              Cuenta con equipo de sonido:
+            </p>
+            <Toggle
+              className={
+                'text-sm font-medium text-white inline-block align-middle '
+              }
+              checked={tieneEquipoSonido}
+              icons={{
+                checked: 'Si',
+                unchecked: 'No',
+              }}
+              onChange={handleToggle}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="text-sm font-medium text-slate-900">
+              Detalles adicionales:
+            </p>
+            <textarea
+              value={detalles}
+              onChange={(event) => setDetalles(event.target.value)}
+              className="h-14 w-full rounded-md border border-gray-300 p-2"
+            ></textarea>
+          </div>
+        </div>
+
+        <div className="mt-4 pt-4 flex flex-row justify-end gap-2 border-t border-gray-200">
+          <button
+            type="button"
+            className="rounded-lg border bg-gray-500 px-4 py-1 text-base font-medium text-white"
+            onClick={onClose}
+          >
+            Cancelar
+          </button>
+          <CommitButton />
+        </div>
+      </form>
+    </>
   );
 };
 

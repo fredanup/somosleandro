@@ -44,7 +44,7 @@ export default function DeleteCallingModal({
           <div className={overlayClassName}></div>
           <form
             onSubmit={handleSubmit}
-            className="absolute left-1/2 top-1/2 z-20 w-11/12 -translate-x-1/2 -translate-y-1/2 transform flex flex-col gap-2 rounded-lg bg-white p-6 drop-shadow-lg"
+            className="absolute top-1/2 left-1/2 z-30 w-11/12 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2 rounded-lg bg-white p-6 drop-shadow-lg"
           >
             {/**Header y botón de cierre */}
             <div className="flex flex-row gap-4">

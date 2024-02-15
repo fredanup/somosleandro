@@ -39,7 +39,7 @@ export default function ApplyingFullScreen({
 
   return (
     <>
-      <div className="flex flex-col h-full w-full rounded-lg drop-shadow-lg">
+      <div className="flex flex-col h-screen md:h-full w-full rounded-lg drop-shadow-lg">
         {/**Header */}
         <Header
           text="Perfil del cliente"

@@ -40,7 +40,7 @@ export default function ChooseCallingModal({
         <div>
           {/* Fondo borroso y no interactivo */}
           <div className={overlayClassName}></div>
-          <div className="absolute left-1/2 top-1/2 z-20 w-11/12 -translate-x-1/2 -translate-y-1/2 transform flex flex-col gap-2 rounded-lg bg-white p-6 drop-shadow-lg">
+          <div className="absolute top-1/2 left-1/2 z-20 w-11/12 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-2 rounded-lg bg-white p-6 drop-shadow-lg">
             {/**Header y botón de cierre */}
             <div className="flex flex-row gap-2 items-center justify-between">
               <h1 className="text-black text-lg font-semibold">
