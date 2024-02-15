@@ -124,7 +124,7 @@ export default function ApplyingSmallScreen({
   };
 
   if (isLoading) {
-    return <Spinner text="Cargando registro" />;
+    return <Spinner text="Cargando registros" />;
   }
 
   return (

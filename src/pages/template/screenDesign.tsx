@@ -59,7 +59,7 @@ const ScreenDesign = ({
     }
     if (!session) {
       // Si el usuario no está autenticado, redirige a la página de inicio de sesión
-      router.replace('/login').catch((error) => {
+      router.replace('/').catch((error) => {
         console.error(
           'Error al redirigir a la página de inicio de sesión:',
           error,
