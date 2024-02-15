@@ -22,6 +22,7 @@ const ScreenDesign = ({
   //pero si está en el servidor será 0
   //Obtenemos la sesión de la bd
   const { data: session, status } = useSession();
+
   //Inicialización de ruta
   const router = useRouter();
   const [anchoPantalla, setAnchoPantalla] = useState<number>(
