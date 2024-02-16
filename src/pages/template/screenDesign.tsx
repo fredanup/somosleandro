@@ -4,6 +4,7 @@ import Spinner from 'pages/utilities/spinner';
 import { useState, type ReactNode, useEffect, memo } from 'react';
 import type { ApplicantRoomType } from 'server/routers/room';
 import type { IUserCalling } from 'utils/auth';
+import { trpc } from 'utils/trpc';
 
 interface BodyProps {
   smallScreenBody: ReactNode;
@@ -28,18 +29,13 @@ const ScreenDesign = ({
   const [anchoPantalla, setAnchoPantalla] = useState<number>(
     typeof window !== 'undefined' ? window.innerWidth : 0,
   );
-  //Obtención de la sesión
-  //const { data: session, status } = useSession();
-  //Declaración de router empleado en caso de no obtener la sesión
-  //const router = useRouter();
 
-  /*
   const [subscription, setSubscription] = useState<PushSubscription | null>(
     null,
   );
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
-*/
+
   useEffect(() => {
     //Actualiza el ancho de la pantalla cada que se cambia de ancho
     const handleResize = () => {
@@ -69,16 +65,77 @@ const ScreenDesign = ({
     }
   }, [status, session, router]);
 
-  if (status === 'loading') {
-    // Muestra un spinner de carga mientras se carga la sesión
-    return <Spinner text="Cargando sesión" />;
-  }
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      // run only in browser
+      navigator.serviceWorker.ready
+        .then((reg) => {
+          reg.pushManager
+            .getSubscription()
+            .then((sub) => {
+              if (
+                sub &&
+                !(
+                  sub.expirationTime &&
+                  Date.now() > sub.expirationTime - 5 * 60 * 1000
+                )
+              ) {
+                setSubscription(sub);
+              }
+            })
+            .catch((error) => {
+              // Maneja los errores de la solicitud
+              console.error('Error de red:', error);
+              // Realiza alguna acción en función del error de red
+            });
+          setRegistration(reg);
+        })
+        .catch((error) => {
+          // Maneja los errores de la solicitud
+          console.error('Error de red:', error);
+          // Realiza alguna acción en función del error de red
+        });
+    }
+  }, []);
 
-  if (!session) {
-    // Si la sesión no está disponible, no renderices nada
-    return null;
-  }
+  useEffect(() => {
+    subscribeFunction(); // Llama a la función subscribeFunction cuando el componente se monta
+  }, []);
+
+  trpc.room.onSendMessage.useSubscription(undefined, {
+    onData(data) {
+      //Busca al usuario de la sesión actual. Nota revisar
+      const user = data.users.find((u) => u.id === session?.user?.id);
+      //Si la sala del usuario actual es la sala del mensaje
+      if (user?.roomId === data.message.applicantRoomId) {
+        //Llenar el buzón de mensajes previo con el nuevo mensaje agregándo la fecha de creación. Nota revisar
+
+        if (data.message.userId !== session?.user?.id) {
+          // Verifica que el mensaje sea de otro usuario antes de mostrar la notificación
+
+          sendNotification(data.message.userName, data.message.text);
+        }
+      }
+    },
+    onError(err) {
+      console.error('Subscription error:', err);
+    },
+  });
   /*
+  //Si la sesión no existe se redirige al inicio de sesión
+  if (!session) {
+    router.replace('/').catch((error) => {
+      // Se muestra el error identificado en el enrutadomiento. F(x): manejo de errores
+      console.error(
+        'Error al redirigir a la página de inicio de sesión:',
+        error,
+      );
+    });
+  } else {
+    subscribeFunction();
+  }
+*/
+
   const base64ToUint8Array = (base64: string) => {
     const padding = '='.repeat((4 - (base64.length % 4)) % 4);
     const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -118,39 +175,6 @@ const ScreenDesign = ({
       });
   };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-      // run only in browser
-      navigator.serviceWorker.ready
-        .then((reg) => {
-          reg.pushManager
-            .getSubscription()
-            .then((sub) => {
-              if (
-                sub &&
-                !(
-                  sub.expirationTime &&
-                  Date.now() > sub.expirationTime - 5 * 60 * 1000
-                )
-              ) {
-                setSubscription(sub);
-              }
-            })
-            .catch((error) => {
-              // Maneja los errores de la solicitud
-              console.error('Error de red:', error);
-              // Realiza alguna acción en función del error de red
-            });
-          setRegistration(reg);
-        })
-        .catch((error) => {
-          // Maneja los errores de la solicitud
-          console.error('Error de red:', error);
-          // Realiza alguna acción en función del error de red
-        });
-    }
-  }, []);
-
   const sendNotification = (
     title: string | null,
     message: string | null,
@@ -180,45 +204,16 @@ const ScreenDesign = ({
       });
   };
 
-  trpc.room.onSendMessage.useSubscription(undefined, {
-    onData(data) {
-      //Busca al usuario de la sesión actual. Nota revisar
-      const user = data.users.find((u) => u.id === session?.user?.id);
-      //Si la sala del usuario actual es la sala del mensaje
-      if (user?.roomId === data.message.applicantRoomId) {
-        //Llenar el buzón de mensajes previo con el nuevo mensaje agregándo la fecha de creación. Nota revisar
-
-        if (data.message.userId !== session?.user?.id) {
-          // Verifica que el mensaje sea de otro usuario antes de mostrar la notificación
-
-          sendNotification(data.message.userName, data.message.text);
-        }
-      }
-    },
-    onError(err) {
-      console.error('Subscription error:', err);
-    },
-  });
-
   //Se obtiene la sesión de la base de datos si es que la hay y mientras se muestra un spinner
   if (status === 'loading') {
-    // Se muestra el spinner mientra se verifica el estado de autenticación
+    // Muestra un spinner de carga mientras se carga la sesión
     return <Spinner text="Cargando sesión" />;
   }
 
-  //Si la sesión no existe se redirige al inicio de sesión
   if (!session) {
-    router.replace('/').catch((error) => {
-      // Se muestra el error identificado en el enrutadomiento. F(x): manejo de errores
-      console.error(
-        'Error al redirigir a la página de inicio de sesión:',
-        error,
-      );
-    });
-  } else {
-    subscribeFunction();
+    // Si la sesión no está disponible, no renderices nada
+    return null;
   }
-*/
 
   return (
     <>
