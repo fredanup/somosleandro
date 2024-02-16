@@ -12,6 +12,49 @@ interface BodyProps {
   menu: ReactNode;
   selectedCard: IUserCalling | ApplicantRoomType | null;
 }
+const base64ToUint8Array = (base64: string) => {
+  const padding = '='.repeat((4 - (base64.length % 4)) % 4);
+  const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/');
+
+  const rawData = window.atob(b64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
+
+const subscribeFunction = (
+  registration: ServiceWorkerRegistration | null,
+  setSubscription: React.Dispatch<
+    React.SetStateAction<PushSubscription | null>
+  >,
+): void => {
+  if (!registration) {
+    console.error('Service Worker registration not found.');
+    return;
+  }
+
+  registration.pushManager
+    .subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: base64ToUint8Array(
+        'BJwvGYEOUTD1sPwR0UqBzDRvtmRZswpRVYfxzWH1X88X2NzpLWpRMwxij9GDbAXDnT4VsVJ50gGbiXbkjGM3Mpg',
+      ),
+    })
+    .then((sub) => {
+      // TODO: deberías llamar a tu API para guardar los datos de la suscripción en el servidor
+      setSubscription(sub);
+
+      console.log('Web push subscribed!');
+      console.log(sub);
+    })
+    .catch((error) => {
+      console.error('Error subscribing to web push:', error);
+      // Maneja el error
+    });
+};
 
 const ScreenDesign = ({
   smallScreenBody,
@@ -99,8 +142,8 @@ const ScreenDesign = ({
   }, []);
 
   useEffect(() => {
-    subscribeFunction(); // Llama a la función subscribeFunction cuando el componente se monta
-  }, []);
+    subscribeFunction(registration, setSubscription); // Llama a la función subscribeFunction cuando el componente se monta
+  }, [registration, setSubscription]);
 
   trpc.room.onSendMessage.useSubscription(undefined, {
     onData(data) {
@@ -135,45 +178,6 @@ const ScreenDesign = ({
     subscribeFunction();
   }
 */
-
-  const base64ToUint8Array = (base64: string) => {
-    const padding = '='.repeat((4 - (base64.length % 4)) % 4);
-    const b64 = (base64 + padding).replace(/-/g, '+').replace(/_/g, '/');
-
-    const rawData = window.atob(b64);
-    const outputArray = new Uint8Array(rawData.length);
-
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  };
-
-  const subscribeFunction = (): void => {
-    if (!registration) {
-      console.error('Service Worker registration not found.');
-      return;
-    }
-
-    registration.pushManager
-      .subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64ToUint8Array(
-          'BJwvGYEOUTD1sPwR0UqBzDRvtmRZswpRVYfxzWH1X88X2NzpLWpRMwxij9GDbAXDnT4VsVJ50gGbiXbkjGM3Mpg',
-        ),
-      })
-      .then((sub) => {
-        // TODO: deberías llamar a tu API para guardar los datos de la suscripción en el servidor
-        setSubscription(sub);
-
-        console.log('Web push subscribed!');
-        console.log(sub);
-      })
-      .catch((error) => {
-        console.error('Error subscribing to web push:', error);
-        // Maneja el error
-      });
-  };
 
   const sendNotification = (
     title: string | null,
