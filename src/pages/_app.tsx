@@ -3,12 +3,28 @@ import type { Session } from 'next-auth';
 import { getSession, SessionProvider } from 'next-auth/react';
 import type { AppType } from 'next/app';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import { trpc } from 'utils/trpc';
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps,
 }) => {
+  useEffect(() => {
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test(userAgent);
+    };
+
+    const isInStandaloneMode = () =>
+      'standalone' in window.navigator && window.navigator.standalone;
+
+    if (isIos() && !isInStandaloneMode()) {
+      // Aquí puedes hacer algo cuando se cumpla la condición
+      console.log('Mostrar mensaje de instalación');
+    }
+  }, []);
+
   return (
     <>
       <Head>
