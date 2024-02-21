@@ -5,6 +5,7 @@ self.addEventListener('push', function (event) {
   event.waitUntil(
     registration.showNotification(data.title, {
       body: data.message,
+<<<<<<< HEAD
       icon: '/icons/icon-192x192.png',
       persistent: true
     })
