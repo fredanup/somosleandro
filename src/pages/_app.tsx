@@ -29,6 +29,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <>
       <Head>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta httpEquiv="content-language" content="es" />
         <title>Somos Leandro</title>
         <meta
           name="description"
