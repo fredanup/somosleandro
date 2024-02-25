@@ -1,0 +1,21 @@
+.parent {
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); /* Fondo del contenedor padre con opacidad */
+}
+
+.child {
+  opacity: 1; /* Establecer la opacidad del hijo al 100% */
+}
+
+.parentTextBox {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.233
+  ); /* Fondo del contenedor padre con opacidad */
+}
