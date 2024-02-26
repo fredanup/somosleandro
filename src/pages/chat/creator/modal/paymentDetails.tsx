@@ -98,8 +98,8 @@ export default function PaymentDetails({
                   console.log('La solicitud fue exitosa');
 
                   // Por ejemplo, cerrar el formulario
-                  onClose();
-                  window.location.reload();
+                  //onClose();
+                  //window.location.reload();
                 } else {
                   // Si la respuesta no es exitosa, puedes manejar el error aquí
                   console.error(
@@ -148,7 +148,7 @@ export default function PaymentDetails({
         <button
           onClick={() => {
             onClose;
-            //window.location.reload();
+            window.location.reload();
           }}
         >
           Cerrar
