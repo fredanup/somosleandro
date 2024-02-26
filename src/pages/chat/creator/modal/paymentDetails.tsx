@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Script from 'next/script';
 
 import type { PaymentRequestBody } from 'pages/api/pago';
+import Spinner from 'pages/utilities/spinner';
 
 export interface PaymentRequestForm {
   total: number;
@@ -71,7 +72,7 @@ export default function PaymentDetails({
 
           const cardholderEmail = cardFormData.payer.email;
 
-          return new Promise(() => {
+          return new Promise((resolve, reject) => {
             fetch('/api/pago', {
               method: 'POST',
               headers: {
@@ -92,27 +93,17 @@ export default function PaymentDetails({
                 transactionAmount: Number(totalAmount),
               }),
             })
-              .then((response) => {
-                if (response.ok) {
-                  // Si la respuesta es exitosa (código 200), puedes realizar alguna acción en el cliente
-                  console.log('La solicitud fue exitosa');
-
-                  // Por ejemplo, cerrar el formulario
-                  //onClose();
-                  //window.location.reload();
-                } else {
-                  // Si la respuesta no es exitosa, puedes manejar el error aquí
-                  console.error(
-                    'Error al procesar la solicitud:',
-                    response.statusText,
-                  );
-                  // Realiza alguna acción en función del error
-                }
+              .then((response) => response.json())
+              .then((parsedResponse) => {
+                resolve(parsedResponse); // Resolver la promesa externa con los datos recibidos
+                console.log('La solicitud fue exitosa:', parsedResponse);
+                <Spinner text="Pago exitoso" />;
+                onClose(); // Cerrar el formulario después de recibir una respuesta exitosa
+                window.location.reload();
               })
               .catch((error) => {
-                // Maneja los errores de la solicitud
-                console.error('Error de red:', error);
-                // Realiza alguna acción en función del error de red
+                reject(error); // Rechazar la promesa externa con el error original
+                console.error('Error al procesar la solicitud:', error);
               });
           });
         },
@@ -143,16 +134,20 @@ export default function PaymentDetails({
           src="https://sdk.mercadopago.com/js/v2"
           onLoad={createMPFormContainer}
         />
-        {isLoading && <div>Cargando...</div>}
+        {isLoading && <Spinner text="Cargando" />}
         <div id="cardPaymentBrick_container"></div>
-        <button
-          onClick={() => {
-            onClose;
-            window.location.reload();
-          }}
-        >
-          Cerrar
-        </button>
+        <div className="pt-2 flex flex-row justify-end gap-2 border-t border-gray-200">
+          <button
+            type="button"
+            className="rounded-lg border bg-gray-500 px-4 py-1 text-base font-medium text-white"
+            onClick={() => {
+              onClose();
+              window.location.reload();
+            }}
+          >
+            Cancelar
+          </button>
+        </div>
       </div>
     </>
   );
