@@ -138,7 +138,7 @@ export default function PaymentDetails({
 
   return (
     <>
-      <div className="absolute left-1/2 top-1/2 z-40 w-auto -translate-x-1/2 -translate-y-1/2 transform overflow-auto rounded-lg bg-white p-6 drop-shadow-lg">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform z-30 h-5/6 w-11/12 overflow-auto rounded-lg bg-white p-6">
         <Script
           src="https://sdk.mercadopago.com/js/v2"
           onLoad={createMPFormContainer}
@@ -148,7 +148,7 @@ export default function PaymentDetails({
         <button
           onClick={() => {
             onClose;
-            window.location.reload();
+            //window.location.reload();
           }}
         >
           Cerrar
